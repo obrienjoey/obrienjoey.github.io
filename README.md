@@ -1,4 +1,4 @@
-# [https://joeyobrien.netlify.app/](https://joeyobrien.netlify.app/)
+# [https://obrienjoey.github.io/](https://obrienjoey.github.io/)
 
 This website is built with [blogdown](https://github.com/rstudio/blogdown) and [Hugo](https://gohugo.io/), with the [Academic](https://academic-demo.netlify.app/ ) theme. I deploy my website using [Netlify](https://www.netlify.com/). 
 
