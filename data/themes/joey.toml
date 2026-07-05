@@ -1,0 +1,18 @@
+# Theme metadata
+name = "Joey Custom"
+
+# Is theme light or dark? (This defines the default mode; day_night allows toggling)
+light = true
+
+# Primary Accent (Sophisticated Emerald / Teal tone instead of raw green)
+primary = "#0d9488" # Teal 600
+
+# Menu (Navbar Styling)
+menu_primary = "#0f172a"      # Deep Slate 900
+menu_text = "rgba(255, 255, 255, 0.7)"
+menu_text_active = "#2dd4bf" # Light Teal / Turquoise accent
+menu_title = "#fff"
+
+# Home sections (Light background alternation)
+home_section_odd = "#ffffff"
+home_section_even = "#f8fafc" # Very soft blue-grey slate
