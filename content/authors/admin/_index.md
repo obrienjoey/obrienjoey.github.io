@@ -75,14 +75,11 @@ user_groups:
 - Visitors
 ---
 
-I am a Principal Consultant in the Quant Services division of [LSEG (Formerly Acadia)](https://www.lseg.com/en/post-trade/solutions) specializing in the application of advanced mathematical modelling and data science techniques to deliver robust model validation and implementation solutions for financial institutions. I have deep expertise in XVAs and derivative pricing models, with a specific focus on partnering with clients (including tier-one investment banks and hedge funds) to ensure compliance with regulatory standards, mitigate risk exposure, and enhance valuation accuracy.
+I am a **Principal Consultant** in the Quant Services division of [LSEG (Formerly Acadia)](https://www.lseg.com/en/post-trade/solutions), where I partner with tier-one investment banks, hedge funds, and risk technology teams to design, validate, and implement quantitative models for counterparty credit risk and derivative pricing. My work spans **CVA, DVA, FVA, and PFE model validation**, regulatory compliance with frameworks such as **SS1/23 and FRTB**, and the deployment of open-source risk infrastructure using the **Open Source Risk Engine (ORE)**.
 
-My interests include statistics, data science, network science, education, and
-public-speaking across a number of domains. This tends to result in working within
-a range of programming languages including R, Python, Julia, and SQL.
+I hold a PhD in Applied Mathematics from the University of Limerick, where my research focused on describing the dynamics of complex systems (such as online social networks and popularity dynamics) using mathematical modelling and large-scale data analysis. This background in applied statistics and network science now informs my approach to building robust, mathematically rigorous financial risk analytics.
 
-I received my PhD in Applied Mathematics from the University of Limerick with a
-focus on describing the dynamics of complex systems through a combination of mathematical modelling alongside large-scale data analysis. These systems can range from memes, online threads to even Fantasy sports!  
+My technical toolkit includes **Python** (NumPy, SciPy, pandas, QuantLib Python), **C++** for performance-critical pricing components, and **R** for statistical analysis and diagnostics. I also regularly contribute to LSEG's *Ahead of the Curve* podcast series, discussing ORE developments, model risk regulation, and the future of quantitative risk management.
 
 ## News
 - **July 5th, 2026**: Joined the latest episode of LSEG's **Ahead of the Curve** podcast alongside Xabier Anduaga and Stuart Smith to discuss the real-world impact and future of Agentic AI in quantitative risk management. [Listen & Watch.](https://lseg.group/4dt4uey)
