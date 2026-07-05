@@ -8,7 +8,7 @@ active = true  # Activate this widget? true/false
 weight = 50  # Order that this section will appear.
 
 title = "Recent & Upcoming Talks"
-subtitle = ""
+subtitle = "Presentations, Webinars & Podcast Appearances"
 
 [content]
   # Page type to display. E.g. post, talk, or publication.
