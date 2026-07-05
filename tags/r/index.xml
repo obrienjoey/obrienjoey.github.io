@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>R | Joey O'Brien</title><link>/tags/r/</link><atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml"/><description>R</description><generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 30 Jan 2022 00:00:00 +0000</lastBuildDate><image><url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url><title>R</title><link>/tags/r/</link></image><item><title>Building a tidy data pipeline: Covid19 Northern Ireland</title><link>/post/20220130_covid19ni_data/</link><pubDate>Sun, 30 Jan 2022 00:00:00 +0000</pubDate><guid>/post/20220130_covid19ni_data/</guid><description>
+&lt;script src="/post/20220130_covid19ni_data/index_files/header-attrs/header-attrs.js">&lt;/script>
+&lt;p>One of the many scientific benefits that have occurred since the start of the Coronavirus pandemic is the emergence of large-scale open access data describing the dynamics of the virus at a range of scales. Governments, health organizations, and many others have produced data at a unparalleled rate to help society understand how the disease has rampaged through society.&lt;/p>
+&lt;p>Of course the quality of production of this data varies greatly depending on the producer. Ideally for those interested in data analytics/science the data would be readily available in a clean and tidy format which allows quick analysis to be done. Such ideas are generally considered by data engineers (which I, unfortunately, wouldn’t count myself as) to produce pipelines to collect, clean, and update the data on a regular basis to keep up with the latest figures.&lt;/p>
+&lt;p>Motivated by this, I have produced a framework to consider such data describing the pandemic in the case of Northern Ireland. The &lt;a href="https://www.health-ni.gov.uk/publications/daily-dashboard-updates-covid-19-november-2021">Department of Health NI&lt;/a> produce a fantastic summary of the main metrics describing the disease including, cases, testing, hospitilizations, and deaths arising from Covid-19 on a daily-ish basis (more on this in a moment). Unfortunately, for those of us who want to access data as quickly and cleanly as possible, the data is stored in rather clunky &lt;em>.xlsx&lt;/em> spreadsheets with each tab representing a different summary.&lt;/p>
+&lt;p>So the aim of this post is to describe how one can produce a pipeline to&lt;/p>
+&lt;ol style="list-style-type: decimal">
+&lt;li>Look for the latest spreadsheet on a daily basis.&lt;/li>
+&lt;li>Extract the needed info from each of the sheets of the .xlsx file individually.&lt;/li>
+&lt;li>Clean this data in a more usable format.&lt;/li>
+&lt;li>store the data in a public repository for others to use.&lt;/li>
+&lt;/ol>
+&lt;p>This is exactly the framework introduced in the &lt;a href="https://github.com/obrienjoey/covid19northernireland">&lt;strong>covid19northernireland&lt;/strong>&lt;/a> repo hosted on my github. Let me now talk you through the main workings of the software and how the individual codes work.&lt;/p>
+&lt;p>First let’s load the required packages in &lt;code>R&lt;/code>.&lt;/p>
+&lt;pre class="r">&lt;code>library(tidyverse) # for data wrangling
+library(janitor) # for cleaning dataframes
+library(padr) # dealing with missing values
+library(zoo) # time series handling
+library(readxl) # reading xlsx workbooks
+library(httr) # for storing downloaded files temporarily&lt;/code>&lt;/pre>
+&lt;p>First of all, the spreadsheets are stored at a URL with the following form:&lt;/p>
+&lt;p>&lt;a href="https://www.health-ni.gov.uk/sites/default/files/publications/health/doh-dd-19-november-2021.xlsx" class="uri">https://www.health-ni.gov.uk/sites/default/files/publications/health/doh-dd-19-november-2021.xlsx&lt;/a>&lt;/p>
+&lt;p>so we will need to provide the current date to build the URL, however the files are also only updated on weekdays so we can use a little function to correct for that and then save the file lcoally for analysis as follows&lt;/p>
+&lt;pre class="r">&lt;code>most_recent_weekday &amp;lt;- function(date){
+# function to take a date input and return the most recent weekday
+if(weekdays(date) == &amp;quot;Saturday&amp;quot;){
+return(date - 1)
+}else if(weekdays(date) == &amp;quot;Sunday&amp;quot;){
+return(date - 2)
+}else{
+return(date)
+}
+}
+data_date = format(most_recent_weekday(Sys.Date()), &amp;quot;%d%m%y&amp;quot;)
+fname = paste0(&amp;#39;https://www.health-ni.gov.uk/sites/default/files/publications/health/doh-dd-&amp;#39;, data_date,&amp;#39;.xlsx&amp;#39;)
+# download the file and store a connection to it in xls_file
+httr::GET(fname, write_disk(xls_file &amp;lt;- tempfile(fileext = &amp;quot;.xlsx&amp;quot;)))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## Response [https://www.health-ni.gov.uk/sites/default/files/publications/health/doh-dd-280122.xlsx]
+## Date: 2022-01-30 21:33
+## Status: 200
+## Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+## Size: 3.14 MB
+## &amp;lt;ON DISK&amp;gt; C:\Users\JOEYOB~1\AppData\Local\Temp\Rtmp2V42oQ\file4a6871c01034.xlsx&lt;/code>&lt;/pre>
+&lt;p>Now we have a connection to the latest version of the spreadsheet stored in the variable &lt;code>xls_file&lt;/code> (thanks to the &lt;code>httr&lt;/code> package). Generally we use .csv files when interacting with smaller tabular files, however in this case it is actually an xlsx file and such it has sheets. Fortunately the &lt;code>readxl&lt;/code> packages allows us to read directly from a given sheet by providing its name (we’ll look at the &lt;em>Summary Tests&lt;/em> sheet) as follows&lt;/p>
+&lt;pre class="r">&lt;code>test_df &amp;lt;- read_excel(xls_file, sheet = &amp;quot;Summary Tests&amp;quot;)
+test_df&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## # A tibble: 730 x 7
+## Sample_Date `TOTAL TESTS` `INDIVIDUALS TESTED PO~ `ALL INDIVIDUALS T~
+## &amp;lt;dttm&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;
+## 1 2020-01-05 00:00:00 3 0 0
+## 2 2020-01-07 00:00:00 1 0 0
+## 3 2020-01-11 00:00:00 1 0 0
+## 4 2020-01-16 00:00:00 2 0 0
+## 5 2020-01-18 00:00:00 2 0 0
+## 6 2020-01-21 00:00:00 1 0 0
+## 7 2020-01-22 00:00:00 1 0 0
+## 8 2020-01-25 00:00:00 1 0 0
+## 9 2020-01-27 00:00:00 1 0 0
+## 10 2020-01-31 00:00:00 1 0 0
+## # ... with 720 more rows, and 3 more variables:
+## # ROLLING 7 DAY POSITIVE TESTS &amp;lt;dbl&amp;gt;, ROLLING 7 DAY INDIVIDUALS TESTED &amp;lt;dbl&amp;gt;,
+## # POSITIVITY RATE PER 100K POP &amp;lt;dbl&amp;gt;&lt;/code>&lt;/pre>
+&lt;p>Now if we take a look through this data we will note that its hygiene (no offence…) isn’t the best. First of all the column names have spaces, and there is nothing a data scientist dislikes more than spaces in variable names (perhaps a slight exaggeration but then again maybe not). As such the first thing we will do is use the &lt;code>janitor::clean_names()&lt;/code> function which is fantastic at repairing these troublesome naming conventions. Second we don’t want all the columns in this instance so we can use &lt;code>dplyr::select()&lt;/code> to take what we need. Furthermore, if we check the data we note that the date column &lt;em>Sample_Date&lt;/em> isn’t consistent in that some days aren’t present this is quickly fixed with the &lt;code>padr::pad()&lt;/code> function that, as the name suggests, pads the missing days. Lastly, there are some columns where those days with no values (cases, deaths,…) are represented by NA which we don’t really want to be the case as there is information in these values so that can be resolved using tools from &lt;code>dplyr&lt;/code> also. All together we have went through a whirlwind step of data cleaning to have a much tidier and user-friendly data frame as seen below&lt;/p>
+&lt;pre class="r">&lt;code>test_df %&amp;gt;%
+clean_names() %&amp;gt;%
+select(date = sample_date,
+cases = individuals_tested_positive,
+tests = all_individuals_tested,
+cases_per_100k = positivity_rate_per_100k_pop
+) %&amp;gt;%
+pad(&amp;#39;day&amp;#39;) %&amp;gt;%
+mutate_if(is.numeric, funs(ifelse(is.na(.), 0, .))) %&amp;gt;%
+filter(date &amp;gt;= &amp;#39;2020-03-05&amp;#39;)&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## # A tibble: 694 x 4
+## date cases tests cases_per_100k
+## &amp;lt;dttm&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;
+## 1 2020-03-05 00:00:00 2 18 0.106
+## 2 2020-03-06 00:00:00 2 14 0.106
+## 3 2020-03-07 00:00:00 5 14 0.264
+## 4 2020-03-08 00:00:00 3 18 0.158
+## 5 2020-03-09 00:00:00 3 35 0.158
+## 6 2020-03-10 00:00:00 5 92 0.264
+## 7 2020-03-11 00:00:00 11 91 0.581
+## 8 2020-03-12 00:00:00 4 72 0.211
+## 9 2020-03-13 00:00:00 11 78 0.581
+## 10 2020-03-14 00:00:00 10 62 0.528
+## # ... with 684 more rows&lt;/code>&lt;/pre>
+&lt;p>Now there is so much more data in the file that we can pull but this would turn into a rather long post if I continued describing every one of the steps but please do check out the entire code &lt;a href="https://github.com/obrienjoey/covid19northernireland/blob/main/code/00_source.R">here&lt;/a> if interested.&lt;/p>
+&lt;p>The main point however is that from this collection + cleaning exercise we create four separate tidy .csv files (found &lt;a href="https://github.com/obrienjoey/covid19northernireland/tree/main/data">here&lt;/a>) which are much easier to analyse in a data science setting.&lt;/p>
+&lt;p>Of course we want these files to continually update each time the corresponding spreadsheet is updated. And no, I do not want to remember to run the script each day. Therefore the best option is to set up some pipeline that will run the script automatically on a virtual machine each day. This is done using a &lt;code>.yaml&lt;/code> script that runs my script from the cloud each night at 10pm before committing the files in the aforementioned repository for use by others. The format of this script looks like this:&lt;/p>
+&lt;pre class="yaml">&lt;code>name: covid_northernireland_data_update
+# Controls when the action will run.
+on:
+schedule:
+- cron: &amp;#39;00 22 * * *&amp;#39;
+jobs:
+CovidDataScrape:
+# The type of runner that the job will run on
+runs-on: windows-latest
+# Load repo and install R
+steps:
+- uses: actions/checkout@master
+- uses: r-lib/actions/setup-r@master
+# Set-up R
+- name: Install Packages
+run: |
+install.packages(&amp;#39;tidyverse&amp;#39;)
+install.packages(&amp;#39;janitor&amp;#39;)
+install.packages(&amp;#39;padr&amp;#39;)
+install.packages(&amp;#39;zoo&amp;#39;)
+install.packages(&amp;#39;readxl&amp;#39;)
+install.packages(&amp;#39;httr&amp;#39;)
+shell: Rscript {0}
+# Run R script
+- name: Get Data
+run: Rscript code/01_data_update.R
+# Add new files in data folder, commit along with other modified files, push
+- name: Commit Files
+run: |
+git config --local user.name &amp;#39;obrienjoey&amp;#39;
+git config --local user.email &amp;quot;mr.joeyob@gmail.com&amp;quot;
+git add data/*
+git commit -am &amp;quot;update NI Covid19 data $(date)&amp;quot;
+git push origin main
+env:
+REPO_KEY: ${{secrets.GITHUB_TOKEN}}
+username: obrienjoey&lt;/code>&lt;/pre>
+&lt;p>So there we have it, a fully fledged workflow to collect, clean, and store the required data in a systematic and tidy manner. I hope this discussion can be useful for you in creating your own data pipelines (and make us all appreciate the godly work of data engineers more!) allowing for clean and automatic data collection for whatever project comes your way!&lt;/p></description></item></channel></rss>

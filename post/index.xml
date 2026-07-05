@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts | Joey O'Brien</title><link>/post/</link><atom:link href="/post/index.xml" rel="self" type="application/rss+xml"/><description>Posts</description><generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 30 Jan 2022 00:00:00 +0000</lastBuildDate><image><url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url><title>Posts</title><link>/post/</link></image><item><title>Building a tidy data pipeline: Covid19 Northern Ireland</title><link>/post/20220130_covid19ni_data/</link><pubDate>Sun, 30 Jan 2022 00:00:00 +0000</pubDate><guid>/post/20220130_covid19ni_data/</guid><description>
+&lt;script src="/post/20220130_covid19ni_data/index_files/header-attrs/header-attrs.js">&lt;/script>
+&lt;p>One of the many scientific benefits that have occurred since the start of the Coronavirus pandemic is the emergence of large-scale open access data describing the dynamics of the virus at a range of scales. Governments, health organizations, and many others have produced data at a unparalleled rate to help society understand how the disease has rampaged through society.&lt;/p>
+&lt;p>Of course the quality of production of this data varies greatly depending on the producer. Ideally for those interested in data analytics/science the data would be readily available in a clean and tidy format which allows quick analysis to be done. Such ideas are generally considered by data engineers (which I, unfortunately, wouldn’t count myself as) to produce pipelines to collect, clean, and update the data on a regular basis to keep up with the latest figures.&lt;/p>
+&lt;p>Motivated by this, I have produced a framework to consider such data describing the pandemic in the case of Northern Ireland. The &lt;a href="https://www.health-ni.gov.uk/publications/daily-dashboard-updates-covid-19-november-2021">Department of Health NI&lt;/a> produce a fantastic summary of the main metrics describing the disease including, cases, testing, hospitilizations, and deaths arising from Covid-19 on a daily-ish basis (more on this in a moment). Unfortunately, for those of us who want to access data as quickly and cleanly as possible, the data is stored in rather clunky &lt;em>.xlsx&lt;/em> spreadsheets with each tab representing a different summary.&lt;/p>
+&lt;p>So the aim of this post is to describe how one can produce a pipeline to&lt;/p>
+&lt;ol style="list-style-type: decimal">
+&lt;li>Look for the latest spreadsheet on a daily basis.&lt;/li>
+&lt;li>Extract the needed info from each of the sheets of the .xlsx file individually.&lt;/li>
+&lt;li>Clean this data in a more usable format.&lt;/li>
+&lt;li>store the data in a public repository for others to use.&lt;/li>
+&lt;/ol>
+&lt;p>This is exactly the framework introduced in the &lt;a href="https://github.com/obrienjoey/covid19northernireland">&lt;strong>covid19northernireland&lt;/strong>&lt;/a> repo hosted on my github. Let me now talk you through the main workings of the software and how the individual codes work.&lt;/p>
+&lt;p>First let’s load the required packages in &lt;code>R&lt;/code>.&lt;/p>
+&lt;pre class="r">&lt;code>library(tidyverse) # for data wrangling
+library(janitor) # for cleaning dataframes
+library(padr) # dealing with missing values
+library(zoo) # time series handling
+library(readxl) # reading xlsx workbooks
+library(httr) # for storing downloaded files temporarily&lt;/code>&lt;/pre>
+&lt;p>First of all, the spreadsheets are stored at a URL with the following form:&lt;/p>
+&lt;p>&lt;a href="https://www.health-ni.gov.uk/sites/default/files/publications/health/doh-dd-19-november-2021.xlsx" class="uri">https://www.health-ni.gov.uk/sites/default/files/publications/health/doh-dd-19-november-2021.xlsx&lt;/a>&lt;/p>
+&lt;p>so we will need to provide the current date to build the URL, however the files are also only updated on weekdays so we can use a little function to correct for that and then save the file lcoally for analysis as follows&lt;/p>
+&lt;pre class="r">&lt;code>most_recent_weekday &amp;lt;- function(date){
+# function to take a date input and return the most recent weekday
+if(weekdays(date) == &amp;quot;Saturday&amp;quot;){
+return(date - 1)
+}else if(weekdays(date) == &amp;quot;Sunday&amp;quot;){
+return(date - 2)
+}else{
+return(date)
+}
+}
+data_date = format(most_recent_weekday(Sys.Date()), &amp;quot;%d%m%y&amp;quot;)
+fname = paste0(&amp;#39;https://www.health-ni.gov.uk/sites/default/files/publications/health/doh-dd-&amp;#39;, data_date,&amp;#39;.xlsx&amp;#39;)
+# download the file and store a connection to it in xls_file
+httr::GET(fname, write_disk(xls_file &amp;lt;- tempfile(fileext = &amp;quot;.xlsx&amp;quot;)))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## Response [https://www.health-ni.gov.uk/sites/default/files/publications/health/doh-dd-280122.xlsx]
+## Date: 2022-01-30 21:33
+## Status: 200
+## Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+## Size: 3.14 MB
+## &amp;lt;ON DISK&amp;gt; C:\Users\JOEYOB~1\AppData\Local\Temp\Rtmp2V42oQ\file4a6871c01034.xlsx&lt;/code>&lt;/pre>
+&lt;p>Now we have a connection to the latest version of the spreadsheet stored in the variable &lt;code>xls_file&lt;/code> (thanks to the &lt;code>httr&lt;/code> package). Generally we use .csv files when interacting with smaller tabular files, however in this case it is actually an xlsx file and such it has sheets. Fortunately the &lt;code>readxl&lt;/code> packages allows us to read directly from a given sheet by providing its name (we’ll look at the &lt;em>Summary Tests&lt;/em> sheet) as follows&lt;/p>
+&lt;pre class="r">&lt;code>test_df &amp;lt;- read_excel(xls_file, sheet = &amp;quot;Summary Tests&amp;quot;)
+test_df&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## # A tibble: 730 x 7
+## Sample_Date `TOTAL TESTS` `INDIVIDUALS TESTED PO~ `ALL INDIVIDUALS T~
+## &amp;lt;dttm&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;
+## 1 2020-01-05 00:00:00 3 0 0
+## 2 2020-01-07 00:00:00 1 0 0
+## 3 2020-01-11 00:00:00 1 0 0
+## 4 2020-01-16 00:00:00 2 0 0
+## 5 2020-01-18 00:00:00 2 0 0
+## 6 2020-01-21 00:00:00 1 0 0
+## 7 2020-01-22 00:00:00 1 0 0
+## 8 2020-01-25 00:00:00 1 0 0
+## 9 2020-01-27 00:00:00 1 0 0
+## 10 2020-01-31 00:00:00 1 0 0
+## # ... with 720 more rows, and 3 more variables:
+## # ROLLING 7 DAY POSITIVE TESTS &amp;lt;dbl&amp;gt;, ROLLING 7 DAY INDIVIDUALS TESTED &amp;lt;dbl&amp;gt;,
+## # POSITIVITY RATE PER 100K POP &amp;lt;dbl&amp;gt;&lt;/code>&lt;/pre>
+&lt;p>Now if we take a look through this data we will note that its hygiene (no offence…) isn’t the best. First of all the column names have spaces, and there is nothing a data scientist dislikes more than spaces in variable names (perhaps a slight exaggeration but then again maybe not). As such the first thing we will do is use the &lt;code>janitor::clean_names()&lt;/code> function which is fantastic at repairing these troublesome naming conventions. Second we don’t want all the columns in this instance so we can use &lt;code>dplyr::select()&lt;/code> to take what we need. Furthermore, if we check the data we note that the date column &lt;em>Sample_Date&lt;/em> isn’t consistent in that some days aren’t present this is quickly fixed with the &lt;code>padr::pad()&lt;/code> function that, as the name suggests, pads the missing days. Lastly, there are some columns where those days with no values (cases, deaths,…) are represented by NA which we don’t really want to be the case as there is information in these values so that can be resolved using tools from &lt;code>dplyr&lt;/code> also. All together we have went through a whirlwind step of data cleaning to have a much tidier and user-friendly data frame as seen below&lt;/p>
+&lt;pre class="r">&lt;code>test_df %&amp;gt;%
+clean_names() %&amp;gt;%
+select(date = sample_date,
+cases = individuals_tested_positive,
+tests = all_individuals_tested,
+cases_per_100k = positivity_rate_per_100k_pop
+) %&amp;gt;%
+pad(&amp;#39;day&amp;#39;) %&amp;gt;%
+mutate_if(is.numeric, funs(ifelse(is.na(.), 0, .))) %&amp;gt;%
+filter(date &amp;gt;= &amp;#39;2020-03-05&amp;#39;)&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## # A tibble: 694 x 4
+## date cases tests cases_per_100k
+## &amp;lt;dttm&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;
+## 1 2020-03-05 00:00:00 2 18 0.106
+## 2 2020-03-06 00:00:00 2 14 0.106
+## 3 2020-03-07 00:00:00 5 14 0.264
+## 4 2020-03-08 00:00:00 3 18 0.158
+## 5 2020-03-09 00:00:00 3 35 0.158
+## 6 2020-03-10 00:00:00 5 92 0.264
+## 7 2020-03-11 00:00:00 11 91 0.581
+## 8 2020-03-12 00:00:00 4 72 0.211
+## 9 2020-03-13 00:00:00 11 78 0.581
+## 10 2020-03-14 00:00:00 10 62 0.528
+## # ... with 684 more rows&lt;/code>&lt;/pre>
+&lt;p>Now there is so much more data in the file that we can pull but this would turn into a rather long post if I continued describing every one of the steps but please do check out the entire code &lt;a href="https://github.com/obrienjoey/covid19northernireland/blob/main/code/00_source.R">here&lt;/a> if interested.&lt;/p>
+&lt;p>The main point however is that from this collection + cleaning exercise we create four separate tidy .csv files (found &lt;a href="https://github.com/obrienjoey/covid19northernireland/tree/main/data">here&lt;/a>) which are much easier to analyse in a data science setting.&lt;/p>
+&lt;p>Of course we want these files to continually update each time the corresponding spreadsheet is updated. And no, I do not want to remember to run the script each day. Therefore the best option is to set up some pipeline that will run the script automatically on a virtual machine each day. This is done using a &lt;code>.yaml&lt;/code> script that runs my script from the cloud each night at 10pm before committing the files in the aforementioned repository for use by others. The format of this script looks like this:&lt;/p>
+&lt;pre class="yaml">&lt;code>name: covid_northernireland_data_update
+# Controls when the action will run.
+on:
+schedule:
+- cron: &amp;#39;00 22 * * *&amp;#39;
+jobs:
+CovidDataScrape:
+# The type of runner that the job will run on
+runs-on: windows-latest
+# Load repo and install R
+steps:
+- uses: actions/checkout@master
+- uses: r-lib/actions/setup-r@master
+# Set-up R
+- name: Install Packages
+run: |
+install.packages(&amp;#39;tidyverse&amp;#39;)
+install.packages(&amp;#39;janitor&amp;#39;)
+install.packages(&amp;#39;padr&amp;#39;)
+install.packages(&amp;#39;zoo&amp;#39;)
+install.packages(&amp;#39;readxl&amp;#39;)
+install.packages(&amp;#39;httr&amp;#39;)
+shell: Rscript {0}
+# Run R script
+- name: Get Data
+run: Rscript code/01_data_update.R
+# Add new files in data folder, commit along with other modified files, push
+- name: Commit Files
+run: |
+git config --local user.name &amp;#39;obrienjoey&amp;#39;
+git config --local user.email &amp;quot;mr.joeyob@gmail.com&amp;quot;
+git add data/*
+git commit -am &amp;quot;update NI Covid19 data $(date)&amp;quot;
+git push origin main
+env:
+REPO_KEY: ${{secrets.GITHUB_TOKEN}}
+username: obrienjoey&lt;/code>&lt;/pre>
+&lt;p>So there we have it, a fully fledged workflow to collect, clean, and store the required data in a systematic and tidy manner. I hope this discussion can be useful for you in creating your own data pipelines (and make us all appreciate the godly work of data engineers more!) allowing for clean and automatic data collection for whatever project comes your way!&lt;/p></description></item><item><title>A complex networks approach to ranking professional Snooker players</title><link>/post/snooker_oup/</link><pubDate>Mon, 03 May 2021 00:00:00 +0000</pubDate><guid>/post/snooker_oup/</guid><description>&lt;p>One does not have to look far to observe the innate desire us humans have to rank things. Each year we are faced with endless awards ceremonies—just think about the Oscars, Grammys, Ballon d’Or, Time Person of the Year… the list goes on and on. Indeed, at the turn of every year/decade/century media organizations fill whitespace with their “top 100 (insert domain of interest here) of (insert temporal period here)” where a supposed expert gives their thoughts on the optimal ordering of entities from the domain of choice. These rankings are, however, far from definitive, and rather than settle an argument they instead tend to simply add fuel to the fire of the debate. The main problem with these approaches is that the rankings tend to be based upon personal preference with an extremely high level of subjectivity (the player who scored the goal that won their team the cup, the movie they saw on their first date…). In an ideal science-based world, however, any ranking would be determined using an entirely objective approach which, unfortunately, requires detailed data describing the interactions between different entities to determine who/what exactly is the best.&lt;br>
+While the collection of such data can prove difficult for most domains, one area in which there is no shortage of detailed historical data of competition is within the field of sport. Rather, there is in fact a data revolution taking place in sport whereby athletes are becoming increasingly aware of statistics and, moreover, devoted fans of said sports have amassed huge collections of historical results that readily allow for data-driven mathematical analysis to be conducted. Motivated by this, researchers at MACSI (Mathematics Applications Consortium for Science and Industry) based in the University of Limerick in Ireland posed the following problem—who is the greatest snooker player of all time?
+For the unaware, snooker is a cue-based game in which competitors compete head-to-head by trying to strike balls on a rectangular table and obtain points, based upon the denomination of the ball, as a result of successfully landing it within one of the six “pockets” or holes on the table. Like most sports, there is constant discussion regarding which competitor is the greatest to have graced the game.
+To answer the question in a quantitative manner the first thing needed was detailed data of results from the sport which were obtained via a large data scraping exercise (involving pulling statistics from multiple webpages). This resulted in a collection of the match results from over fifty years (1968-2020), amounting to 657 tournaments featuring 1,221 unique players competing in 47,710 matches.
+With this data at hand, the question then becomes how best to use it in ranking the competitors. Perhaps the most obvious thing to do would be simply to count the number of times each player had won, the equivalent of giving the Oscar to the highest grossing movie—not ideal. The issue with this approach is in the fact that the player with the most wins could simply repeatedly play Joe Bloggs at the snooker hall. In order to offer an alternative approach, we make use of the network description of this data. This network is obtained by letting each player be represented by a node and for each match an edge is drawn from the losing node to the corresponding winning node.&lt;/p>
+&lt;p>&lt;img src="distributions.png" alt="">
+&lt;em>(a) Probability distribution of the number of matches (blue), wins (pink), and losses (green) for each professional Snooker player. Each point shows the fraction of players that had a certain number of each quantity. Note the scale of both axes are logarithmic suggesting that most players appear in very few matches while a select few appear much more often. (b) Corresponding plot but now showing the probability of having more than a certain number of matches for each player.&lt;/em>&lt;/p>
+&lt;p>Figure 1 shows the corresponding probability distributions describing the number of matches, wins, and losses for each player, which appears to be highly skewed, suggesting a form of “Matthew effect” occurring in the sport in that a select few players win many games while many players win very few. Using this networked representation, an algorithm was proposed which could be used in identifying a ranking of the most important players. In particular, this algorithm considers not only how many times one player defeated another but also how frequently the defeated player themselves defeated others. In this sense each player has some associated prestige describing their quality, and in defeating a player the winner receives some of this associated prestige. This implies that a win against a strong competitor with high prestige is now more worthwhile to a player’s rank than defeating a weaker competitor.&lt;/p>
+&lt;p>Using the approach described above, after constructing a network based upon all recorded professional snooker games, it can quickly be determined who is the greatest player of all time. Interestingly, it is not Ronnie O’Sullivan with his natural talent, Steve Davis and his distinguished trophy room, or the winning machine known as Stephen Hendry, but rather the four-time world champion John Higgins! This result may seem surprising to some snooker fans but when the data is considered it is entirely understandable. While both Davis and Hendry have plenty of trophies and wins to their name, the quality of player competing in their era was considerably less than those faced by Higgins and O’Sullivan (who is ranked the second greatest through our approach).&lt;/p>
+&lt;p>&lt;img src="rankings.png" alt="">
+&lt;em>Rankings of the top 30 Snooker players of all time based upon the level of prestige determined via the proposed algorithm (vertical axis) compared to their ranking based upon total wins (horizontal axis). The red line acts as a reference for those players who were ranked higher by prestige than wins (under the line) and vice-versa (above the line).&lt;/em>&lt;/p>
+&lt;p>Moreover, this approach can give an indication as to which players have faced tougher competition in wins during their careers. This is highlighted in Figure 2 where the top 30 players ranked using the prestige approach (our algorithm) is compared to their ranking based upon the number of wins. While the two ranking schemes are clearly very correlated, a considerable amount of information may be obtained from the location of players within this graphic. Those players who are above the red line (Davis, Hendry, White…) have obtained their wins from less competitive games (i.e., their wins were accumulated against players with less prestige), while the contrary is true for those below the line, many of whom are from the modern era.
+In order to help satisfy the intrinsic human desire to rank entities, this work has proposed a method which utilizes a mathematical framework to determine a ranking of competitors which considers not only the number of times a player has won but also the quality associated with each win. Excitingly, this concept offers plenty of room for extension to any domain for which detailed data on interactions is available and can hopefully help in ending the many arguments about the greatest competitor in your favourite area of interest!&lt;/p>
+&lt;p>&lt;em>This article originally appeared on Oxford University Press Blog, the article can be found &lt;a href="https://blog.oup.com/2021/05/a-complex-networks-approach-to-ranking-professional-snooker-players/">here&lt;/a>.&lt;/em>&lt;/p></description></item><item><title>Covid-19 and the Irish Routine</title><link>/post/covid_mobility/</link><pubDate>Mon, 01 Jun 2020 00:00:00 +0000</pubDate><guid>/post/covid_mobility/</guid><description>&lt;p>The way in which the terrible virus that is Covid-19 has rampaged through the entire world over the course of 2020 has altered the behaviour of humanity in a way no one could have foreseen. With the aim of understanding the properties of this disease alongside the way in which it is (and ultimately will) spread through and affect society has resulted in a momentous collaborative effort across all areas of science from epidemiologists all the way through to economists. The community of applied mathematicians and statisticians have been conducting research at the forefront of this effort through developing compartmental models not unlike those seen in an introductory dynamical systems course and making use of a variety of datasets in order to both increase the complexity of the models and also infer the parameters needed to fit said models with the empirical incidence rate.&lt;/p>
+&lt;p>The requirement for datasets to aid this scientific endeavour and inform society itself has resulted in large companies making some of their (usually vaulted!) data – generated through the digital traces left every day when interacting with technology – publicly available. Arguably the most obvious demonstration of this is the mobility data provided by two of the world’s largest corporations – Apple and Google. Both of whom are currently providing aggregated data from requests made to their corresponding map services over multiple geographical resolutions ranging from country, to county, to in some cases city levels. This offers the potential to gain an insight into just how much the daily Irish routine has been altered in the age of social distancing and travel restrictions. To demonstrate some of these insights two data sources in the case of Ireland are considered below.&lt;/p>
+&lt;p>&lt;strong>Apple&lt;/strong>&lt;/p>
+&lt;p>Apple have released daily country level time series data on how levels for three modes of transport – driving, walking, and public transport – changed relative to the baseline values from January 13th. One may see in the early points of the time series in Figure 1 that Irish society had a relatively consistent weekly pattern of all three modes of transport with two consecutive peaks (the weekends) followed by five more modest values describing the weekdays. The first reported case of the virus on Irish shores occurred on the 29th February but we see that it is almost two full weeks before a significant change in the transport levels occur when the Containment Phase strategy was introduced with the closure of schools and colleges on March 12th.&lt;/p>
+&lt;figure>
+&lt;a data-fancybox="" href="apple_mobility_ecmi.png" data-caption="Apple Mobility Data">
+&lt;img data-src="apple_mobility_ecmi.png" class="lazyload" alt="" >&lt;/a>
+&lt;figcaption data-pre="Figure " data-post=":" class="numbered">
+Apple Mobility Data
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>The readily increasing number of cases resulted in the announcement of national travel restrictions on March 27th and on this date arguably the most interesting point in the entire time series is seen with a significant increase suggesting a possible `last chance saloon’ to travel home before restrictions came into place. One may then observe over the following two months how the country was brought to a near standstill in terms of mobility. Also, interestingly, it can be seen that Apple had missing data from the 10th and 11th of May showing how even the largest corporations can run into problems with data collection! Restrictions began to ease through the end of May as the number of cases had slowed and a roadmap of Phases were proposed with specific relaxations at each point. After Phase 1 (18th May), which involved increasing the permitted travel distance to 5km from one’s home, an increase in mobility across all modes occurs and further gains after the commencement of Phase 2 which further extended the travel distance to 20km. The levels of mobility is gradually returning to those seen prior to the start of Covid-19 as the growth in the number of cases decreases.&lt;/p>
+&lt;p>&lt;strong>Google&lt;/strong>&lt;/p>
+&lt;p>Similar to Apple, Google has also released aggregated time series of requests to their own map service but with a different set of descriptions. Rather than the mode of transport used above, Google released requests regarding six distinct categories – retail and recreation, grocery and pharmacy, parks, transit stations, workplaces, and residential areas. They also provided a finer level of resolution namely at a county level. Here two of the categories (residential and workplaces) at six different Thursdays over the past few months are considered.&lt;/p>
+&lt;figure>
+&lt;a data-fancybox="" href="works_ecmi.png" data-caption="Google Workplace Data">
+&lt;img data-src="works_ecmi.png" class="lazyload" alt="" >&lt;/a>
+&lt;figcaption data-pre="Figure " data-post=":" class="numbered">
+Google Workplace Data
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>The set of plots in Figure 2 shows the percentage change in the frequency at which people were at a workplace from a baseline taken over January 3rd – February 6th. A considerable decrease as the restrictions were at their strongest up to the end of April is seen. In the final two maps however a return to normality is observed as the restrictions have lifted demonstrating people returning to work. One interesting aspect throughout is the level of workplace activity in Dublin. The capital city is found in the small county in the east of the island which is the darkest shade in each of the six plots, the suggestion being that workers have been slower to return to work in Dublin, with the hypothesis being that the more technical jobs found there are more amenable to ‘working-from-home’ and this development will prove interesting to follow as the country further moves out of restrictions.&lt;/p>
+&lt;p>The equivalent statistics in the case of residential areas are shown in Figure 3, where the grey areas represent counties in which there wasn’t enough data to provide a statistically significant estimate. These show the opposite effect to that found in the workplace requests as to be expected with people having to stay at home if they cannot go to the workplace. But again, the gradual return to the original baseline can be seen as we move forward in time and restrictions ease suggesting a return to some form of normality for the Irish population.&lt;/p>
+&lt;figure>
+&lt;a data-fancybox="" href="residential_ecmi.png" data-caption="Google Residential Data">
+&lt;img data-src="residential_ecmi.png" class="lazyload" alt="" >&lt;/a>
+&lt;figcaption data-pre="Figure " data-post=":" class="numbered">
+Google Residential Data
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>&lt;strong>Summary&lt;/strong>&lt;/p>
+&lt;p>The availability of previously sensitive data offers fantastic opportunities for the applied mathematics community to provide analysis to society on the effect Covid-19 has had while also offering the potential to be included in technical models being used to describe the spreading process and how it is changing as these restriction measures fluctuate. It is also fascinating to get a small insight into the data which is available to these large corporations as a result of the use of their services and how they may be learnt from. Positively, it appears from these two separate sources that Irish daily life is slowly returning to where it was prior to the commencement of restrictions as the speed at which the virus spreads has been slowed with such great effect which one hopes to remain the case as society progresses in the future.&lt;/p>
+&lt;p>&lt;em>This article originally appeared on the ECMI (European Consortium for Mathematics in Industry), the article can be found &lt;a href="https://ecmiindmath.org/2020/07/01/covid-19-and-the-irish-routine/">here&lt;/a>.&lt;/em>&lt;/p></description></item><item><title>The maths of fantasy football</title><link>/post/fpl_brainstorm/</link><pubDate>Thu, 12 Sep 2019 00:00:00 +0000</pubDate><guid>/post/fpl_brainstorm/</guid><description>&lt;p>The Premier League is back. The season kicked off in August with last season&amp;rsquo;s runners-up Liverpool giving newly promoted Norwich City a tough introductory lesson in the form of a 4-1 defeat. The Reds&amp;rsquo; talisman Mo Salah scored their second goal, before assisting Virgil van Dijk for their third. While this performance no doubt thrilled Liverpool fans, there was also another group of people who were just as (if not more) delighted with the display. That&amp;rsquo;s the 44.7% of Fantasy Premier League managers who had Salah in their team.&lt;/p>
+&lt;p>For the uninitiated, Fantasy Premier League (commonly referred to as Fantasy Football) is an online game where six million users are provided with a virtual £100 million budget to assemble a squad of 15 real-life Premier League footballers from the 20 teams in the league. Each player has two characteristics: (a) their position - goalkeeper (GK), defender (DEF), midfielder (MID), or forward (FWD), and (b) the price one must pay to have them in their team.&lt;/p>
+&lt;p>The user must select two GKs, five DEFs, five MIDs and three FWDs while remaining on budget. Once the squad is ready, the user then proceeds to choose their 11 starting players, each of whom will score points as a result of their statistical performance in the physical matches they appear in with their team that Gameweek (GW). Users also nominate one of their players to be the team’s captain, which means that their point total is doubled that week.&lt;/p>
+&lt;p>At the end of the GW, each team’s points are tallied and users are given a ranking, process which repeats throughout the season. The challenge of the game is to determine an optimal way of spending your budget as to maximise your points.&lt;/p>
+&lt;p>&lt;img src="fpl_job.png" alt="">
+&lt;em>How my team looked over the first GW of this season, giving me a total of 82 points and a measly rank of 839,678&lt;/em>&lt;/p>
+&lt;p>During the off-season, researchers at &lt;a href="https://ulsites.ul.ie/macsi/">MACSI&lt;/a> in the University of Limerick undertook a large data scraping exercise to obtain the information of the top one million ranked players and their teams over the course of last season. We did so in the hope of gaining some insight into what characteristics and actions make a successful Fantasy Premier League &amp;ldquo;manager&amp;rdquo;. Specifically, we want to look at the different actions taken by those users that finished in the top 10K positions, in comparison to the moves made by the rest of the top million users.&lt;/p>
+&lt;p>Let&amp;rsquo;s focus on one element of the game, namely the manager’s use of chips. No, I’m not referring to their diet, but rather the three special Gameweek chips in the game itself. These allow users to have special privileges during the week that chip is played.&lt;/p>
+&lt;p>Due to the hectic nature of the English football season, there are occasions when fixtures must be rearranged known in Fantasy Football as Blank Gameweeks and Double Gameweeks.&lt;/p>
+&lt;p>&lt;strong>Blank Gameweeks&lt;/strong> are GWs in which there are less than the usual ten fixtures as a result of fixture postponement. This occurred in 2017/18 in GW 27, 31 and 33 where there was only eight, five and six fixtures respectively. These weeks can make it difficult for users to field a full team of 11 playing players.&lt;/p>
+&lt;p>&lt;strong>Double Gameweeks&lt;/strong> occur when teams who have fixtures postponed must play two matches in a GW. These offer prime opportunities to make extra points as players now have twice the opportunity to earn more points. Last season, these occurred in GW 32, 34 and 35, when there were a whopping 15, 11 and 14 games played.&lt;/p>
+&lt;p>The most successful chip strategy from last season was the &lt;strong>Bench Boost&lt;/strong>. You choose a team of 11 starting players from your squad of 15 players and the remaining four are what are known as bench players. The point scores of these bench players don’t contribute to your GW total aside from the week in which one plays their bench boost chip. It would appear that if one’s bench players were going to receive points then the ideal time to use this chip would be when each of these players may play twice (to maximize the potential upswing from the chip) i.e., during one of the double GWs. Our analysis as seen in the following graph supports this claim:&lt;/p>
+&lt;p>&lt;img src="bb_use.png" alt="">
+&lt;em>How my team looked over the first GW of this season, giving me a total of 82 points and a measly rank of 839,678&lt;/em>&lt;/p>
+&lt;p>You can see how a massive 79% of the players in the top 10k used the bench boost chip in GW 35 (the week of the season where there were the most fixtures). This compared to only 29% of those in the top 1 million. In fact, less than 10% of top 10k users had used the chip prior to this GW, a figure which the top 1 million surpassed by GW 14! The result? The top 10k users were much more likely to have obtained a higher point total from this chip (23.16) than the remaining players in the top 1 million (13.82).&lt;/p>
+&lt;p>In Fantasy Football, users can make only one free transfer in any GW, which allows them to exchange one of their players for another player in the game (provided they can afford them). The &lt;strong>Free Hit&lt;/strong> chip allows the user to make unlimited transfers for that week. They could choose a new squad of 15 if they so pleased, but their team then reverts to how it was at the start of the week.&lt;/p>
+&lt;p>There tends to be two schools of thought within the Fantasy Football community as to what is the best way to use this chip. Should one use it during a blank GW when a large number of their players might not have a game? Or target the double GWs, because they have the chance of essentially hand-picking players appearing in 22 games (if their 11 starters all have two matches)?&lt;/p>
+&lt;p>&lt;img src="FH_use.png" alt="">
+&lt;em>How my team looked over the first GW of this season, giving me a total of 82 points and a measly rank of 839,678&lt;/em>&lt;/p>
+&lt;p>Our analysis (above) looked into what was the best strategy last season. 33% of users in the top 1 million had used this chip prior to GW 27 i.e. before any of the blank/double GWs came into play, which pales with the 7% of top 10k. We found that a massive 33% of the top million used it in GW 31, the week with the fewest fixtures, in comparison with 17% of the top 10k.&lt;/p>
+&lt;p>The other considerable GW which featured the chips use was GW 32, the large double Gameweek, with 69% of those who finished in the top 10k choosing to use the chip then, compared with only 15% of the remaining users. The top 10k generally received more points from this chip with a mean points value of 84.7, compared to 60.5 for the top million users. This suggests the strategy of using the chip during a large double GW was most definitely the best approach to take last season.&lt;/p>
+&lt;p>Each Gameweek, the user nominates one of their players to be the team&amp;rsquo;s captain, which means that their point total is doubled that week. The &lt;strong>Triple Captain&lt;/strong> chip simply increases this to a factor of three. This is arguably the chip which offers the most uncertain returns, because not only does one have the option of which GW to use the chip but also the choice of player to give the virtual armband to.&lt;/p>
+&lt;p>The temptation to use this chip during a double GW (eg Sergio Aguero for Manchester City versus Fulham and Cardiff City in GW 32) is obviously very enticing since the player would have two games from which they could return triple gains. However, if their team has two difficult fixtures it may not prove to be worthwhile, and one may instead prefer to use it during a normal single GW where the player has an appealing fixture (e.g., Salah for Liverpool versus Huddersfield Town in GW 36). A third option that is commonly mentioned is to use the chip in the final GW where many teams have nothing to play for and can result in high score-lines (e.g., Nathan Redmond for Southampton vs. Huddersfield in GW 38).&lt;/p>
+&lt;p>&lt;img src="tc_use.png" alt="">
+&lt;em>How my team looked over the first GW of this season, giving me a total of 82 points and a measly rank of 839,678&lt;/em>&lt;/p>
+&lt;p>Investigating the data found a variety of strategies for this chip at different points in the season. Once again, we highlight the fact that while only 6% of top 10k users had used their triple captain chip by GW24, a considerable 25% of the remaining players had done so at the same point. In terms of the GW in which it was most commonly used, we found that 43% of top 10k users used it in GW 36, which interestingly was a single GW (where Liverpool had a very attractive game in terms of difficulty). 29% of the top 1 million decided that the double GW 32 was the optimal time to play the chip.&lt;/p>
+&lt;p>In terms of the range of scores obtained, it appears that the triple captain chip offers the least in terms of total number of points, which in some way is to be expected as it only provides an increase for a single player. We found that the triple captain chip resulted in a mean score of 11.5 for the top 10k and 8.67 for the other group.&lt;/p>
+&lt;p>For Fantasy Football managers looking for tips regarding the optimal way to use their chips, here are some suggestions from the data&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Save your chips! While it is very tempting to use a chip at an early stage in the season to get the top spot in your league, we can see from last season&amp;rsquo;s data that good users saved their chips until the last 10 weeks in the season to make the most of the blank and double GWs.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>There are generally two large double GWs and these are prime times to use your chips to maximise your returns, especially the Bench Boost. Almost 80% of top 10k managers used this strategy.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Don’t be afraid to play your Triple Captain chip in a single GW. It is very tempting to use the chip during a double GW, where the player has two opportunities to score points. But if the fixtures aren’t great for the player, it is arguably better to use it in a single GW where they have a nice fixture as shown by the top 10k using the chip in GW 36 when Liverpool played Huddersfield.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>This project is still very much a work in progress and any comments or suggestions of potential research avenues will be greatly appreciated. We hope that all the managers considering their options throughout this season have found some useful information to help them climb up the leader board with our analysis of the different chips. It&amp;rsquo;s worth noting that while these strategies performed well during last season for the top 10k, this is not to say the same will happen this season. Of course, you’re free to trust them blindly, which may result in an improvement of your own overall rank.&lt;/p>
+&lt;p>&lt;em>This article originally appeared on RTE Brainstorm, the article can be found &lt;a href="https://www.rte.ie/brainstorm/2019/0911/1075310-the-maths-of-fantasy-football/">here&lt;/a>.&lt;/em>&lt;/p></description></item></channel></rss>

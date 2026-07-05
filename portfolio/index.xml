@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Joey O'Brien</title><link>/portfolio/</link><atom:link href="/portfolio/index.xml" rel="self" type="application/rss+xml"/><description>Joey O'Brien</description><generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 04 May 2022 00:00:00 +0000</lastBuildDate><image><url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url><title>Joey O'Brien</title><link>/portfolio/</link></image><item><title>spRingsteen</title><link>/portfolio/springsteen/</link><pubDate>Wed, 04 May 2022 00:00:00 +0000</pubDate><guid>/portfolio/springsteen/</guid><description>&lt;p>We all love him &amp;mdash; if you disagree you just haven&amp;rsquo;t spent long enough listening &amp;mdash; it is of course the Boss, the Jersey Devil, Bruce Springsteen. With a musical career spanning over fifty years, record breaking albums, an award-winning one-man Broadway show, podcast series with ex-Presidents and so much more. However what Bruce (I hope he is okay with me working on first name terms) is most famous for is his live performances. Hard rocking four hour sets, solo acoustic shows, country swing bands, the list goes on and on but throughout his career there has been a huge collection of performances with ever-changing setlists working there way through both his own recording history and also the classics from other artists.&lt;/p>
+&lt;p align="center">
+&lt;img src="https://media.giphy.com/media/H89Osb5ZHntuCJHFRE/giphy.gif" alt="animated" />
+&lt;/p>
+&lt;p>Thankfully, this huge repertoire of performances have been carefully collected by the devoted followers on E Street through the fan site &lt;a href="http://brucebase.wikidot.com/">Brucebase&lt;/a>. Within this platform is a huge collection of data describing the majority of shows the Boss has ever performed including ever song performed at each gig. This source of data is what makes up the spRingsteen &lt;code>R&lt;/code> package which I have created to allow for the data inclined to analyse both quickly and in a reproducible manner. In this post I discuss the data collection alongside its storage in a SQL setting, the process of wrapping the data in an &lt;code>R&lt;/code> package and a quick demonstration of some possible data analysis that can be performed with it.&lt;/p>
+&lt;h3 id="data-collection-and-database-storage">Data collection and database storage&lt;/h3>
+&lt;p>As mentioned before, the goldmine needed for this project is Brucebase - a fan led platform containing a huge collection of data describing the Springsteen career over the past 50 years. Given that this data is readily available via this online platform it can be collected rather quickly via web-scraping. This is the idea of setting up a computer program to literally scrape, or collect, the content from a website and store it in an accessible manner.&lt;/p>
+&lt;p>The main idea is to find a systematic approach towards accessing the entire corpus of setlists, thankfully the maintainers of the site structure the URL associated with each page such that the date and venue of the concert is the main identifier, for example &lt;a href="http://brucebase.wikidot.com/gig:2016-05-27-croke-park-dublin-ireland">http://brucebase.wikidot.com/gig:2016-05-27-croke-park-dublin-ireland&lt;/a>. As such, if the date and location of each performance is known the setlists can then be readily accessed. Fortunately, there are separate pages (found &lt;a href="http://brucebase.wikidot.com/stats:tour-statistics">here&lt;/a>) which simply contain these exact values, so the first thing is to collect these values which then feed the setlist collector. Using the &lt;code>R&lt;/code> packages &lt;code>rvest&lt;/code> and &lt;code>dplyr&lt;/code> this can be done rather quickly.&lt;/p>
+&lt;p>It is important to note however that there is quite a lot of data here, with over 50 years of performances, 25 tours, and over 1,500 songs. As such the storage of the data is important, classical spreadsheets can of course be used however more standard approaches for such data, particularly given that there are multiple tables (setlists, song details, venues and dates) is in a database setting. This is where the &lt;code>DBI&lt;/code> and &lt;code>RSQLite&lt;/code> packages comes into play where we can perform work with reading/writing a database directly in &lt;code>R&lt;/code>.&lt;/p>
+&lt;pre>&lt;code class="language-r">### we connect to a database like so
+db_loc = here('database/springsteen_data.sqlite')
+springsteen_db = DBI::dbConnect(RSQLite::SQLite(), db_loc)
+### concert_df would be a tibble containing the collected data
+### which we now write to the &amp;quot;concerts&amp;quot; table in the database
+DBI::dbWriteTable(springsteen_db,
+&amp;quot;concerts&amp;quot;,
+concert_df)
+### and finally close the database connection
+DBI::dbDisconnect(springsteen_db)
+&lt;/code>&lt;/pre>
+&lt;p>So we can collect all the data we need from Brucebase, parse it in a tidy format and write to a database all within &lt;code>R&lt;/code>, what a language! This is exactly what happens in the &lt;a href="https://github.com/obrienjoey/springsteen_db">&lt;strong>springsteen_db&lt;/strong>&lt;/a> repository hosted on my Github. There is also some very nice automation hosted within there such that the scripts are run every day to check if the Boss has had any new shows and if so that data also gets added to the database.&lt;/p>
+&lt;h3 id="creating-a-data-centric-r-package">Creating a data-centric R package&lt;/h3>
+&lt;p>Now with the data in place and neatly stored within a repository anyone can quickly load it into their programming language of choice, however I thought it would be particularly nice if it was accessible directly in &lt;code>R&lt;/code> via its very own package. In order to perform such development work we are extremely fortunate in the &lt;code>R&lt;/code>-universe to have packages like &lt;code>usethis&lt;/code> which take away a lot of the pain from package creation with a huge array of tools. The main emphasis - as any data scientist/engineer has no doubt been told by their software developer peers (if fortunate enough to work alongside some) - is documentation. Each dataset in my case, and how it originated, has to be described in detail alongside toy examples to demonstrate possible use cases of the data.&lt;/p>
+&lt;p>Indeed, &lt;code>usethis&lt;/code> also offers functionality that allows for the package to be based upon a Github repository for future maintenance and also allows for it to be accessed in its latest form via&lt;/p>
+&lt;pre>&lt;code class="language-r">remotes::install_github(&amp;quot;obrienjoey/spRingsteen&amp;quot;)
+&lt;/code>&lt;/pre>
+&lt;p>However for a package to be really picked up I believe it needs to be hosted on CRAN, the official &lt;code>R&lt;/code> package platform. Again, &lt;code>usethis&lt;/code> offers a range of functionality to prepare the new package for submission, where it goes through extensive validation and testing on a range of environments from the team there. All going well with documentation and the package performing correctly within the different tests on CRAN the work will get accepted and have its very own page &lt;a href="https://cran.r-project.org/web/packages/spRingsteen/index.html">like so&lt;/a>.&lt;/p>
+&lt;h3 id="example-analysis">Example analysis&lt;/h3>
+&lt;p>So having collected the data and developed a package we are now left with the fun part - playing with the data! So let&amp;rsquo;s load in the package directly from CRAN and have a look at some example data analysis we can do straight away. For example let&amp;rsquo;s check out the top 10 most played songs by Springsteen through out his career:&lt;/p>
+&lt;pre>&lt;code class="language-r">library(spRingsteen)
+spRingsteen::setlists |&amp;gt;
+count(song, sort = TRUE) |&amp;gt;
+slice(1:10) |&amp;gt;
+mutate(song = ifelse(song == 'Born In The U.s.a.', 'Born In The U.S.A.', song),
+song = forcats::fct_rev(forcats::fct_inorder(song))) |&amp;gt;
+ggplot(aes(x = n, y = song)) +
+geom_col(fill = '#2176FF') +
+geom_text(aes(label = n),
+hjust = 0, nudge_x = .5,
+size = 4, fontface = &amp;quot;bold&amp;quot;, family = &amp;quot;Fira Sans&amp;quot;) +
+coord_cartesian(clip = &amp;quot;off&amp;quot;) +
+scale_x_continuous(expand = c(.01, .01)) +
+theme_void() +
+theme(
+axis.text.y = element_text(size = 14, hjust = 1, family = &amp;quot;Fira Sans&amp;quot;),
+plot.margin = margin(15, 30, 15, 15)
+)
+&lt;/code>&lt;/pre>
+&lt;p>&lt;img src="staticunnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" />&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>I hope this summary gave you a nice insight into the &lt;strong>spRingsteen&lt;/strong> package (and hopefully has you inspired for a quick check in on the Boss). Overall it is a dense data engineering project involving setting up an automated scraper that can collect all the data needed, storage in a SQL database, and a nice wrapping in a &lt;code>R&lt;/code> package. All of the code can be found on my Github and hopefully it can help in setting up similar pipelines, because remember - you can&amp;rsquo;t start a fire without a spark.&lt;/p></description></item><item><title>COVID Northern Ireland</title><link>/portfolio/covid_ni/</link><pubDate>Tue, 22 Feb 2022 00:00:00 +0000</pubDate><guid>/portfolio/covid_ni/</guid><description>&lt;p>One of the many scientific benefits that have occurred since the start of the Coronavirus 19 pandemic is the emergence of large-scale open access data describing the dynamics of the virus at a range of scales. Governments, health organizations, and many others have produced data at a unparalleled rate to help society understand how the disease has rampaged through society.&lt;/p>
+&lt;p>This has offered a unique opportunity for data analysts, engineers, scientists, or even simply enthusiasts, to work with real world data that is constantly evolving as the pandemic unfolds. There are great examples of storytelling that have emerged from this occurrence, for example the &lt;em>flatten the curve&lt;/em> narrative which was so prevalent in the early stages all the way up to more recent information regarding vaccination uptake globally.&lt;/p>
+&lt;p>I myself have been fortunate to have been involved in numerous efforts in utilizing these novel datasets, for example early data studies regarding mobility data (provided by Apple and Google) among citizens in Ireland were a particular entertaining aspect for me as virus begun to spread, see for example this &lt;a href="https://ecmiindmath.org/2020/07/01/covid-19-and-the-irish-routine/">invited blog post&lt;/a> on Irish mobility) or some &lt;a href="%5Bhttps://twitter.com/obrienj_/status/1253248715940380677%5D">visuals&lt;/a> which picked up national attention.&lt;/p>
+&lt;p>More recently I have focused on the affect of the pandemic in Northern Ireland. The work on which will be the main discussion point of this post.&lt;/p>
+&lt;h3 id="data-collection">Data Collection&lt;/h3>
+&lt;p>Firstly, like any good data scientist I had to ask the question - where is the data? It turns out that the &lt;a href="https://www.health-ni.gov.uk/publications/daily-dashboard-updates-covid-19-november-2021">Department of Health NI&lt;/a> produce a fantastic summary of the main metrics describing the disease including, cases, testing, hospitilizations, and deaths arising from Covid-19 on a daily-ish basis (more on this in a moment). Unfortunately, for those of us who want to access data as quickly and cleanly as possible, the data is stored in rather clunky &lt;em>.xlsx&lt;/em> spreadsheets with each tab representing a different summary.&lt;/p>
+&lt;ol>
+&lt;li>Look for the latest spreadsheet on a daily basis.&lt;/li>
+&lt;li>Extract the needed info from each of the sheets of the .xlsx file individually.&lt;/li>
+&lt;li>Clean this data in a more usable format.&lt;/li>
+&lt;li>Store the data in a public repository for others to use.&lt;/li>
+&lt;/ol>
+&lt;p>This is exactly the framework introduced in the &lt;a href="https://github.com/obrienjoey/covid19northernireland">&lt;strong>covid19northernireland&lt;/strong>&lt;/a> repo hosted on my GitHub. The main point of this code is to first of all collect the latest spreadsheet from the online platform, clean and parse the data into a tidy format, and lastly store the data. Nicely, due to the repetitive nature of this task I could set up a server which would do this for me automatically each night and produce the output observed in the repo. See &lt;a href="https://www.joeyobrien.ie/post/20220130_covid19ni_data/">this post&lt;/a> for a detailed discussion on how this entire package works.&lt;/p>
+&lt;h3 id="dashboard">Dashboard&lt;/h3>
+&lt;p>Okay, so the data has been collected in a great format which is very easy to work with. Of course there are a huge number of things one could do here (epidemic modelling, spatial statistics,&amp;hellip;) but I really wanted to learn about developing dashboards in &lt;code>R&lt;/code> so that&amp;rsquo;s what I&amp;rsquo;ll write about now (to see the finished product check &lt;a href="https://obrienjoey.github.io/covidni_dashboard/">&lt;strong>here&lt;/strong>&lt;/a>).&lt;/p>
+&lt;p>After some initial research I came across the &lt;a href="https://rstudio.github.io/flexdashboard/index.html">&lt;code>flexdashboard&lt;/code>&lt;/a> package which looked to be perfect for what I wanted to do. In essence it is entirely described in a &lt;code>.Rmarkdown&lt;/code> document so it is generally okay to work with, plus can look quite fantastic if given a bit of love and care (and help from the &lt;code>plotly&lt;/code> package!), for example here&amp;rsquo;s one page of the finished dashboard.&lt;/p>
+&lt;p>&lt;img src="covid_ni_dashboard.PNG" alt="The Covid19 Northern Ireland Dashboard">&lt;/p>
+&lt;p>For some more specifics about how it works, it makes use of a number of the cleaned datasets from the first part of this post to extract information about tests, cases, and deaths at an number of time and spatial scales. For example it was possible to load in the data at an electoral level to see how the number of cases varied by region using the &lt;code>mapview&lt;/code> package:&lt;/p>
+&lt;pre>&lt;code class="language-r">`%&amp;gt;%` &amp;lt;- magrittr::`%&amp;gt;%`
+### Pulling most recent data from Github
+national_df &amp;lt;- data.table::fread(&amp;quot;https://raw.githubusercontent.com/obrienjoey/covid19northernireland/main/data/ni_covid_national.csv&amp;quot;)
+last_national_data &amp;lt;- national_df %&amp;gt;%
+tidyr::drop_na() %&amp;gt;%
+dplyr::filter(date == max(date))
+local_df &amp;lt;- data.table::fread(&amp;quot;https://raw.githubusercontent.com/obrienjoey/covid19northernireland/main/data/ni_covid_local.csv&amp;quot;)
+shapefile &amp;lt;- sf::st_read(
+&amp;quot;shapefiles/OSNI_Open_Data_-_Largescale_Boundaries_-_Local_Government_Districts_(2012).shp&amp;quot;, quiet = TRUE)
+local_df_summary &amp;lt;- local_df %&amp;gt;%
+dplyr::distinct() %&amp;gt;%
+dplyr::mutate_if(is.numeric, ~replace(., is.na(.), 0)) %&amp;gt;%
+dplyr::group_by(area) %&amp;gt;%
+dplyr::summarise(tests_1 = sum(tail(tests,1)),
+tests_7 = sum(tail(tests,7)),
+tests_30 = sum(tail(tests,30)),
+tests_all = sum(tests),
+cases_1 = sum(tail(cases,1)),
+cases_7 = sum(tail(cases,7)),
+cases_30 = sum(tail(cases,30)),
+cases_all = sum(cases),
+deaths_1 = sum(tail(deaths,1)),
+deaths_7 = sum(tail(deaths,7)),
+deaths_30 = sum(tail(deaths,30)),
+deaths_all = sum(deaths)) %&amp;gt;%
+janitor::adorn_totals(&amp;quot;row&amp;quot;) %&amp;gt;%
+dplyr::as_tibble() %&amp;gt;%
+dplyr::filter(area != 'Missing Postcode') %&amp;gt;%
+tidyr::drop_na() %&amp;gt;%
+tidyr::pivot_longer(cols = tests_1:deaths_all,
+names_to = 'category') %&amp;gt;%
+tidyr::separate(category,
+into = c(&amp;quot;Category&amp;quot;, &amp;quot;Time&amp;quot;),
+sep=&amp;quot;_(?=[^_]+$)&amp;quot;)
+map_df &amp;lt;- local_df_summary %&amp;gt;%
+dplyr::filter(Time == 1,
+Category == 'cases') %&amp;gt;%
+dplyr::inner_join(shapefile, .,
+by = c('LGDNAME' = 'area'))
+mapview::mapview(sf::st_zm(map_df),
+zcol = c('value'),
+layer.name = 'Cases',
+popup = FALSE)
+&lt;/code>&lt;/pre>
+&lt;p>&lt;img src="map.PNG" alt="The Covid19 Northern Ireland Dashboard">&lt;/p>
+&lt;p>The main problem then was that the underlying of this data updates daily as discussed before. However given the data pipeline is already set up, a similar server can be utilized to automatically update the dashboard after the original collection script has run.&lt;/p>
+&lt;h3 id="conclusions">Conclusions&lt;/h3>
+&lt;p>So there we have it, a discussion on developing a pipeline to automatically update and collect data (which I had a lot of fun doing, maybe I should think about a career in data engineering&amp;hellip;) and also creating a number of visualizations to create a story regarding the pandemic&amp;rsquo;s evolution. Wrapping these altogether in a neat &lt;a href="https://obrienjoey.github.io/covidni_dashboard/">dashboard&lt;/a> which I particularly like!&lt;/p></description></item><item><title>Data-Driven Snooker Rankings</title><link>/portfolio/snooker_rankings/snooker_rankings/</link><pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate><guid>/portfolio/snooker_rankings/snooker_rankings/</guid><description>
+&lt;p>&lt;em>The following is a project that came from a hobby project arising from my interest in snooker and how ideas from network science can be used in helping to rank competitors in the sport. This resulted in a &lt;a href="https://academic.oup.com/comnet/article/8/6/cnab003/6161497?login=true">peer-reviewed academic article&lt;/a> during my PhD studies, a blog post for &lt;a href="https://blog.oup.com/2021/05/a-complex-networks-approach-to-ranking-professional-snooker-players/">Oxford University Press&lt;/a>, and some interesting commentary in the &lt;a href="https://drive.google.com/file/d/181W5b-JI2lXMOYw3jNGB88UrK6lsCUba/view?usp=sharing">Sunday Mail&lt;/a>!&lt;/em>&lt;/p>
+&lt;p>People love ranking things. Each year we are faced with endless awards ceremonies—just think about the Oscars, Grammys, Ballon d’Or, Time Person of the Year… the list goes on and on.&lt;/p>
+&lt;p>The problem with these lists is that they are rarely backed up by quantitative data, which arises from most things rarely directly competing to help us determine who exactly the best is. One area however which experiences no shortage of such data is the realm of sport. So here let’s use a combination of data science and network science to try and answer the question in the case of snooker.&lt;/p>
+&lt;p>This will involve
+- obtaining the data (the exact details are beyond the scope of this post but may result in some content further up the road…)
+- performing an exploratory data analysis to get a feel for the underlying structure
+- developing models to rank competitors in a data-driven manner&lt;/p>
+&lt;p>It will also be a good chance to show some &lt;code>R&lt;/code> code that was used to perform the analysis&lt;/p>
+&lt;div id="the-data" class="section level2">
+&lt;h2>1. The Data&lt;/h2>
+&lt;p>The data which was scraped from &lt;a href="https://cuetracker.net/">cuetracker&lt;/a> is already available on my &lt;a href="https://github.com/obrienjoey/snooker_rankings">Github&lt;/a> so let’s load this into &lt;code>R&lt;/code> straight away. There’ll be two dataframes, one describing every match played over 50 years of the sport and the other describing the details of the different tournaments in the same time period.&lt;/p>
+&lt;pre class="r">&lt;code>## load the packages
+options(tidyverse.quiet = TRUE)
+library(tidyverse)
+library(scales)
+library(cowplot)
+library(tidygraph)
+library(igraph)
+library(ggrepel)
+library(Matrix)
+theme_set(theme_light())
+tourn_df &amp;lt;- read_csv(&amp;#39;https://raw.githubusercontent.com/obrienjoey/snooker_rankings/master/Data/final_tourn_df.csv&amp;#39;)
+match_df &amp;lt;- read_csv(&amp;#39;https://raw.githubusercontent.com/obrienjoey/snooker_rankings/master/Data/final_match_df.csv&amp;#39;)&lt;/code>&lt;/pre>
+&lt;/div>
+&lt;div id="exploratory-data-analysis" class="section level2">
+&lt;h2>2. Exploratory Data Analysis&lt;/h2>
+&lt;p>Okay so now we can dive in and do some analysis on these two dataframes using the &lt;code>tidyverse&lt;/code> toolbox. First of all how many matches are in the data?&lt;/p>
+&lt;pre class="r">&lt;code>match_df %&amp;gt;%
+select(match_id) %&amp;gt;%
+unique() %&amp;gt;%
+nrow()&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] 47710&lt;/code>&lt;/pre>
+&lt;p>And what about the actual players?&lt;/p>
+&lt;pre class="r">&lt;code>match_df %&amp;gt;%
+select(match_id, player_1, player_2) %&amp;gt;%
+pivot_longer(2:3, values_to = &amp;#39;player&amp;#39;) %&amp;gt;%
+select(player) %&amp;gt;%
+unique() %&amp;gt;%
+nrow()&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] 1221&lt;/code>&lt;/pre>
+&lt;p>Lastly how many tournaments were played?&lt;/p>
+&lt;pre class="r">&lt;code>tourn_df %&amp;gt;%
+nrow()&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] 657&lt;/code>&lt;/pre>
+&lt;p>Okay, that is a good start let’s consider a more technical problem and check which player’s have won the most matches&lt;/p>
+&lt;pre class="r">&lt;code># find the result frequencies of each player
+player_result_df &amp;lt;- match_df %&amp;gt;%
+filter(walkover != TRUE) %&amp;gt;%
+select(match_id, season, player_1, player_2, player_1_score, player_2_score) %&amp;gt;%
+mutate(winner = if_else(player_1_score &amp;gt; player_2_score,
+player_1, player_2),
+loser = if_else(player_1_score &amp;gt; player_2_score,
+player_2, player_1)
+) %&amp;gt;%
+select(match_id, winner, loser) %&amp;gt;%
+pivot_longer(cols = 2:3, values_to = &amp;#39;player&amp;#39;, names_to = &amp;#39;result&amp;#39;) %&amp;gt;%
+group_by(result, player) %&amp;gt;%
+tally() %&amp;gt;%
+ungroup() %&amp;gt;%
+pivot_wider(names_from = &amp;#39;result&amp;#39;, values_from = &amp;#39;n&amp;#39;) %&amp;gt;%
+mutate(loser = replace_na(loser, 0),
+winner = replace_na(winner,0),
+total = loser + winner) %&amp;gt;%
+pivot_longer(cols = 2:4, names_to = &amp;#39;result&amp;#39;,
+values_to = &amp;#39;matches&amp;#39;)
+player_result_df %&amp;gt;%
+filter(result == &amp;#39;winner&amp;#39;) %&amp;gt;%
+select(-result) %&amp;gt;%
+arrange(desc(matches)) %&amp;gt;%
+slice(1:5)&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## # A tibble: 5 x 2
+## player matches
+## &amp;lt;chr&amp;gt; &amp;lt;int&amp;gt;
+## 1 John Higgins 899
+## 2 Ronnie O&amp;#39;Sullivan 843
+## 3 Stephen Hendry 818
+## 4 Mark Williams 768
+## 5 Steve Davis 761&lt;/code>&lt;/pre>
+&lt;p>So there we have the top five ranked players based on the number of wins they have had during their career.&lt;/p>
+&lt;p>Interestingly, there is also a temporal element to this data in that the matches each occur within a given year, let’s look at how the above values vary over time&lt;/p>
+&lt;pre class="r">&lt;code># number of tournaments by season
+tourn_season_plot &amp;lt;- match_df %&amp;gt;%
+mutate(season = as.integer(season)) %&amp;gt;%
+group_by(season) %&amp;gt;%
+summarise(no_tournaments = n_distinct(tourn_id)) %&amp;gt;%
+ggplot(aes(x = season, y = no_tournaments)) +
+geom_bar(stat=&amp;#39;identity&amp;#39;, fill = &amp;#39;#008DA8&amp;#39;,
+color = &amp;#39;black&amp;#39;) +
+scale_x_continuous(expand = c(0,0), breaks = seq(1968,2020,4)) +
+scale_y_continuous(expand = c(0,0)) +
+theme_minimal() +
+labs(x = &amp;#39;Season&amp;#39;, y = &amp;#39;Number of Tournaments&amp;#39;) +
+theme(axis.line = element_line(),
+axis.text=element_text(size=12),
+plot.title.position = &amp;#39;plot&amp;#39;,
+panel.grid.major.x = element_blank(),
+legend.text=element_text(size=12),
+legend.position = c(0.85,0.9),
+axis.text.x = element_text(angle = 60, hjust = 1),
+plot.title = element_text(size = 14, face = &amp;#39;bold&amp;#39;),
+axis.title=element_text(size=14))
+# number of players by season
+player_season_plot &amp;lt;- match_df %&amp;gt;%
+select(season, player_1, player_2) %&amp;gt;%
+pivot_longer(cols = 2:3, values_to = &amp;#39;player&amp;#39;) %&amp;gt;%
+mutate(season = as.integer(season)) %&amp;gt;%
+group_by(season) %&amp;gt;%
+summarise(no_players = n_distinct(player)) %&amp;gt;%
+ggplot(aes(x = season, y = no_players)) +
+geom_bar(stat=&amp;#39;identity&amp;#39;, fill = &amp;#39;#008DA8&amp;#39;,
+color = &amp;#39;black&amp;#39;) +
+theme_minimal() +
+scale_x_continuous(expand = c(0,0), breaks = seq(1968,2020,4)) +
+scale_y_continuous(expand = c(0,0)) +
+labs(x = &amp;#39;Season&amp;#39;, y = &amp;#39;Number of Players&amp;#39;) +
+theme(axis.line = element_line(),
+axis.text=element_text(size=12),
+plot.title.position = &amp;#39;plot&amp;#39;,
+panel.grid.major.x = element_blank(),
+legend.text=element_text(size=12),
+legend.position = c(0.85,0.9),
+axis.text.x = element_text(angle = 60, hjust = 1, size = 10),
+plot.title = element_text(size = 14, face = &amp;#39;bold&amp;#39;),
+axis.title=element_text(size=14))
+cowplot::plot_grid(tourn_season_plot, player_season_plot)&lt;/code>&lt;/pre>
+&lt;p>&lt;img src="snooker_rankings_files/figure-html/unnamed-chunk-6-1.png" width="672" height="50px" style="display: block; margin: auto;" />&lt;/p>
+&lt;pre class="r">&lt;code># plot the probability distribution of results obtained by each player
+player_result_df %&amp;gt;%
+group_by(result, matches) %&amp;gt;%
+summarise(n = n()) %&amp;gt;%
+ungroup() %&amp;gt;%
+mutate(freq = n / sum(n)) %&amp;gt;%
+filter(matches != 0) %&amp;gt;%
+ggplot(aes(x = matches, y = freq, col = result)) +
+geom_point() +
+scale_y_log10(labels=trans_format(&amp;#39;log10&amp;#39;,math_format(10^.x))) +
+scale_x_log10(labels=trans_format(&amp;#39;log10&amp;#39;,math_format(10^.x))) +
+labs(y = &amp;#39;Probability&amp;#39;,
+x = &amp;#39;Number of Matches&amp;#39;
+) +
+theme_minimal() +
+scale_color_manual(name = &amp;#39;&amp;#39;,
+breaks = c(&amp;#39;total&amp;#39;, &amp;#39;winner&amp;#39;, &amp;#39;loser&amp;#39;),
+values = c(&amp;#39;#008DA8&amp;#39;,&amp;#39;#C3627D&amp;#39;,&amp;#39;#4A904D&amp;#39;),
+labels = c(&amp;#39;Total&amp;#39;, &amp;#39;Won&amp;#39;, &amp;#39;Lost&amp;#39;)) +
+theme(axis.line = element_line(colour = &amp;#39;black&amp;#39;),
+axis.text=element_text(size=12),
+plot.title.position = &amp;#39;plot&amp;#39;,
+legend.text=element_text(size=12),
+legend.position = c(0.85,0.85),
+plot.title = element_text(size = 14, face = &amp;#39;bold&amp;#39;),
+axis.title=element_text(size=14))&lt;/code>&lt;/pre>
+&lt;p>&lt;img src="snooker_rankings_files/figure-html/unnamed-chunk-7-1.png" width="672" height="100px" style="display: block; margin: auto;" />&lt;/p>
+&lt;pre class="r">&lt;code>result_df &amp;lt;- match_df %&amp;gt;%
+filter(walkover != TRUE) %&amp;gt;%
+select(match_id, player_1, player_2, player_1_score, player_2_score) %&amp;gt;%
+mutate(winner = if_else(player_1_score &amp;gt; player_2_score,
+player_1, player_2),
+loser = if_else(player_1_score &amp;gt; player_2_score,
+player_2, player_1),
+) %&amp;gt;%
+select(winner, loser)&lt;/code>&lt;/pre>
+&lt;/div>
+&lt;div id="the-model" class="section level2">
+&lt;h2>3. The Model&lt;/h2>
+&lt;p>So now getting to the main aim of this post, let’s borrow some tools from network science to help figuring out an alternative way of ranking snooker players. We’ll use what is known as &lt;strong>PageRank&lt;/strong>, an algorithm originally developed by the founders of Google in ranking webpages that helped their search engine return better results!&lt;/p>
+&lt;p>The main idea is to represent the sport as a &lt;strong>graph&lt;/strong>, where each of the &lt;span class="math inline">\(N\)&lt;/span> players are a node and the edges of the graph are created by considering the matches played between players. Importantly, the result of the match is important and this is captured by the &lt;strong>direction&lt;/strong> of the edge we draw, so in each match we draw the edge from loser to winner. After consider all matches in the dataset we obtain a &lt;span class="math inline">\(N \times N\)&lt;/span> matrix with entries &lt;span class="math inline">\(w_{ij}\)&lt;/span> describing the number of times player &lt;span class="math inline">\(i\)&lt;/span> has lost to player &lt;span class="math inline">\(j\)&lt;/span>.&lt;/p>
+&lt;p>With this set-up we can proceed to use the PageRank algorithm to rank the players based on the &lt;strong>prestige&lt;/strong> of player &lt;span class="math inline">\(i\)&lt;/span> - &lt;span class="math inline">\(P_i\)&lt;/span>, obtained from the following set of equations (feel free to ignore this part if equations aren’t your thing)&lt;/p>
+&lt;p>&lt;span class="math display">\[\begin{equation}
+P_i = (1-q)\sum_j P_j \frac{w_{ji}}{k_j^{\text{out}}} + \frac{q}{N} + \frac{1-q}{N}\sum_j P_j \delta(k_j^{\text{out}})
+\end{equation}\]&lt;/span>&lt;/p>
+&lt;p>Importantly this algorithm considers not only how many times one player defeated another but also how frequently the defeated player themselves defeated others. In this sense each player has some associated prestige describing their quality, and in defeating a player the winner receives some of this associated prestige. This implies that a win against a strong competitor with high prestige is now more worthwhile to a player’s rank than defeating a weaker competitor.&lt;/p>
+&lt;p>Okay, so no doubt there are plenty of software packages to do this calculation for us but sometimes it is nice to code up the system ourselves so let’s do that now, using the brilliant &lt;code>tidygraph&lt;/code> and &lt;code>igraph&lt;/code> packages to work with the networks.&lt;/p>
+&lt;pre class="r">&lt;code>page_rank_sim = function(match_result_df){
+node_list &amp;lt;- match_result_df %&amp;gt;%
+gather() %&amp;gt;%
+select(-key) %&amp;gt;%
+unique() %&amp;gt;%
+rename(label = value) %&amp;gt;%
+rowid_to_column(&amp;quot;id&amp;quot;)
+el &amp;lt;- match_result_df %&amp;gt;%
+count(winner, loser, name = &amp;#39;weight&amp;#39;) %&amp;gt;%
+rename(target = winner,
+source = loser) %&amp;gt;%
+left_join(., node_list, by = c(&amp;#39;source&amp;#39; = &amp;#39;label&amp;#39;)) %&amp;gt;%
+rename(from = id) %&amp;gt;%
+left_join(., node_list, by = c(&amp;#39;target&amp;#39; = &amp;#39;label&amp;#39;)) %&amp;gt;%
+rename(to = id) %&amp;gt;%
+select(to, from, weight)
+snooker_net &amp;lt;- tbl_graph(nodes = node_list,
+edges = el,
+directed = TRUE)
+adj &amp;lt;- as_adj(snooker_net, sparse = TRUE, attr = &amp;#39;weight&amp;#39;)
+### PageRank algorithm
+N &amp;lt;- node_list %&amp;gt;% nrow() # number of nodes in the network
+P0 &amp;lt;- rep(1/N, N) # initial values
+q = 0.15 # page rank factor
+s_out &amp;lt;- rowSums(adj) # outdegree of the nodes
+P_temp &amp;lt;- P0
+thres &amp;lt;- 1e-20
+error &amp;lt;- 1
+iter = 1
+while(error &amp;gt; thres &amp;amp; iter &amp;lt; 1e4){
+temp &amp;lt;- (1-q)*((P_temp/s_out) %*% adj) + (q/N) + ((1-q)/N)*(P0 * (s_out == 0))
+error &amp;lt;- max(P_temp - temp)
+P_temp &amp;lt;- temp
+iter &amp;lt;- iter + 1
+}
+prestige &amp;lt;- as.vector(temp)
+result &amp;lt;- tibble(player = node_list$label, prestige = prestige,
+in_strength = as.vector(colSums(adj))) %&amp;gt;%
+arrange(desc(prestige)) %&amp;gt;%
+mutate(rank_pre = rank(-prestige, ties.method = &amp;quot;first&amp;quot;),
+rank_str = rank(-in_strength, ties.method = &amp;quot;first&amp;quot;))
+result
+}&lt;/code>&lt;/pre>
+&lt;/div>
+&lt;div id="results" class="section level2">
+&lt;h2>4. Results&lt;/h2>
+&lt;p>Using the approach described above, after constructing a network based upon all recorded professional snooker games, it can quickly be determined who is the greatest player of all time. Interestingly, it is not Ronnie O’Sullivan with his natural talent, Steve Davis and his distinguished trophy room, or the winning machine known as Stephen Hendry, but rather the four-time world champion John Higgins! This result may seem surprising to some snooker fans but when the data is considered it is entirely understandable. While both Davis and Hendry have plenty of trophies and wins to their name, the quality of player competing in their era was considerably less than those faced by Higgins and O’Sullivan (who is ranked the second greatest through our approach).&lt;/p>
+&lt;pre class="r">&lt;code>set.seed(1)
+# perform the PageRank
+all_time_df &amp;lt;- page_rank_sim(result_df)
+all_time_df %&amp;gt;%
+filter(rank_pre &amp;lt;= 30 | rank_str &amp;lt;= 30) %&amp;gt;%
+ggplot(aes(x = rank_str, y = rank_pre, label = player)) +
+geom_abline(slope = 1, intercept = 0,
+color=&amp;quot;red&amp;quot;,
+linetype=&amp;quot;dashed&amp;quot;, size=1) +
+geom_point() +
+theme_minimal() +
+geom_text_repel(size = 2.25) +
+labs(x = &amp;#39;Rank by Wins&amp;#39;,
+y = &amp;#39;Rank by PageRank&amp;#39;) +
+theme(axis.line = element_line(colour = &amp;#39;black&amp;#39;),
+axis.text=element_text(size=10),
+plot.title.position = &amp;#39;plot&amp;#39;,
+plot.title = element_text(size = 14, face = &amp;#39;bold&amp;#39;),
+plot.subtitle = element_text(size = 12),
+axis.title=element_text(size=12))&lt;/code>&lt;/pre>
+&lt;p>&lt;img src="snooker_rankings_files/figure-html/unnamed-chunk-10-1.png" width="672" height="200px" style="display: block; margin: auto;" />&lt;/p>
+&lt;/div>
+&lt;div id="concluding-thoughts" class="section level2">
+&lt;h2>5. Concluding Thoughts&lt;/h2>
+&lt;p>In order to help satisfy the intrinsic human desire to rank entities, this work has proposed a method which utilizes a mathematical framework to determine a ranking of competitors which considers not only the number of times a player has won but also the quality associated with each win.&lt;/p>
+&lt;/div></description></item></channel></rss>
