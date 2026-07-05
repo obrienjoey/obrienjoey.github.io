@@ -1,0 +1,30 @@
+// Custom Typography Overrides
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 2.5rem; // Prominent hero size
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-top: 2rem;
+  margin-bottom: 0.8rem;
+}
+
+h3 {
+  font-size: 1.4rem;
+  margin-top: 1.5rem;
+}
+
+p {
+  line-height: 1.7; // Better body breathing room
+  color: rgba(0, 0, 0, 0.82);
+}
+
+.dark p {
+  color: rgba(255, 255, 255, 0.85);
+}
