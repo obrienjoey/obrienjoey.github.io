@@ -1,6 +1,6 @@
 ---
 title: "Speaking at LSEG Quant Summit London 2026"
-summary: I had the pleasure of speaking on two topics at the LSEG Quant Summit 2026 in London: "ORE in the Era of Agentic AI" and "LSEG’s Internal Adoption of ORE."
+summary: 'I had the pleasure of speaking on two topics at the LSEG Quant Summit 2026 in London: "ORE in the Era of Agentic AI" and "LSEG’s Internal Adoption of ORE."'
 date: 2026-05-12T00:00:00Z
 draft: false
 categories:
