@@ -5,3 +5,9 @@
 resources/
 public/
 .Rproj.user
+
+# R
+.RData
+.Rhistory
+.RDataTmp
+
