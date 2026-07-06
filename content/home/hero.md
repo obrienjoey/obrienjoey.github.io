@@ -2,7 +2,7 @@
 # Custom Hero widget
 widget = "hero"
 headless = true
-active = true
+active = false
 weight = 5
 
 title = "Quantitative Risk & Model Validation"
