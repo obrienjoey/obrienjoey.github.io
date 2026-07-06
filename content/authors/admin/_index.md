@@ -21,10 +21,10 @@ organizations:
 bio: Principal Consultant in the Quant Services division of LSEG, specializing in model validation, derivative pricing, and risk solutions.
 
 interests:
-- Complex Systems
-- Networks
-- Data Science
-- Statistics
+- Counterparty Credit Risk (CCR)
+- XVA (CVA / DVA / FVA)
+- Derivative Pricing & Valuation
+- Model Risk Management
 - Quantitative Finance
 
 education:
@@ -46,7 +46,7 @@ social:
   link: 'mailto:obrienjoeyd@gmail.com'  # For a direct email link, use \"mailto:obrienjoeyd@gmail.com\".
 - icon: twitter
   icon_pack: fab
-  link: https://twitter.com/obrienj_
+  link: https://x.com/obrienj_
 - icon: linkedin
   icon_pack: fab
   link: https://www.linkedin.com/in/joeyobrien/
