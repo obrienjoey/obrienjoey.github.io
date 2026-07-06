@@ -47,7 +47,7 @@ After some initial research I came across the [`flexdashboard`](https://rstudio.
 For some more specifics about how it works, it makes use of a number of the cleaned datasets from the first part of this post to extract information about tests, cases, and deaths at an number of time and spatial scales. For example it was possible to load in the data at an electoral level to see how the number of cases varied by region using the `mapview` package:
 
 
-```r
+``` r
 `%>%` <- magrittr::`%>%`
 ### Pulling most recent data from Github
 national_df <- data.table::fread("https://raw.githubusercontent.com/obrienjoey/covid19northernireland/main/data/ni_covid_national.csv")
