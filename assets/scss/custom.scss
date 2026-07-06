@@ -30,14 +30,18 @@ p {
 }
 
 // Typographic Navbar Logo
+.navbar-brand,
+.navbar-light .navbar-brand,
+.navbar-light .navbar-brand:hover,
+.navbar-light .navbar-brand:focus,
 .navbar-brand-text {
-  font-family: 'Outfit', sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  font-size: 1.4rem;
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.03em !important;
+  font-size: 1.4rem !important;
   color: #ffffff !important;
   .dot {
-    color: #0d9488;
+    color: #0d9488 !important;
   }
 }
 
