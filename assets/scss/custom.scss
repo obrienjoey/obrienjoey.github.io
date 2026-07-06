@@ -47,7 +47,7 @@ p {
 
 // Spacing & Design Overrides for the About Widget
 .wg-about {
-  padding: 6rem 0 !important; // Add vertical breathing room
+  padding: 2.5rem 0 6rem 0 !important; // Reduced top padding to pull profile closer to header
   
   #profile {
     text-align: center;
