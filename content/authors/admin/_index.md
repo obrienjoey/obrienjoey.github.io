@@ -14,11 +14,11 @@ role: Principal Consultant
 
 # Organizations/Affiliations
 organizations:
-- name: LSEG (Formerly Acadia)
+- name: LSEG
   url: "https://www.lseg.com/en/post-trade/solutions"
 
 # Short bio (displayed in user profile at end of posts)
-bio: Principal Consultant in the Quant Services division of LSEG (Formerly Acadia), specializing in model validation, derivative pricing, and risk solutions.
+bio: Principal Consultant in the Quant Services division of LSEG, specializing in model validation, derivative pricing, and risk solutions.
 
 interests:
 - Complex Systems
@@ -38,12 +38,12 @@ education:
 
 # Social/Academic Networking
 # For available icons, see: https://sourcethemes.com/academic/docs/page-builder/#icons
-#   For an email link, use "fas" icon pack, "envelope" icon, and a link in the
-#   form "mailto:your-email@example.com" or "#contact" for contact widget.
+#   For an email link, use \"fas\" icon pack, \"envelope\" icon, and a link in the
+#   form \"mailto:your-email@example.com\" or \"#contact\" for contact widget.
 social:
 - icon: envelope
   icon_pack: fas
-  link: 'mailto:obrienjoeyd@gmail.com'  # For a direct email link, use "mailto:obrienjoeyd@gmail.com".
+  link: 'mailto:obrienjoeyd@gmail.com'  # For a direct email link, use \"mailto:obrienjoeyd@gmail.com\".
 - icon: twitter
   icon_pack: fab
   link: https://twitter.com/obrienj_
@@ -75,7 +75,7 @@ user_groups:
 - Visitors
 ---
 
-I am a **Principal Consultant** in the Quant Services division of [LSEG (Formerly Acadia)](https://www.lseg.com/en/post-trade/solutions), where I partner with tier-one investment banks, hedge funds, and risk technology teams to design, validate, and implement quantitative models for counterparty credit risk and derivative pricing. My work spans **CVA, DVA, FVA, and PFE model validation**, regulatory compliance with frameworks such as **SS1/23 and FRTB**, and the deployment of open-source risk infrastructure using the **Open Source Risk Engine (ORE)**.
+I am a **Principal Consultant** in the Quant Services division of [LSEG](https://www.lseg.com/en/post-trade/solutions), where I partner with tier-one investment banks, hedge funds, and risk technology teams to design, validate, and implement quantitative models for counterparty credit risk and derivative pricing. My work spans **CVA, DVA, FVA, and PFE model validation**, regulatory compliance with frameworks such as **SS1/23 and FRTB**, and the deployment of open-source risk infrastructure using the **Open Source Risk Engine (ORE)**.
 
 I hold a PhD in Applied Mathematics from the University of Limerick, where my research focused on describing the dynamics of complex systems (such as online social networks and popularity dynamics) using mathematical modelling and large-scale data analysis. This background in applied statistics and network science now informs my approach to building robust, mathematically rigorous financial risk analytics.
 
@@ -87,6 +87,7 @@ My technical toolkit includes **Python** (NumPy, SciPy, pandas, QuantLib Python)
 - **January 2025**: Featured on LSEG's **Ahead of the Curve** podcast alongside Scott Sobolewski and Xabier Anduaga to discuss the UK model risk regulatory landscape (such as SS1/23), open-source ORE tools, and the Risk Analytics Lab. [Listen & Watch.](https://lseg.group/4ohGiiK)
 - **December 2024**: Joined the **Ahead of the Curve: 2024 Year in Review** podcast episode alongside Scott Sobolewski and Roland Stamm to reflect on key ORE developments in 2024 (including PFE, XVA, and market risk sensitivities) and a look ahead to 2025. [Watch](https://lnkd.in/dPrnnETw) | [Listen](https://lnkd.in/dZs8TSfC)
 - **July 2024**: Joined Roland Stamm on the **Ahead of the Curve** podcast to discuss counterparty credit risk using ORE, with a focus on backtesting for future risk factors, Bank of England developments, and post-2022 market scrutiny. [Watch](https://hubs.la/Q02C63Ws0) | [Listen](https://hubs.la/Q02C61f40)
+- **March 2024**: Published LSEG white paper **Backtesting Future Risk Factors Case Study**, demonstrating methodologies to validate credit exposure models against realized market metrics. [Read Case Study](https://www.lseg.com/en/post-trade/solutions/advise/open-source-risk-engine/backtesting-future-risk-factors-case-study)
 - **July 28th, 2022**: Featured in the [This Working Life](https://www.independent.ie/business/this-working-life-we-make-sure-client-models-stand-up-so-in-some-sense-we-are-helping-avoid-another-crash-41872675.html) column in the **Irish Independent** where I spoke about a day in the life of a data focused Quantitative Analyst.
 - **May 2nd, 2022**: Delighted to have made my TV debut on **Brainstorm** where I explained how applied mathematics and data science can be applied to ranking competitors in the sport of snooker! [(18:01)](https://t.co/HLTZqS5XUP).
 - **April 26th, 2022**: Interviewed on the radio show Game On from RTE 2FM to discuss the ongoing Snooker World Championship and how mathematics can help us rank the competing players [(1:37:44 onwards)](https://www.rte.ie/radio/2fm/game-on/programmes/2022/0426/1294268-game-on-tuesday-26-april-2022/).
