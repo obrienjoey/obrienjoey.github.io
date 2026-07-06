@@ -7,8 +7,8 @@ headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 50  # Order that this section will appear.
 
-title = "Recent & Upcoming Talks"
-subtitle = "Presentations, Webinars & Podcast Appearances"
+title = "Talks & Seminars"
+subtitle = "Academic Conferences, Seminars & Workshops"
 
 [content]
   # Page type to display. E.g. post, talk, or publication.
@@ -25,7 +25,7 @@ subtitle = "Presentations, Webinars & Podcast Appearances"
 
   # Filter posts by a taxonomy term.
   [content.filters]
-    tag = ""
+    tag = "Presentation"
     category = ""
     publication_type = ""
     exclude_featured = false

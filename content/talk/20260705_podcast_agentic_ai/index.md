@@ -13,6 +13,7 @@ tags:
   - Agentic AI
   - Risk Management
   - Quantitative Finance
+  - Podcast
 featured: no
 
 links:

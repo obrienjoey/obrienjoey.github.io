@@ -9,6 +9,7 @@ all_day: true
 categories:
   - talk
 tags:
+  - Presentation
   - ORE
   - CVA
   - Risk Analytics

@@ -12,6 +12,7 @@ tags:
   - Counterparty Credit Risk
   - ORE
   - Backtesting
+  - Podcast
 featured: no
 
 links:
