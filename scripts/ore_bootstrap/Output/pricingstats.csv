@@ -1,0 +1,4 @@
+#TradeId,TradeType,NumberOfPricings,CumulativeTiming,AverageTiming
+OIS_1M,Swap,1,18,18
+OIS_1Y,Swap,1,7,7
+OIS_5Y,Swap,1,12,12

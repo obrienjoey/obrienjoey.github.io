@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<Conventions>
+  <Deposit>
+    <Id>USD-ON-SOFR-DEPOSIT</Id>
+    <IndexBased>true</IndexBased>
+    <Index>USD-SOFR</Index>
+  </Deposit>
+  <OIS>
+    <Id>USD-SOFR-OIS</Id>
+    <SpotLag>0</SpotLag>
+    <Index>USD-SOFR</Index>
+    <FixedDayCounter>A360</FixedDayCounter>
+    <PaymentLag>2</PaymentLag>
+    <EOM>false</EOM>
+    <FixedFrequency>Annual</FixedFrequency>
+    <FixedConvention>MF</FixedConvention>
+    <FixedPaymentConvention>MF</FixedPaymentConvention>
+    <Rule>Backward</Rule>
+  </OIS>
+</Conventions>

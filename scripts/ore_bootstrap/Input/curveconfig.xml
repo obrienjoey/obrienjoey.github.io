@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<CurveConfiguration>
+  <YieldCurves>
+    <YieldCurve>
+      <CurveId>USD-SOFR</CurveId>
+      <CurveDescription>USD SOFR OIS discount curve</CurveDescription>
+      <Currency>USD</Currency>
+      <DiscountCurve>USD-SOFR</DiscountCurve>
+      <Segments>
+        <Simple>
+          <Type>Deposit</Type>
+          <Quotes>
+            <Quote>MM/RATE/USD/SOFR/0D/1D</Quote>
+          </Quotes>
+          <Conventions>USD-ON-SOFR-DEPOSIT</Conventions>
+          <ProjectionCurve>USD-SOFR</ProjectionCurve>
+        </Simple>
+        <Simple>
+          <Type>OIS</Type>
+          <Quotes>
+            <Quote optional="true">IR_SWAP/RATE/USD/SOFR/0D/1D/1M</Quote>
+            <Quote optional="true">IR_SWAP/RATE/USD/SOFR/0D/1D/3M</Quote>
+            <Quote optional="true">IR_SWAP/RATE/USD/SOFR/0D/1D/6M</Quote>
+            <Quote optional="true">IR_SWAP/RATE/USD/SOFR/0D/1D/1Y</Quote>
+            <Quote optional="true">IR_SWAP/RATE/USD/SOFR/0D/1D/2Y</Quote>
+            <Quote optional="true">IR_SWAP/RATE/USD/SOFR/0D/1D/5Y</Quote>
+            <Quote optional="true">IR_SWAP/RATE/USD/SOFR/0D/1D/10Y</Quote>
+            <Quote optional="true">IR_SWAP/RATE/USD/SOFR/0D/1D/30Y</Quote>
+          </Quotes>
+          <Conventions>USD-SOFR-OIS</Conventions>
+        </Simple>
+      </Segments>
+      <InterpolationVariable>Discount</InterpolationVariable>
+      <InterpolationMethod>LogLinear</InterpolationMethod>
+      <YieldCurveDayCounter>A365</YieldCurveDayCounter>
+      <Tolerance>0.0000000000010000</Tolerance>
+      <Extrapolation>true</Extrapolation>
+    </YieldCurve>
+  </YieldCurves>
+</CurveConfiguration>
