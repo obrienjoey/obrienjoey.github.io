@@ -2,7 +2,7 @@
 title: "Bootstrapping in the Open-Source Risk Engine"
 subtitle: "A Step-by-Step Guide for Building USD SOFR OIS Curves"
 summary: "A step-by-step walkthrough: market data → XML config → bootstrap → zero-PV re-pricing check, all in Python via the open-source-risk-engine package."
-date: 2026-07-15T00:00:00
+date: 2026-07-15T00:00:00Z
 draft: false
 tags: ["ORE", "quant finance", "interest rates", "Python"]
 ---
@@ -500,4 +500,4 @@ All configuration files and the Python script used in this post are available fo
 
 ***
 
-*Disclaimer: The minimal ORE inputs and Python scripts utilized in this post, along with the featured graphics, were generated and coordinated using Gemini 3.5 Flash.*
+*Disclaimer: The minimal ORE inputs utilized in this post, along with the featured graphics, were generated and coordinated using Gemini 3.5 Flash and Nano Banana 2.*
