@@ -68,7 +68,7 @@ Indeed, a solid understanding of these conventions is key to successful interest
 
 For the underlying mathematics of interest rate curve construction, interpolation methods, and multi-curve bootstrapping, the classic paper by Ferdinando M. Ametrano and Marco Bianchetti serves as the reference text: **[Everything You Always Wanted to Know About Multiple Interest Rate Curve Bootstrapping but Were Afraid to Ask](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2219548)**. It is highly recommended reading if you want to dive deep into the bootstrapping mechanics.
 
-For a standard USD SOFR curve build, we combine money market (MM) overnight deposit conventions for the short end and Overnight Indexed Swap (OIS) conventions for the longer tenors. The conventions are defined in `conventions.xml`:
+For a standard USD SOFR curve build, we combine money market (MM) overnight deposit conventions for the short end and Overnight Indexed Swap (OIS) conventions for the longer tenors. Note, some practitioners would also use SOFR MM Futures as the second component of the bootstrap rather than going dorectly tl OIS Swaps, this is entirely possible in ORE also. The conventions are defined in `conventions.xml`:
 
 ```xml
 <Conventions>
