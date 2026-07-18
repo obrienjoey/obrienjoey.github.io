@@ -44,7 +44,7 @@ social:
 - icon: envelope
   icon_pack: fas
   link: 'mailto:obrienjoeyd@gmail.com'  # For a direct email link, use \"mailto:obrienjoeyd@gmail.com\".
-- icon: twitter
+- icon: x-twitter
   icon_pack: fab
   link: https://x.com/obrienj_
 - icon: linkedin

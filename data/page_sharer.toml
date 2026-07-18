@@ -6,7 +6,7 @@
   url = "https://x.com/intent/tweet?url={url}&text={title}"
   title = "X (Twitter)"
   icon_pack = "fab"
-  icon = "twitter"
+  icon = "x-twitter"
   enable = true
 
 [[buttons]]
