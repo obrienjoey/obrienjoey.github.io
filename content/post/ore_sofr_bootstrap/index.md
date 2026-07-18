@@ -5,6 +5,8 @@ summary: "A step-by-step walkthrough: market data → XML config → bootstrap �
 date: 2026-07-15T00:00:00
 draft: false
 tags: ["ORE", "quant finance", "interest rates", "Python"]
+math: true
+series: ["ORE Fundamentals"]
 ---
 
 Open Source Risk Engine (ORE) is a powerful, production-grade risk analysis and pricing engine built on top of QuantLib. Having supported multiple clients through vendor replacement processes, we have seen first-hand that interest rate curve bootstrapping is always a critical first step. Reconciling a new open-source library against legacy vendor systems is an iterative, detailed task, and establishing a consistent curve bootstrap is the foundation upon which all downstream valuation and risk metrics depend.

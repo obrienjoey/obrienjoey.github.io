@@ -58,7 +58,7 @@ highlight_languages = ["r", "python", "cpp", "julia", "bash", "toml"]  # Add sup
 
 # Enable LaTeX math rendering? true/false
 #   If false, you can enable math on a per page basis as needed.
-math = true
+math = false
 
 # Enable diagram rendering? true/false
 #   If false, you can enable diagrams on a per page basis as needed.
@@ -105,7 +105,7 @@ phone = ""
 # Contact links
 #   Set to `[]` to disable, or comment out unwanted lines with a hash `#`.
 contact_links = [
-  {icon = "twitter", icon_pack = "fab", name = "DM Me", link = "https://twitter.com/obrienj_"},
+  {icon = "twitter", icon_pack = "fab", name = "DM Me", link = "https://x.com/obrienj_"},
   {icon = "linkedin", icon_pack = "fab", name = "Connect", link = "https://www.linkedin.com/in/joeyobrien/"},
   # {icon = "skype", icon_pack = "fab", name = "Skype Me", link = "skype:obrienjoey"},
   #{icon = "keybase", icon_pack = "fab", name = "Chat on Keybase", link = "https://keybase.io/"},
@@ -147,10 +147,10 @@ gravatar = false
 main_menu = {align = "l", show_logo = true}
 
 # Show estimated reading time for posts? (true/false)
-reading_time = false
+reading_time = true
 
 # Display next/previous section pager? (true/false)
-section_pager = false
+section_pager = true
 docs_section_pager = true  # Display pager in Docs layout (e.g. tutorials)?
 
 # Enable in-built social sharing buttons? (true/false)

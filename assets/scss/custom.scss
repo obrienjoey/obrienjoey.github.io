@@ -106,6 +106,17 @@ p {
   color: #cbd5e1;
 }
 
+.dark .wg-about #profile .portrait {
+  border-color: #334155;
+}
+.dark .wg-about #profile .portrait-title h3 {
+  color: #94a3b8;
+}
+.dark .wg-about #profile .network-icon li a {
+  color: #94a3b8;
+  &:hover { color: #2dd4bf; }
+}
+
 // Hero Tagline Styling
 .hero-title {
   background: linear-gradient(135deg, #0f172a 30%, #0d9488 100%);
@@ -116,4 +127,42 @@ p {
   background: linear-gradient(135deg, #ffffff 40%, #2dd4bf 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+// Enhanced table styling for technical posts
+.article-style table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+
+  th {
+    background: #f1f5f9;
+    font-weight: 600;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  tr:nth-child(even) td {
+    background: #f8fafc;
+  }
+}
+
+.dark .article-style table {
+  th {
+    background: #1e293b;
+    border-bottom-color: #334155;
+  }
+  td {
+    border-bottom-color: #334155;
+  }
+  tr:nth-child(even) td {
+    background: #0f172a;
+  }
 }
