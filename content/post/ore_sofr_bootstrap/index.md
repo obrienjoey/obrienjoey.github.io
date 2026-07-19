@@ -498,7 +498,9 @@ Discrepancies during this comparison are common and usually trace back to subtle
 By following this disciplined comparison, you can gain high confidence in ORE's open-source calculations. But establishing a solid, verified bootstrap is just the first step. Once you have matching curves, you unlock the ability to leverage ORE's wider ecosystem for full portfolio valuation, XVA, historical simulation, and market risk analytics. Reconciling your curves is the ideal foundation for a much broader ORE integration journey.
 
 ### Source Code
-All configuration files and the Python script used in this post are available for download [here](/post/ore_sofr_bootstrap/ore_sofr_bootstrap_files.zip).
+All configuration files and the Python script used in this post are available for download:
+{{< code-download url="ore_sofr_bootstrap_files.zip" >}}
+
 
 ***
 
