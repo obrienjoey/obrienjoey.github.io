@@ -166,3 +166,22 @@ p {
     background: #0f172a;
   }
 }
+
+// Reduce home page section vertical spacing
+.home-section {
+  padding: 60px 0 60px 0 !important;
+}
+
+.home-section:first-of-type {
+  padding-top: 30px !important;
+}
+
+@media screen and (max-width: 768px) {
+  .home-section {
+    padding: 40px 0 40px 0 !important;
+  }
+  .home-section:first-of-type {
+    padding-top: 25px !important;
+  }
+}
+
