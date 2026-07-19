@@ -1,0 +1,4 @@
+div class="callout callout-{{ .Get "type" | default "info" }}">
+  {{ if .Get "title" }}<h4>{{ .Get "title" }}</h4>{{ end }}
+  {{ .Inner | markdownify }}
+</div>

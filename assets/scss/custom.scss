@@ -185,3 +185,33 @@ p {
   }
 }
 
+// Reusable Admonition/Callout styling
+.callout {
+  padding: 1rem 1.25rem;
+  border-left: 4px solid;
+  border-radius: 4px;
+  margin: 1.5rem 0;
+  
+  &-info { border-color: #0d9488; background: #f0fdfa; }
+  &-warning { border-color: #f59e0b; background: #fffbeb; }
+  &-important { border-color: #ef4444; background: #fef2f2; }
+
+  h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.dark .callout {
+  &-info { background: #112d2a; }
+  &-warning { background: #2d2411; }
+  &-important { background: #2d1313; }
+}
+
+
