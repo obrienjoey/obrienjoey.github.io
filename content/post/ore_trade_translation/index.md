@@ -10,7 +10,7 @@ diagram: true
 series: ["ORE Fundamentals"]
 ---
 
-Trade ingestion is a common bottleneck in consideration of a new quantitative risk system. Portfolio specifications and formats vary widely across different trading desks and software systems. Running valuations or risk analysis in the **Open Source Risk Engine (ORE)** requires eventually representing these trades in the specific ORE XML portfolio schema. 
+Trade ingestion is one of the most common challenges encountered when adopting a new quantitative risk platform. Portfolio specifications and formats vary widely across different trading desks and software systems. Running valuations or risk analysis in the **Open Source Risk Engine (ORE)** requires eventually representing these trades in the specific ORE XML portfolio schema. 
 
 Once you can [bootstrap curves](/post/ore_sofr_bootstrap/) to set up your market environment, the next natural step is to load your actual trades into the engine. That is the focus of this post. To bridge this gap, you need a robust translation layer: a mapping script or service that reads a flat input format, constructs nested XML structures, outputting a schema-compliant portfolio configuration.
 
