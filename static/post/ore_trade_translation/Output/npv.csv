@@ -1,0 +1,3 @@
+#TradeId,TradeType,Maturity,MaturityTime,NPV,NpvCurrency,NPV(Base),BaseCurrency,Notional,NotionalCurrency,Notional(Base),NettingSet,CounterParty
+EQ_CALL_SP5_1,EquityOption,2023-07-31,0.495890,10818.438615,USD,10818.438615,USD,400000.00,USD,400000.00,,CPTY_A
+EQ_PUT_SP5_2,EquityOption,2023-07-31,0.495890,-8211.213933,USD,-8211.213933,USD,205000.00,USD,205000.00,,CPTY_B

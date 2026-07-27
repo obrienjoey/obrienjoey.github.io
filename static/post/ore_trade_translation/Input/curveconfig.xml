@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<CurveConfiguration>
+  <YieldCurves>
+    <YieldCurve>
+      <CurveId>USD-SOFR</CurveId>
+      <CurveDescription>USD SOFR OIS discount curve</CurveDescription>
+      <Currency>USD</Currency>
+      <DiscountCurve>USD-SOFR</DiscountCurve>
+      <Segments>
+        <Simple>
+          <Type>Deposit</Type>
+          <Quotes>
+            <Quote>MM/RATE/USD/SOFR/0D/1D</Quote>
+          </Quotes>
+          <Conventions>USD-ON-SOFR-DEPOSIT</Conventions>
+          <ProjectionCurve>USD-SOFR</ProjectionCurve>
+        </Simple>
+        <Simple>
+          <Type>OIS</Type>
+          <Quotes>
+            <Quote optional="true">IR_SWAP/RATE/USD/SOFR/0D/1D/1M</Quote>
+            <Quote optional="true">IR_SWAP/RATE/USD/SOFR/0D/1D/3M</Quote>
+            <Quote optional="true">IR_SWAP/RATE/USD/SOFR/0D/1D/6M</Quote>
+            <Quote optional="true">IR_SWAP/RATE/USD/SOFR/0D/1D/1Y</Quote>
+            <Quote optional="true">IR_SWAP/RATE/USD/SOFR/0D/1D/2Y</Quote>
+            <Quote optional="true">IR_SWAP/RATE/USD/SOFR/0D/1D/5Y</Quote>
+            <Quote optional="true">IR_SWAP/RATE/USD/SOFR/0D/1D/10Y</Quote>
+            <Quote optional="true">IR_SWAP/RATE/USD/SOFR/0D/1D/30Y</Quote>
+          </Quotes>
+          <Conventions>USD-SOFR-OIS</Conventions>
+        </Simple>
+      </Segments>
+      <InterpolationVariable>Discount</InterpolationVariable>
+      <InterpolationMethod>LogLinear</InterpolationMethod>
+      <YieldCurveDayCounter>A365</YieldCurveDayCounter>
+      <Tolerance>0.0000000000010000</Tolerance>
+      <Extrapolation>true</Extrapolation>
+    </YieldCurve>
+  </YieldCurves>
+  <EquityCurves>
+    <EquityCurve>
+      <CurveId>RIC:.SPX</CurveId>
+      <CurveDescription>S&amp;P 500 equity price projection curve</CurveDescription>
+      <Currency>USD</Currency>
+      <ForecastingCurve>USD-SOFR</ForecastingCurve>
+      <Type>ForwardPrice</Type>
+      <SpotQuote>EQUITY/PRICE/RIC:.SPX/USD</SpotQuote>
+      <Quotes>
+        <Quote>EQUITY_FWD/PRICE/RIC:.SPX/USD/6M</Quote>
+      </Quotes>
+      <DayCounter>A365</DayCounter>
+    </EquityCurve>
+  </EquityCurves>
+  <EquityVolatilities>
+    <EquityVolatility>
+      <CurveId>RIC:.SPX</CurveId>
+      <CurveDescription>Lognormal option implied vols for SPX</CurveDescription>
+      <Currency>USD</Currency>
+      <Dimension>ATM</Dimension>
+      <Expiries>
+        6M
+      </Expiries>
+    </EquityVolatility>
+  </EquityVolatilities>
+</CurveConfiguration>

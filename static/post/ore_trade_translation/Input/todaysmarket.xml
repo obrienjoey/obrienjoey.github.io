@@ -1,0 +1,14 @@
+<TodaysMarket>
+  <DiscountingCurves id="default">
+    <DiscountingCurve currency="USD">Yield/USD/USD-SOFR</DiscountingCurve>
+  </DiscountingCurves>
+  <IndexForwardingCurves id="default">
+    <Index name="USD-SOFR">Yield/USD/USD-SOFR</Index>
+  </IndexForwardingCurves>
+  <EquityCurves id="default">
+    <EquityCurve name="RIC:.SPX">Equity/USD/RIC:.SPX</EquityCurve>
+  </EquityCurves>
+  <EquityVolatilities id="default">
+    <EquityVolatility name="RIC:.SPX">EquityVolatility/USD/RIC:.SPX</EquityVolatility>
+  </EquityVolatilities>
+</TodaysMarket>

@@ -1,0 +1,49 @@
+#TradeId,ResultId,ResultType,ResultValue
+EQ_CALL_SP5_1,PricingConfigEngine,string,AnalyticEuropeanEngine
+EQ_CALL_SP5_1,PricingConfigModel,string,BlackScholesMerton
+EQ_CALL_SP5_1,PricingConfigProductType,string,EquityOption
+EQ_CALL_SP5_1,isdaAssetClass,string,Equity
+EQ_CALL_SP5_1,isdaBaseProduct,string,Option
+EQ_CALL_SP5_1,isdaSubProduct,string,Price Return Basic Performance
+EQ_CALL_SP5_1,isdaTransaction,string,
+EQ_CALL_SP5_1,quantity,double,100.0000000000000000
+EQ_CALL_SP5_1,strike,double,4000.0000000000000000
+EQ_CALL_SP5_1,strikeCurrency,string,
+EQ_CALL_SP5_1,cashFlowResults[0],cashflows,112.3500281083220216  @ 2023-07-31
+EQ_CALL_SP5_1,discountFactor,double,0.9762704874971966
+EQ_CALL_SP5_1,dividendDiscount,double,0.9762704874971967
+EQ_CALL_SP5_1,forward,double,4000.0000000000004547
+EQ_CALL_SP5_1,instMultiplier,double,100.0000000000000000
+EQ_CALL_SP5_1,riskFreeDiscount,double,0.9762704874971966
+EQ_CALL_SP5_1,spot,double,4000.0000000000000000
+EQ_CALL_SP5_1,strike,double,4000.0000000000000000
+EQ_CALL_SP5_1,timeToExpiry,double,0.4958904109589041
+EQ_CALL_SP5_1,volatility,double,0.1000000000000000
+_EQ_CALL_SP5_1_1,instMultiplier,double,-1.0000000000000000
+_EQ_CALL_SP5_1_1,premiumAmount,double,150.0000000000000000
+_EQ_CALL_SP5_1_1,premiumDate,date,2023-02-02
+_EQ_CALL_SP5_1_1,premiumDiscountFactor,double,0.9997537072850695
+EQ_PUT_SP5_2,PricingConfigEngine,string,AnalyticEuropeanEngine
+EQ_PUT_SP5_2,PricingConfigModel,string,BlackScholesMerton
+EQ_PUT_SP5_2,PricingConfigProductType,string,EquityOption
+EQ_PUT_SP5_2,isdaAssetClass,string,Equity
+EQ_PUT_SP5_2,isdaBaseProduct,string,Option
+EQ_PUT_SP5_2,isdaSubProduct,string,Price Return Basic Performance
+EQ_PUT_SP5_2,isdaTransaction,string,
+EQ_PUT_SP5_2,quantity,double,50.0000000000000000
+EQ_PUT_SP5_2,strike,double,4100.0000000000000000
+EQ_PUT_SP5_2,strikeCurrency,string,
+EQ_PUT_SP5_2,cashFlowResults[0],cashflows,170.6736910368799727  @ 2023-07-31
+EQ_PUT_SP5_2,discountFactor,double,0.9762704874971966
+EQ_PUT_SP5_2,dividendDiscount,double,0.9762704874971967
+EQ_PUT_SP5_2,forward,double,4000.0000000000004547
+EQ_PUT_SP5_2,instMultiplier,double,-50.0000000000000000
+EQ_PUT_SP5_2,riskFreeDiscount,double,0.9762704874971966
+EQ_PUT_SP5_2,spot,double,4000.0000000000000000
+EQ_PUT_SP5_2,strike,double,4100.0000000000000000
+EQ_PUT_SP5_2,timeToExpiry,double,0.4958904109589041
+EQ_PUT_SP5_2,volatility,double,0.1000000000000000
+_EQ_PUT_SP5_2_1,instMultiplier,double,1.0000000000000000
+_EQ_PUT_SP5_2_1,premiumAmount,double,120.0000000000000000
+_EQ_PUT_SP5_2_1,premiumDate,date,2023-02-02
+_EQ_PUT_SP5_2_1,premiumDiscountFactor,double,0.9997537072850695

@@ -11,3 +11,10 @@ public/
 .Rhistory
 .RDataTmp
 
+# Agent skills and config
+.agents/
+.claude/
+AGENTS.md
+docs/agents/
+skills-lock.json
+

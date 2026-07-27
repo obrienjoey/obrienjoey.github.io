@@ -1,0 +1,3 @@
+TradeID,Counterparty,Underlying,Currency,Quantity,Strike,OptionType,LongShort,ExpiryDate,PremiumAmount,PremiumCcy,PremiumDate,ExerciseStyle
+EQ_CALL_SP5_1,CPTY_A,RIC:.SPX,USD,100.0,4000.0,Call,Long,2023-07-31,150.0,USD,2023-02-02,E
+EQ_PUT_SP5_2,CPTY_B,RIC:.SPX,USD,50.0,4100.0,Put,Short,2023-07-31,120.0,USD,2023-02-02,E
