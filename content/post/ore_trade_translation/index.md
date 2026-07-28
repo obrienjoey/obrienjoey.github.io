@@ -10,11 +10,13 @@ diagram: true
 series: ["ORE Fundamentals"]
 ---
 
-Trade ingestion is one of the most common challenges encountered when adopting a new quantitative risk platform. Portfolio specifications and formats vary widely across different trading desks and software systems. Running valuations or risk analysis in the **Open Source Risk Engine (ORE)** requires eventually representing these trades in the specific ORE XML portfolio schema. 
+Trade ingestion is often one of the biggest challenges when adopting a new quantitative risk platform. Portfolio definitions vary considerably across trading desks, front-office systems, and vendor platforms, with each using its own conventions and data formats. To perform valuations or risk analysis in **Open Source Risk Engine (ORE)**, these trades must ultimately be translated into ORE's XML portfolio schema. This translation step is often a significant source of effort, making robust and automated trade ingestion a key requirement for any successful ORE deployment.
 
-Once you can [bootstrap curves](/post/ore_sofr_bootstrap/) to set up your market environment, the next natural step is to load your actual trades into the engine. That is the focus of this post. To bridge this gap, you need a robust translation layer: a mapping script or service that reads a flat input format, constructs nested XML structures, outputting a schema-compliant portfolio configuration.
+Once you can [bootstrap curves](/post/ore_sofr_bootstrap/) and construct a market environment, the next step is to load your trade portfolio into the engine. This post focuses on that process. The missing piece is a translation layer that converts a flat trade representation into ORE's hierarchical XML portfolio schema, producing a valid, schema-compliant portfolio ready for valuation and risk analysis.
 
-The translation adaptor is decoupled from the storage layer. Provided the parameters can be fetched and loaded into a standard Python structure, such as a Pandas DataFrame, the mapping logic and XML serialisation remain the same.
+The translation layer is deliberately independent of the underlying data source. Whether trade data originates from a CSV file, database, or API, the workflow is the same: load the data into a standard Python structure, such as a Pandas DataFrame, apply the mapping rules, and serialise the result as ORE XML. This separation keeps the translation logic reusable while allowing it to integrate with a wide range of storage and data ingestion pipelines.
+
+The approach described here is based on work we have carried out for clients evaluating ORE as an alternative to established commercial risk platforms, as well as organisations undertaking full production migrations. In some cases, the objective was to build a proof of concept that could validate pricing and risk against an incumbent system; in others, it was to develop a robust, production-grade trade translation pipeline. Although every implementation differs, the underlying design principles remain remarkably consistent. This post focuses on those principles and the practices that have proven most effective across a range of real-world projects.
 
 > ### Walkthrough Objectives
 > In this guide, we will:
@@ -269,7 +271,7 @@ print(f"Successfully generated ORE Portfolio XML at: {OUTPUT_XML_PATH}")
 ### Step 4: Schema Validation via `input.xsd`
 To ensure the translation adaptor does not generate malformed or schema-violating XML portfolios, we validate the generated output against the ORE master schema definition (`input.xsd`). 
 
-Using `lxml`, we load and parse local schema files (`input.xsd`, which automatically resolves relative imports of `instruments.xsd` and `ore_types.xsd`):
+The complete set of ORE XSD schema files can be obtained from the [official ORE repository](https://github.com/OpenSourceRisk/Engine/tree/master/xsd). Using `lxml`, we load and parse local schema files (`input.xsd`, which automatically resolves relative imports of `instruments.xsd` and `ore_types.xsd`):
 
 ```python
 from lxml import etree
