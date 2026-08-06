@@ -36,30 +36,25 @@ def reconcile_equity_option():
     premium_id = f"_{trade_id}_1"
 
     quantity = get_param(trade_id, "quantity")
-    S = get_param(trade_id, "spot")
+    F = get_param(trade_id, "forward")
     K = get_param(trade_id, "strike")
     T = get_param(trade_id, "timeToExpiry")
     vol = get_param(trade_id, "volatility")
-    dividend_df = get_param(trade_id, "dividendDiscount")
-    risk_free_df = get_param(trade_id, "riskFreeDiscount")
+    discount = get_param(trade_id, "riskFreeDiscount")
     premium_paid = get_param(premium_id, "premiumAmount")
     premium_df = get_param(premium_id, "premiumDiscountFactor")
     ore_npv_row = npv_df[npv_df[npv_df.columns[0]].astype(str).str.strip() == trade_id]
     ore_npv = float(ore_npv_row["NPV"].iloc[0])
 
-    r = -math.log(risk_free_df) / T
-    q = -math.log(dividend_df) / T
-
     print(f"\n=== Additional Results Parameters for {trade_id} ===")
-    print(f"  Spot (S):             {S:.6f}")
+    print(f"  Forward (F):          {F:.6f}")
     print(f"  Strike (K):           {K:.6f}")
     print(f"  Time to Expiry (T):   {T:.10f}")
     print(f"  Volatility (sigma):   {vol:.6f} ({vol*100:.2f}%)")
-    print(f"  Risk-Free Discount:   {risk_free_df:.10f}  (r = {r*100:.4f}%)")
-    print(f"  Dividend Discount:    {dividend_df:.10f}  (q = {q*100:.4f}%)")
+    print(f"  Risk-Free Discount:   {discount:.10f}  (D = e^(-rT))")
 
     sqrt_t = math.sqrt(T)
-    d1 = (math.log(S / K) + (r - q + 0.5 * vol**2) * T) / (vol * sqrt_t)
+    d1 = (math.log(F / K) + 0.5 * vol**2 * T) / (vol * sqrt_t)
     d2 = d1 - vol * sqrt_t
 
     print(f"\n=== d1 / d2 Verification ===")
@@ -67,20 +62,20 @@ def reconcile_equity_option():
     print(f"  d2:                     {d2:.10f}")
 
     normal_cdf = lambda x: (1.0 + math.erf(x / math.sqrt(2.0))) / 2.0
-    bsm_call = S * dividend_df * normal_cdf(d1) - K * risk_free_df * normal_cdf(d2)
+    black76_call = discount * (F * normal_cdf(d1) - K * normal_cdf(d2))
     ore_unit_value = (ore_npv + premium_paid * premium_df) / quantity
 
-    print(f"\n=== Black-Scholes-Merton Reconstruction ===")
-    print(f"  BSM Call (manual): {bsm_call:.6f} USD  per unit")
-    print(f"  ORE Implied Value:  {ore_unit_value:.6f} USD  per unit")
-    print(f"  Difference:        {abs(bsm_call - ore_unit_value):.2e} USD")
+    print(f"\n=== Black-76 Reconstruction ===")
+    print(f"  Black-76 Call (manual): {black76_call:.6f} USD  per unit")
+    print(f"  ORE Implied Value:      {ore_unit_value:.6f} USD  per unit")
+    print(f"  Difference:            {abs(black76_call - ore_unit_value):.2e} USD")
 
     premium_pv = premium_paid * premium_df
-    full_npv_manual = quantity * bsm_call - premium_pv
+    full_npv_manual = quantity * black76_call - premium_pv
 
     print(f"\n=== Full Position NPV Reconciliation ===")
     print(f"  Quantity:             {quantity:.0f} contracts")
-    print(f"  BSM value per unit:   {bsm_call:.6f} USD")
+    print(f"  Black-76 value per unit: {black76_call:.6f} USD")
     print(f"  Premium amount:        {premium_paid:.2f} USD (PV = {premium_pv:.6f})")
     print(f"  Manual NPV:           {full_npv_manual:,.4f} USD")
     print(f"  ORE Reported NPV:     {ore_npv:,.4f} USD")

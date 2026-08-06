@@ -56,7 +56,7 @@ Both validation pathways require specific analytics to be enabled in ORE's maste
 </Analytics>
 ```
 
-The critical flag here is `<Parameter name="additionalResults">Y</Parameter>`. When enabled, ORE writes a companion file (`additional_results.csv`) containing all the raw model inputs and intermediate quantities computed during pricing. This enables the second validation pathway, covered in Section 3. The `<Parameter name="additionalResultsReportPrecision">12</Parameter>` value controls how many decimal places ORE writes for the numeric results in that file — 12 here, which is what lets us reproduce the values in Section 3 to full precision.
+The critical flag here is `<Parameter name="additionalResults">Y</Parameter>`. When enabled, ORE writes a companion file (`additional_results.csv`) containing all the raw model inputs and intermediate quantities computed during pricing. This enables the second validation pathway, covered in Section 3. The `<Parameter name="additionalResultsReportPrecision">12</Parameter>` value controls how many decimal places ORE writes for the numeric results in that file.
 
 ---
 
@@ -342,7 +342,7 @@ The cashflow report works well for instruments where the valuation is a sum of d
 
 When `additionalResults` is enabled, ORE writes every internal pricing parameter used for each trade into this file. For model validation, this means you can take the exact inputs ORE used and reconstruct the pricing formula yourself, verifying that the output is consistent with the closed-form expression.
 
-The option inputs used in this section come from the companion [trade translation bundle](/post/ore_trade_translation/ore_trade_translation_files.zip), configured with the `2023-01-31` as-of date. The resulting option outputs are included in this post's bundle in a dedicated **`Output_Eq`** directory, kept separate from the swap's `Output/` directory so that re-running the swap's `run_pricing.py` never overwrites them.
+The option inputs used in this section come from the companion [trade translation bundle](/post/ore_trade_translation/ore_trade_translation_files.zip), configured with the `2023-01-31` as-of date, which we reuse here. The resulting option outputs are included in this post's bundle in a dedicated **`Output_Eq`** directory, kept separate from the swap's `Output/` directory so that re-running the swap's `run_pricing.py` never overwrites them.
 
 ### 3.1 The Equity Option Portfolio
 
@@ -386,7 +386,7 @@ The call trade in the full ORE portfolio looks like this:
 </Portfolio>
 ```
 
-ORE prices the trade using the analytical Black-Scholes-Merton model (as configured in `pricingengine.xml`), and the NPV run produces:
+ORE prices the trade using the analytical Black-Scholes-Merton model (as configured in `pricingengine.xml`), whose `AnalyticEuropeanEngine` evaluates the payoff via the **Black-76 forward formulation** — written in terms of the forward price rather than the spot price (Section 3.3). The NPV run produces:
 
 | #TradeId | TradeType | NPV (USD) | NpvCurrency |
 |:---|:---|---:|:---|
@@ -394,7 +394,7 @@ ORE prices the trade using the analytical Black-Scholes-Merton model (as configu
 
 ### 3.2 Reading the Additional Results
 
-The `additional_results.csv` file captures the raw model parameters used by ORE's BSM engine for each trade. For `EQ_CALL_SP5_1`, the relevant rows from the actual ORE run look like this:
+The `additional_results.csv` file captures the raw model parameters used by ORE's analytic engine for each trade. For `EQ_CALL_SP5_1`, the relevant rows from the actual ORE run look like this:
 
 | #TradeId | ResultId | ResultType | ResultValue |
 |:---|:---|:---|---:|
@@ -415,22 +415,20 @@ The `additional_results.csv` file captures the raw model parameters used by ORE'
 ORE reports the forward and discount factors directly, so we can reconstruct the price without converting them back into continuously compounded rates. The premium appears as a separate synthetic cashflow record because `PremiumAmount` is an absolute amount, not a per-contract amount.
 
 Two small observations before we plug numbers in:
-- **`cashFlowResults[0]` is the undiscounted payoff**: `112.350028` is ORE's per-unit payoff at expiry. Discount it with the reported factor and you get `112.350028 × 0.9762704875 = 109.684017` — which is exactly the BSM value we reconstruct in Section 3.3. This is a quick internal consistency check: ORE's own cashflow engine agrees with its closed-form engine.
+- **`cashFlowResults[0]` is the undiscounted payoff**: `112.350028` is ORE's per-unit payoff at expiry — precisely $F \cdot N(d_1) - K \cdot N(d_2)$ before discounting. Discount it with the reported factor and you get `112.350028 × 0.9762704875 = 109.684017` — which is exactly the Black-76 value we reconstruct in Section 3.3.
 - **`timeToExpiry` = 0.4958904109589041**: that is `181 / 365`, i.e. the Actual/365 day-count fraction from the valuation date `2023-01-31` to expiry `2023-07-31`.
 
-### 3.3 Reconstructing the Black-Scholes Formula from Additional Results
+### 3.3 Reconstructing the Black-76 Formula from Additional Results
 
-The classic BSM closed-form formula for a European call uses the spot price $S$:
+While ORE's `AnalyticEuropeanEngine` is configured with the `BlackScholesMerton` model, the closed-form price is evaluated in the **Black-76 forward** variation of the model here, written in terms of the forward price $F$ rather than the spot price $S$:
 
-$$C = S \cdot e^{-qT} \cdot N(d_1) - K \cdot e^{-rT} \cdot N(d_2)$$
+$$C = D \cdot \left( F \cdot N(d_1) - K \cdot N(d_2) \right)$$
 
 with
 
-$$d_1 = \frac{\ln(S/K) + \left(r - q + \frac{1}{2}\sigma^2\right) T}{\sigma \sqrt{T}}, \quad d_2 = d_1 - \sigma\sqrt{T}$$
+$$d_1 = \frac{\ln(F/K) + \frac{1}{2}\sigma^2 T}{\sigma \sqrt{T}}, \quad d_2 = d_1 - \sigma\sqrt{T}$$
 
-Here $S$ is the spot price, $K$ the strike, $r$ the risk-free rate, $q$ the dividend yield, $T$ the time to expiry, and $\sigma$ the volatility. ORE reports `spot`, `strike`, `timeToExpiry`, and `volatility` directly, and it also reports the discount factors $e^{-rT}$ (`riskFreeDiscount`) and $e^{-qT}$ (`dividendDiscount`) hence we can recover $r$ and $q$ without any external rate data:
-
-$$r = -\frac{\ln(\text{riskFreeDiscount})}{T}, \qquad q = -\frac{\ln(\text{dividendDiscount})}{T}$$
+Here $F$ is the forward price, $K$ the strike, $D = e^{-rT}$ the risk-free discount factor, $T$ the time to expiry, and $\sigma$ the volatility. The spot-based BSM formula is mathematically equivalent via the carry relationship $F = S e^{(r-q)T}$, but ORE reports `forward`, `strike`, `timeToExpiry`, `volatility`, and `riskFreeDiscount` directly — exactly the inputs the Black-76 formula needs, so we can price without converting anything back into continuously compounded rates.
 
 Plugging the values from `additional_results.csv` directly into the formula:
 
@@ -438,7 +436,7 @@ Plugging the values from `additional_results.csv` directly into the formula:
 import math
 import pandas as pd
 
-def bsm_validate():
+def black76_validate():
     additional_results_df = pd.read_csv("Output_Eq/additional_results.csv")
     npv = pd.read_csv("Output_Eq/npv.csv")
     additional_results_df.columns = additional_results_df.columns.str.strip()
@@ -454,29 +452,24 @@ def bsm_validate():
     premium_id = f"_{trade_id}_1"
 
     quantity = get_param(trade_id, "quantity")
-    S = get_param(trade_id, "spot")
+    F = get_param(trade_id, "forward")
     K = get_param(trade_id, "strike")
     T = get_param(trade_id, "timeToExpiry")
     vol = get_param(trade_id, "volatility")
-    dividend_df = get_param(trade_id, "dividendDiscount")
-    risk_free_df = get_param(trade_id, "riskFreeDiscount")
+    discount = get_param(trade_id, "riskFreeDiscount")
     premium_paid = get_param(premium_id, "premiumAmount")
     premium_df = get_param(premium_id, "premiumDiscountFactor")
     ore_npv = npv.loc[npv["#TradeId"] == trade_id, "NPV"].iloc[0]
 
-    r = -math.log(risk_free_df) / T
-    q = -math.log(dividend_df) / T
-
     print(f"\n=== Additional Results Parameters for {trade_id} ===")
-    print(f"  Spot (S):             {S:.6f}")
+    print(f"  Forward (F):          {F:.6f}")
     print(f"  Strike (K):           {K:.6f}")
     print(f"  Time to Expiry (T):   {T:.10f}")
     print(f"  Volatility:           {vol:.6f}  ({vol*100:.2f}%)")
-    print(f"  Risk-Free Discount:   {risk_free_df:.10f}  (r = {r*100:.4f}%)")
-    print(f"  Dividend Discount:    {dividend_df:.10f}  (q = {q*100:.4f}%)")
+    print(f"  Risk-Free Discount:   {discount:.10f}  (D = e^(-rT))")
 
     sqrt_t = math.sqrt(T)
-    d1 = (math.log(S / K) + (r - q + 0.5 * vol**2) * T) / (vol * sqrt_t)
+    d1 = (math.log(F / K) + 0.5 * vol**2 * T) / (vol * sqrt_t)
     d2 = d1 - vol * sqrt_t
 
     print("\n=== d1 / d2 Verification ===")
@@ -484,70 +477,69 @@ def bsm_validate():
     print(f"  d2:                     {d2:.10f}")
 
     normal_cdf = lambda x: (1.0 + math.erf(x / math.sqrt(2.0))) / 2.0
-    bsm_call = S * dividend_df * normal_cdf(d1) - K * risk_free_df * normal_cdf(d2)
+    black76_call = discount * (F * normal_cdf(d1) - K * normal_cdf(d2))
     ore_unit_value = (ore_npv + premium_paid * premium_df) / quantity
 
-    print("\n=== Black-Scholes-Merton Reconstruction ===")
-    print(f"  BSM Call (manual): {bsm_call:.6f} USD  per unit")
-    print(f"  ORE Implied Value:  {ore_unit_value:.6f} USD  per unit")
-    print(f"  Difference:        {abs(bsm_call - ore_unit_value):.2e} USD")
+    print("\n=== Black-76 Reconstruction ===")
+    print(f"  Black-76 Call (manual): {black76_call:.6f} USD  per unit")
+    print(f"  ORE Implied Value:      {ore_unit_value:.6f} USD  per unit")
+    print(f"  Difference:            {abs(black76_call - ore_unit_value):.2e} USD")
 
     premium_pv = premium_paid * premium_df
-    full_npv_manual = quantity * bsm_call - premium_pv
+    full_npv_manual = quantity * black76_call - premium_pv
 
     print("\n=== Full Position NPV Reconciliation ===")
     print(f"  Quantity:             {quantity:.0f} contracts")
-    print(f"  BSM value per unit:   {bsm_call:.6f} USD")
+    print(f"  Black-76 value per unit: {black76_call:.6f} USD")
     print(f"  Premium amount:        {premium_paid:.2f} USD (PV = {premium_pv:.6f})")
     print(f"  Manual NPV:           {full_npv_manual:,.4f} USD")
     print(f"  ORE Reported NPV:     {ore_npv:,.4f} USD")
     print(f"  Residual:             {abs(full_npv_manual - ore_npv):.4f} USD")
 
 if __name__ == "__main__":
-    bsm_validate()
+    black76_validate()
 ```
 
 Running this gives:
 
 ```text
 === Additional Results Parameters for EQ_CALL_SP5_1 ===
-  Spot (S):             4000.000000
+  Forward (F):          4000.000000
   Strike (K):           4000.000000
   Time to Expiry (T):   0.4958904110
   Volatility:           0.100000  (10.00%)
-  Risk-Free Discount:   0.9762704875  (r = 4.8429%)
-  Dividend Discount:    0.9762704875  (q = 4.8429%)
+  Risk-Free Discount:   0.9762704875  (D = e^(-rT))
 
 === d1 / d2 Verification ===
   d1:                     0.0352097434
-  d2:                    -0.0352097434
+  d2:                     -0.0352097434
 
-=== Black-Scholes-Merton Reconstruction ===
-  BSM Call (manual): 109.684017 USD  per unit
-  ORE Implied Value: 109.684017 USD  per unit
-  Difference:        7.08e-10 USD
+=== Black-76 Reconstruction ===
+  Black-76 Call (manual): 109.684017 USD  per unit
+  ORE Implied Value:      109.684017 USD  per unit
+  Difference:             7.08e-10 USD
 
 === Full Position NPV Reconciliation ===
   Quantity:             100 contracts
-  BSM value per unit:   109.684017 USD
-  Premium amount:       150.00 USD (PV = 149.963056)
-  Manual NPV:           10818.4386 USD
-  ORE Reported NPV:     10818.4386 USD
+  Black-76 value per unit: 109.684017 USD
+  Premium amount:        150.00 USD (PV = 149.963056)
+  Manual NPV:           10,818.4386 USD
+  ORE Reported NPV:     10,818.4386 USD
   Residual:             0.0000 USD
 ```
 
-The manual reconstruction agrees with ORE output to machine precision. The spot, strike, time to expiry, volatility, and the risk-free and dividend discount factors all come directly from `additional_results.csv`, while the premium is taken from its separate synthetic cashflow record. Nothing in the ORE C++ source needs to be trusted blindly: the reported inputs reproduce the final NPV.
+The manual reconstruction agrees with ORE output to machine precision. The forward price, strike, time to expiry, volatility, and the risk-free discount factor all come directly from `additional_results.csv`, while the premium is taken from its separate synthetic cashflow record. These reports allows one to not have to trust the ORE C++ source blindly: the reported inputs reproduce the final NPV.
 
-#### A Note on Why $r = q$
+#### A Note on Why $F = S$ (and hence $r = q$)
 
-You may notice that the recovered risk-free rate and dividend yield are identical (both `4.8429%`). This is not a coincidence or a quirk of ORE — it follows directly from the market data supplied for this example. In the companion [trade translation bundle](/post/ore_trade_translation/), the S&P 500 equity curve is configured with a **spot price of `4000`** and a **6M forward price of `4000`**:
+You may notice that ORE reports `forward = 4000`, identical to the spot price, and consequently `dividendDiscount = riskFreeDiscount`. This is not a coincidence or a quirk of ORE — it follows directly from the market data supplied for this example. In the companion [trade translation bundle](/post/ore_trade_translation/), the S&P 500 equity curve is configured with a **spot price of `4000`** and a **6M forward price of `4000`**:
 
 ```text
 EQUITY/PRICE/RIC:.SPX/USD 4000.00
 EQUITY_FWD/PRICE/RIC:.SPX/USD/6M 4000.00
 ```
 
-For any forward price, the carry relationship is $F = S \cdot e^{(r-q)T}$. With $F = S$, the exponent must vanish, so $r - q = 0$, i.e., the dividend yield exactly offsets the risk-free rate. ORE therefore reports `dividendDiscount = riskFreeDiscount`, and our recovery returns $q = r$. In a real market setup with a forward price different from spot (e.g. a dividend-paying index where the forward trades *below* spot), $q > r$ and the two discount factors would diverge accordingly.
+For any forward price, the carry relationship is $F = S \cdot e^{(r-q)T}$. With $F = S$, the exponent must vanish, so $r - q = 0$, i.e., the dividend yield exactly offsets the risk-free rate. Because Black-76 prices in terms of $F$, that carry information enters the formula directly through the reported `forward`, which is precisely why `forward` equals `spot` and `dividendDiscount` equals `riskFreeDiscount` in this example. In a real market setup with a forward price different from spot (e.g. a dividend-paying index where the forward trades *below* spot), $F < S$, $q > r$, and the two discount factors would diverge accordingly, with the reported `forward` carrying that divergence into the price.
 
 ---
 
