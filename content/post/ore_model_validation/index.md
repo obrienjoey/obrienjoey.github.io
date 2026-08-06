@@ -2,8 +2,8 @@
 title: "Validating Derivative Pricing in ORE"
 subtitle: "How ORE's Transparency Enables Efficient Model Validation"
 summary: "Explore how ORE's open architecture enables rigorous model validation. Walk through two canonical validation pathways — the cashflow report and the additionalResults file — applied to an Interest Rate Swap and an Equity Option position."
-date: 2026-08-05T00:00:00Z
-draft: true
+date: 2026-08-06T00:00:00Z
+draft: false
 authors: ["admin"]
 tags: ["ORE", "quant finance", "Python", "Valuation", "model validation"]
 math: true
