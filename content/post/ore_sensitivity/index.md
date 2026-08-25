@@ -379,7 +379,6 @@ vm = npv_at(-1)        # -1bp quote:      -436,427.78
 
 forward   = vp - v0          # one-sided: -7,191.42
 central   = (vp - vm) / 2    # two-sided: -7,195.31
-gamma_1bp = vp + vm - 2*v0   # curvature:      +7.77
 ```
 
 `npv_at(shift_bp)` modifies `marketdata.csv`, runs ORE's pricing engine, and reads the resulting NPV from `npv.csv`. Comparing against the par table:
@@ -390,14 +389,18 @@ gamma_1bp = vp + vm - 2*v0   # curvature:      +7.77
 | Forward difference (one-sided) | -7,191.42 | -43.96 | 0.61% |
 | Total par delta (section 8) | -7,147.46 | N/A | N/A |
 
-The measured shift matches the par table to within 0.7%. Two factors account for the small difference:
+The measured bump matches the par table to within 0.7%. 
 
-1. Curvature (gamma), small but nonzero. A swap is linear in its coupons, so why does it show any curvature at all? Because the path from market quote to NPV is not a straight line: the quote is bootstrapped into zero rates, which become discount factors through the exponential $e^{-zt}$, which then feed the NPV. Both the exponential discounting and the LogLinear interpolation between grid nodes make the value-vs-quote curve slightly convex, and the swap's coupon payments only amplify it through the compounding. That small nonlinearity is what the measured term, `+7.77` EUR per (1 bp)², captures: a 3.89 EUR gap between one-sided and two-sided differences, and a term worth about 0.1% of the delta itself. A swaption would show orders of magnitude more gamma. Here the whole effect is second-order curvature from the discounting/bootstrap mapping, and central differencing cancels it.
-2. Linearization versus curve rebuilding. The par table calculates sensitivities via a linearized Jacobian on a fixed simulation grid. The manual bump re-bootstraps the yield curve through its interpolation routine. The 0.7% variance reflects this difference between linear approximation and full recalibration.
+### Why is there a slight difference?
 
-The table also shows the forward difference landing closer to the par delta (0.61%) than the central difference (0.67%). Read nothing into that ordering. Both measurements carry essentially the same dominant error, the 44 to 48 EUR gap that comes from comparing a linearized Jacobian with a full curve rebuild, and they differ from each other by only half the curvature term, the 3.89 EUR between them. Central difference stays the right primary metric because it removes that term instead of inheriting it; which method happens to land closer on a given trade is decided by the rebuild error, not by the differencing scheme.
+The main reason for the small variance (~48 EUR or 0.67%) is the **linearisation** inherent in the analytic Jacobian conversion versus a **full curve rebuild**:
 
-In summary, bumping the 15Y OIS quote by 1 bp moves this receiver by roughly -7,150 to -7,200 EUR, closely matching the -7,147.46 EUR calculated by the Jacobian. Central difference is the appropriate primary metric here because it cancels the small second-order curvature and isolates the first-order slope.
+1. **Linearised Jacobian conversion (ORE)**: The par sensitivity table calculates risk via a first-order linear approximation (the Jacobian matrix $J = \partial \text{par} / \partial \text{zero}$). It converts zero-rate sensitivities into par sensitivities via the chain rule on a fixed simulation grid without recalibrating the yield curve from scratch.
+2. **Full curve re-bootstrapping (Bump & Reval)**: In contrast, the manual bump-and-reval modifies the actual market quote in `marketdata.csv` and re-runs the entire bootstrap process. This recalibrates all dependent discount factors through the curve's interpolation routine before repricing the trade.
+
+The 0.67% difference simply reflects this difference between a fast first-order linear approximation and a full non-linear curve recalibration.
+
+In summary, bumping the 15Y OIS quote by 1 bp moves this receiver by roughly -7,150 to -7,200 EUR, closely matching the -7,147.46 EUR calculated by the Jacobian. This confirms that ORE's par conversion produces an accurate, tradeable risk figure without the overhead of re-bootstrapping curves for every risk factor.
 
 ---
 
