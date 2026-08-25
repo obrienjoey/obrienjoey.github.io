@@ -2,7 +2,7 @@
 title: "Sensitivity Analysis in ORE"
 subtitle: "Zero-rate deltas to tradeable par risk in ORE, verified by an independent 15Y market-quote bump"
 summary: "Run ORE's native zero-domain interest-rate sensitivities for a single-curve EUR-ESTER OIS, then follow the Jacobian par conversion that maps those deltas onto the liquid OIS quotes a trader can actually bump. Close the loop with an independent 15Y manual bump-and-reval: a ±1bp bump of the actual OIS quote whose re-valued NPV lands within 0.7% of the par table's total. Includes both config passes, the Jacobian matrix, cleaned zero- and par-domain tables, and the finite-difference check."
-date: 2026-08-25T00:00:00
+date: 2026-08-25T00:00:00Z
 draft: false
 tags: ["ORE", "quant finance", "interest rates", "sensitivity", "Risk", "Python"]
 math: true
