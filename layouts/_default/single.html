@@ -62,7 +62,6 @@
     </div>
   </header>
 
-
   <!-- Body & Layout Container -->
   <div class="article-content-layout container">
     <div class="row">
@@ -99,24 +98,6 @@
 
 </article>
 
-<!-- Floating Switcher Bar for Technical Blog Layouts -->
-<div id="proto-post-switcher" class="proto-switcher-bar">
-  <div class="proto-switcher-label">
-    <i class="fas fa-columns mr-1"></i> <strong>Reading Layout</strong>
-  </div>
-  <div class="proto-btn-group">
-    <button class="proto-btn active" data-variant="a" title="Press 1 to switch">
-      <span class="proto-badge">1</span> Research Paper & Sticky TOC
-    </button>
-    <button class="proto-btn" data-variant="b" title="Press 2 to switch">
-      <span class="proto-badge">2</span> Quant Lab Editorial
-    </button>
-    <button class="proto-btn" data-variant="c" title="Press 3 to switch">
-      <span class="proto-badge">3</span> Academic Monograph
-    </button>
-  </div>
-</div>
-
 <script>
 (function() {
   // Reading Progress Bar
@@ -128,7 +109,7 @@
     if (bar) bar.style.width = scrolled + '%';
   });
 
-  // Code Block Copy Buttons & Language Badges
+  // Code Block Copy Buttons
   document.addEventListener('DOMContentLoaded', function() {
     var codeBlocks = document.querySelectorAll('pre');
     codeBlocks.forEach(function(codeBlock) {
@@ -152,55 +133,6 @@
       wrapper.appendChild(btn);
     });
   });
-
-  // Variant Switcher logic
-  function getVariant() {
-    var params = new URLSearchParams(window.location.search);
-    var v = params.get('variant');
-    if (['a', 'b', 'c'].indexOf(v) !== -1) return v;
-    return localStorage.getItem('proto_post_variant') || 'a';
-  }
-
-  function setVariant(v) {
-    localStorage.setItem('proto_post_variant', v);
-    var url = new URL(window.location.href);
-    url.searchParams.set('variant', v);
-    window.history.replaceState({}, '', url.toString());
-
-    document.body.classList.remove('proto-post-a', 'proto-post-b', 'proto-post-c');
-    document.body.classList.add('proto-post-' + v);
-
-    var buttons = document.querySelectorAll('#proto-post-switcher .proto-btn');
-    buttons.forEach(function(btn) {
-      if (btn.getAttribute('data-variant') === v) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    var activeVar = getVariant();
-    setVariant(activeVar);
-
-    var buttons = document.querySelectorAll('#proto-post-switcher .proto-btn');
-    buttons.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        setVariant(this.getAttribute('data-variant'));
-      });
-    });
-
-    document.addEventListener('keydown', function(e) {
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-      if (e.key === '1') setVariant('a');
-      if (e.key === '2') setVariant('b');
-      if (e.key === '3') setVariant('c');
-    });
-  });
-
-  var initialVar = getVariant();
-  document.body.classList.add('proto-post-' + initialVar);
 })();
 </script>
 

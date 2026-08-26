@@ -1194,37 +1194,5 @@ p {
 }
 
 
-// -----------------------------------------------------------------------------
-// VARIANT B OVERRIDES: Quant Lab Editorial (Centered Breakout)
-// -----------------------------------------------------------------------------
-body.proto-post-b {
-  .article-sidebar-col { display: none !important; }
-  .article-main-col {
-    max-width: 860px !important;
-    margin: 0 auto !important;
-    flex: 0 0 100% !important;
-  }
-  #reading-progress-bar { background: #06b6d4; }
-  .series-pill { color: #06b6d4 !important; border-color: rgba(6, 182, 212, 0.3) !important; }
-}
-
-// -----------------------------------------------------------------------------
-// VARIANT C OVERRIDES: Academic Monograph (ArXiv / Proof Layout)
-// -----------------------------------------------------------------------------
-body.proto-post-c {
-  .article-sidebar-col { display: none !important; }
-  .article-main-col {
-    max-width: 780px !important;
-    margin: 0 auto !important;
-    flex: 0 0 100% !important;
-  }
-  #reading-progress-bar { background: #d97706; }
-  .technical-body blockquote {
-    border-left-color: #d97706;
-    h3, h4 { color: #d97706; }
-  }
-  .series-pill { color: #d97706 !important; border-color: rgba(217, 119, 6, 0.3) !important; }
-}
-
 
 
