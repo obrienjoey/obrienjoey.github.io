@@ -1037,6 +1037,30 @@ p {
         text-decoration: underline;
       }
     }
+  // Featured Header Image Box
+  .article-featured-image-box {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+
+    .article-featured-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      max-height: 480px;
+    }
+
+    .article-img-caption {
+      padding: 0.6rem 1rem;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      font-size: 0.85rem;
+      color: #64748b;
+      font-style: italic;
+      text-align: center;
+    }
   }
 
   // Code Block Copy Button & Formatting
@@ -1048,12 +1072,20 @@ p {
       margin: 0;
       border-radius: 10px;
       padding: 1.25rem;
-      background: #0f172a !important;
-      border: 1px solid #1e293b;
+      background: #f8fafc !important;
+      border: 1px solid #e2e8f0;
+      overflow-x: auto;
+
       code {
         font-family: 'Roboto Mono', monospace;
         font-size: 0.88rem;
         line-height: 1.6;
+        background: transparent !important;
+        color: #0f172a;
+
+        span {
+          background: transparent !important;
+        }
       }
     }
 
@@ -1061,22 +1093,23 @@ p {
       position: absolute;
       top: 10px;
       right: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #cbd5e1;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #475569;
       font-family: 'Outfit', sans-serif;
       font-size: 0.72rem;
       font-weight: 600;
       padding: 3px 8px;
       border-radius: 6px;
       cursor: pointer;
-      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
       transition: all 0.2s ease;
       z-index: 10;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.2);
-        color: #ffffff;
+        background: #f1f5f9;
+        color: #0f172a;
+        border-color: #94a3b8;
       }
     }
   }
@@ -1100,6 +1133,35 @@ p {
       .meta-tags-list .tech-tag-pill {
         background: #1e293b;
         color: #cbd5e1;
+      }
+    }
+  }
+
+  .article-featured-image-box {
+    border-color: #1e293b;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    .article-img-caption {
+      background: #0f172a;
+      border-color: #1e293b;
+      color: #94a3b8;
+    }
+  }
+
+  .code-block-wrapper {
+    pre {
+      background: #0f172a !important;
+      border-color: #1e293b;
+      code {
+        color: #f8fafc;
+      }
+    }
+    .code-copy-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.15);
+      color: #cbd5e1;
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: #ffffff;
       }
     }
   }
@@ -1128,6 +1190,7 @@ p {
     .sidebar-action-box .back-to-top-link { color: #2dd4bf; }
   }
 }
+
 
 // -----------------------------------------------------------------------------
 // VARIANT B OVERRIDES: Quant Lab Editorial (Centered Breakout)

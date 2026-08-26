@@ -40,8 +40,28 @@
         </div>
         {{ end }}
       </div>
+
+      {{ $featured := (.Resources.ByType "image").GetMatch "*featured*" }}
+      {{ with $featured }}
+      <div class="article-featured-image-box mt-4">
+        <img src="{{ .RelPermalink }}" alt="{{ $.Title }}" class="article-featured-img">
+        {{ with $.Params.image.caption }}
+        <div class="article-img-caption">{{ . | markdownify | emojify }}</div>
+        {{ end }}
+      </div>
+      {{ else }}
+        {{ if .Params.header.image }}
+        <div class="article-featured-image-box mt-4">
+          <img src="{{ (printf "/img/%s" .Params.header.image) | relURL }}" alt="{{ .Title }}" class="article-featured-img">
+          {{ with .Params.header.caption }}
+          <div class="article-img-caption">{{ . | markdownify | emojify }}</div>
+          {{ end }}
+        </div>
+        {{ end }}
+      {{ end }}
     </div>
   </header>
+
 
   <!-- Body & Layout Container -->
   <div class="article-content-layout container">
