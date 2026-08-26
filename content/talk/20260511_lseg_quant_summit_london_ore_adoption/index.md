@@ -18,7 +18,7 @@ featured: no
 
 links:
 - icon: link
-- icon_pack: fas
+  icon_pack: fas
   name: Event Info
   url: "https://solutions.lseg.com/Quant_Summit_London_2026"
 ---

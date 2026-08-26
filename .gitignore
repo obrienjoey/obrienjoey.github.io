@@ -4,6 +4,8 @@
 # Hugo
 resources/
 public/
+.hugo_build.lock
+Output/
 .Rproj.user
 
 # R
@@ -15,6 +17,6 @@ public/
 .agents/
 .claude/
 AGENTS.md
-docs/agents/
+docs/
 skills-lock.json
 
