@@ -1,27 +1,45 @@
-<footer class="site-footer">
-  {{ if or (site.GetPage "terms.md") (site.GetPage "privacy.md") }}
-  <p class="powered-by">
-    {{ with site.GetPage "privacy.md" }}
-      {{ printf "<a href=\"%s\">%s</a>" .RelPermalink .Title | safeHTML }}
-    {{ end }}
-    {{ with site.GetPage "terms.md" }}
-      {{ if site.GetPage "privacy.md" }} &middot; {{ end }}
-      {{ printf "<a href=\"%s\">%s</a>" .RelPermalink .Title | safeHTML }}
-    {{ end }}
-  </p>
-  {{ end }}
+<footer class="site-footer custom-site-footer">
+  <div class="container">
+    <div class="footer-top-row">
+      <div class="footer-brand-col">
+        <a class="footer-logo" href="{{ site.BaseURL }}">
+          Joey O'Brien<span class="dot">.</span>
+        </a>
+        <p class="footer-tagline">
+          Principal Consultant in Quantitative Risk &bull; LSEG &bull; PhD in Applied Mathematics
+        </p>
+      </div>
 
-  <p class="powered-by">
-    {{ with site.Copyright }}{{ replace . "{year}" now.Year | markdownify}} &middot; {{ end }}
+      <div class="footer-social-col">
+        <div class="footer-social-links">
+          <a href="https://www.linkedin.com/in/joeyobrien/" target="_blank" rel="noopener" class="footer-social-btn" title="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="https://github.com/obrienjoey" target="_blank" rel="noopener" class="footer-social-btn" title="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://scholar.google.com/citations?user=IrhV4UwAAAAJ&hl=en" target="_blank" rel="noopener" class="footer-social-btn" title="Google Scholar">
+            <i class="ai ai-google-scholar"></i>
+          </a>
+          <a href="https://orcid.org/0000-0002-9516-0175" target="_blank" rel="noopener" class="footer-social-btn" title="ORCID">
+            <i class="ai ai-orcid"></i>
+          </a>
+          <a href="mailto:obrienjoeyd@gmail.com" class="footer-social-btn" title="Email">
+            <i class="fas fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+    </div>
 
-    {{ if not (in (slice "docs" "updates") .Type) }}
-    <span class="float-right" aria-hidden="true">
-      <a href="#" class="back-to-top">
-        <span class="button_icon">
-          <i class="fas fa-chevron-up fa-2x"></i>
-        </span>
-      </a>
-    </span>
-    {{ end }}
-  </p>
+    <div class="footer-bottom-row">
+      <div class="footer-copyright">
+        &copy; {{ now.Year }} Joseph D. O'Brien, PhD. All rights reserved.
+      </div>
+      <div class="footer-back-top">
+        <a href="#" class="back-to-top-btn" title="Back to top">
+          Back to Top <i class="fas fa-chevron-up ml-1"></i>
+        </a>
+      </div>
+    </div>
+  </div>
 </footer>

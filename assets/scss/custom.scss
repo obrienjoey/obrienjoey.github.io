@@ -1193,6 +1193,108 @@ p {
   }
 }
 
+// =============================================================================
+// MINIMALIST EXECUTIVE FOOTER
+// =============================================================================
+
+.custom-site-footer {
+  background: #0f172a;
+  color: #94a3b8;
+  padding: 3.5rem 0 2.5rem 0;
+  border-top: 1px solid #1e293b;
+  margin-top: 4rem;
+
+  .footer-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .footer-logo {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.25rem;
+    .dot {
+      color: #0d9488;
+    }
+  }
+
+  .footer-tagline {
+    font-size: 0.88rem;
+    color: #94a3b8;
+    margin: 0;
+  }
+
+  .footer-social-links {
+    display: flex;
+    gap: 0.6rem;
+
+    .footer-social-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid #334155;
+      font-size: 1rem;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+
+      &:hover {
+        background: #0d9488;
+        color: #ffffff;
+        border-color: #0d9488;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(13, 148, 136, 0.4);
+      }
+    }
+  }
+
+  .footer-bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-top: 1.75rem;
+    font-size: 0.82rem;
+    color: #64748b;
+  }
+
+  .footer-copyright {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.78rem;
+  }
+
+  .back-to-top-btn {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+
+    &:hover {
+      color: #2dd4bf;
+    }
+  }
+}
+
+
 
 
 
