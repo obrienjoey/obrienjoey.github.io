@@ -369,323 +369,264 @@ p {
     border-color: rgba(45, 212, 191, 0.3) !important;
     &:hover {
       background: #2dd4bf !important;
+.callout {
+  padding: 1rem 1.25rem;
+  border-left: 4px solid;
+  border-radius: 4px;
+  margin: 1.5rem 0;
+  
+  &-info { border-color: #0d9488; background: #f0fdfa; }
+  &-warning { border-color: #f59e0b; background: #fffbeb; }
+  &-important { border-color: #ef4444; background: #fef2f2; }
+
+  h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.dark .callout {
+  &-info { background: #112d2a; }
+  &-warning { background: #2d2411; }
+  &-important { background: #2d1313; }
+}
+
+// Hero Call To Action Buttons
+.hero-cta-group {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+
+  .btn {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-flex;
+    align-items: center;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px -4px rgba(13, 148, 136, 0.35);
+    }
+  }
+
+  .btn-primary {
+    background: #0d9488;
+    border-color: #0d9488;
+    color: #ffffff;
+    &:hover {
+      background: #0f766e;
+      border-color: #0f766e;
+    }
+  }
+
+  .btn-outline-primary {
+    color: #0d9488;
+    border-color: #0d9488;
+    background: transparent;
+    &:hover {
+      background: #0d9488;
+      color: #ffffff;
+    }
+  }
+
+  .btn-outline-secondary {
+    color: #475569;
+    border-color: #cbd5e1;
+    background: transparent;
+    &:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+      border-color: #94a3b8;
+    }
+  }
+}
+
+.dark .hero-cta-group {
+  .btn-outline-primary {
+    color: #2dd4bf;
+    border-color: #2dd4bf;
+    &:hover {
+      background: #2dd4bf;
+      color: #0f172a;
+    }
+  }
+  .btn-outline-secondary {
+    color: #94a3b8;
+    border-color: #475569;
+    &:hover {
+      background: #1e293b;
+      color: #f8fafc;
+      border-color: #64748b;
+    }
+  }
+}
+
+// Stream Items, Cards & Media Elements (Talks, Podcasts, Posts)
+.stream-item, .card-simple {
+  padding: 1.25rem 1.5rem !important;
+  margin-bottom: 1.25rem !important;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+    border-color: rgba(13, 148, 136, 0.4);
+  }
+
+  .article-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    margin-bottom: 0.4rem;
+    a {
+      color: #0f172a;
+      transition: color 0.2s ease;
+      &:hover {
+        color: #0d9488;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .article-style {
+    font-size: 0.92rem;
+    color: #475569;
+    line-height: 1.6;
+  }
+}
+
+.dark {
+  .stream-item, .card-simple {
+    background: #0f172a;
+    border-color: #1e293b;
+    &:hover {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      border-color: rgba(45, 212, 191, 0.4);
+    }
+    .article-title a {
+      color: #f8fafc;
+      &:hover {
+        color: #2dd4bf;
+      }
+    }
+    .article-style {
+      color: #94a3b8;
+    }
+  }
+}
+
+// Media & Button Links (Play / Listen / Slides / Paper)
+.btn-links .btn {
+  font-size: 0.85rem !important;
+  border-radius: 6px !important;
+  padding: 0.35rem 0.75rem !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+  margin-right: 0.4rem !important;
+  margin-bottom: 0.4rem !important;
+}
+
+// Modern Tag Pills
+.badge, .article-tags .badge, .btn-tag {
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 0.3em 0.65em;
+  background: #f0fdfa !important;
+  color: #0d9488 !important;
+  border: 1px solid rgba(13, 148, 136, 0.25) !important;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #0d9488 !important;
+    color: #ffffff !important;
+  }
+}
+
+.dark {
+  .badge, .article-tags .badge, .btn-tag {
+    background: rgba(45, 212, 191, 0.1) !important;
+    color: #2dd4bf !important;
+    border-color: rgba(45, 212, 191, 0.3) !important;
+    &:hover {
+      background: #2dd4bf !important;
       color: #0f172a !important;
     }
   }
 }
 
 // =============================================================================
-// CONSOLIDATED MEDIA & TALKS PROTOTYPE STYLES (Variants A, B, C & Switcher)
+// CONSOLIDATED MEDIA & TALKS STYLES (Spotlight & Timeline Layout)
 // =============================================================================
 
-#media-prototype-wrapper {
+.media-section-container {
   position: relative;
   width: 100%;
 }
 
 .media-main-title {
   font-family: 'Outfit', sans-serif;
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 700;
   color: #0f172a;
-  letter-spacing: -0.025em;
-  margin-bottom: 0.25rem;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.35rem;
 }
 
 .media-main-subtitle {
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: #64748b;
-  margin-bottom: 1.5rem;
-}
-
-.media-variant-panel {
-  display: none;
-  animation: fadeInMedia 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  
-  &.active {
-    display: block;
-  }
-}
-
-@keyframes fadeInMedia {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+  margin-bottom: 1.75rem;
 }
 
 // -----------------------------------------------------------------------------
-// Floating Media Prototype Switcher Toolbar
-// -----------------------------------------------------------------------------
-.prototype-floating-bar {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 99999;
-  background: rgba(15, 23, 42, 0.94);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 50px;
-  box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(13, 148, 136, 0.2);
-  padding: 6px 12px;
-  color: #ffffff;
-  font-family: 'Outfit', sans-serif;
-  user-select: none;
-
-  .proto-bar-inner {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .proto-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    color: #cbd5e1;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: all 0.2s ease;
-
-    &:hover {
-      background: #0d9488;
-      color: #ffffff;
-      transform: scale(1.08);
-    }
-  }
-
-  .proto-info {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 0 6px;
-    font-size: 0.85rem;
-    white-space: nowrap;
-
-    .proto-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #2dd4bf;
-      letter-spacing: 0.05em;
-    }
-
-    .proto-name {
-      font-weight: 600;
-      color: #ffffff;
-    }
-  }
-
-  .proto-pills {
-    display: flex;
-    gap: 4px;
-    margin-left: 6px;
-
-    .proto-pill-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #94a3b8;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 3px 10px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-
-      &:hover {
-        color: #ffffff;
-        background: rgba(255, 255, 255, 0.18);
-      }
-
-      &.active {
-        background: #0d9488;
-        color: #ffffff;
-        border-color: #0d9488;
-        box-shadow: 0 0 10px rgba(13, 148, 136, 0.5);
-      }
-    }
-  }
-}
-
-// -----------------------------------------------------------------------------
-// VARIANT A: Segmented Media Hub Styles
-// -----------------------------------------------------------------------------
-.media-filter-bar {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-
-  .filter-group {
-    display: inline-flex;
-    flex-wrap: wrap;
-    background: #f1f5f9;
-    padding: 4px;
-    border-radius: 50px;
-    gap: 4px;
-    border: 1px solid #e2e8f0;
-  }
-
-  .filter-pill {
-    background: transparent;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 40px;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #475569;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    .filter-count {
-      font-size: 0.75rem;
-      color: #94a3b8;
-      font-weight: 500;
-    }
-
-    &:hover {
-      color: #0f172a;
-    }
-
-    &.active {
-      background: #ffffff;
-      color: #0d9488;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      .filter-count { color: #0d9488; }
-    }
-  }
-}
-
-.media-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 1.35rem;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 24px -5px rgba(15, 23, 42, 0.08);
-    border-color: rgba(13, 148, 136, 0.4);
-  }
-
-  &.media-card-podcast {
-    border-left: 4px solid #0d9488;
-  }
-
-  .media-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.6rem;
-  }
-
-  .badge-podcast {
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.2rem 0.55rem;
-    border-radius: 4px;
-    background: #f0fdfa;
-    color: #0d9488;
-    border: 1px solid rgba(13, 148, 136, 0.2);
-  }
-
-  .badge-keynote {
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: #475569;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    padding: 0.2rem 0.55rem;
-    border-radius: 4px;
-  }
-
-  .media-date {
-    font-size: 0.75rem;
-    color: #94a3b8;
-    font-family: 'Roboto Mono', monospace;
-  }
-
-  .media-card-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.15rem;
-    font-weight: 600;
-    line-height: 1.35;
-    margin-bottom: 0.4rem;
-    a {
-      color: #0f172a;
-      &:hover { color: #0d9488; text-decoration: none; }
-    }
-  }
-
-  .media-location {
-    font-size: 0.8rem;
-    color: #64748b;
-    margin-bottom: 0.6rem;
-  }
-
-  .media-abstract {
-    font-size: 0.88rem;
-    color: #475569;
-    line-height: 1.55;
-    margin-bottom: 1rem;
-    flex-grow: 1;
-  }
-
-  .media-card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 0.75rem;
-    border-top: 1px solid #f1f5f9;
-
-    .media-tag-pill {
-      font-size: 0.72rem;
-      padding: 0.15rem 0.45rem;
-      background: #f1f5f9;
-      color: #64748b;
-      border-radius: 4px;
-      margin-right: 0.25rem;
-    }
-  }
-}
-
-// -----------------------------------------------------------------------------
-// VARIANT B: Spotlight & Timeline Feed Styles
+// Featured Broadcast Spotlight Card
 // -----------------------------------------------------------------------------
 .spotlight-media-frame {
   background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
   border-radius: 16px;
-  padding: 1.6rem;
+  padding: 1.75rem;
   color: #ffffff;
   border: 1px solid #334155;
-  box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 14px 32px -8px rgba(15, 23, 42, 0.4);
+  position: relative;
+  overflow: hidden;
 
   .spotlight-badge-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.85rem;
 
     .spotlight-pill {
       font-size: 0.72rem;
       font-weight: 700;
       color: #2dd4bf;
+      background: rgba(45, 212, 191, 0.12);
+      border: 1px solid rgba(45, 212, 191, 0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
       letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
     .spotlight-series {
       font-size: 0.75rem;
       color: #94a3b8;
+      font-family: 'Roboto Mono', monospace;
     }
   }
 
@@ -697,6 +638,7 @@ p {
     margin-bottom: 1rem;
     a {
       color: #ffffff;
+      transition: color 0.2s ease;
       &:hover { color: #2dd4bf; text-decoration: none; }
     }
   }
@@ -705,11 +647,11 @@ p {
     display: flex;
     align-items: center;
     gap: 4px;
-    height: 32px;
-    background: rgba(0, 0, 0, 0.3);
+    height: 36px;
+    background: rgba(0, 0, 0, 0.35);
     border-radius: 8px;
-    padding: 0 12px;
-    margin-bottom: 1rem;
+    padding: 0 14px;
+    margin-bottom: 1.1rem;
 
     .wave-bar {
       width: 4px;
@@ -729,48 +671,63 @@ p {
   }
 
   .spotlight-summary {
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     color: #cbd5e1;
-    line-height: 1.55;
-    margin-bottom: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.1rem;
   }
 
   .spotlight-topics {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    padding: 0.75rem;
-    font-size: 0.8rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    font-size: 0.82rem;
     margin-bottom: 1rem;
-    strong { color: #2dd4bf; display: block; margin-bottom: 0.3rem; }
+    strong { color: #2dd4bf; display: block; margin-bottom: 0.35rem; }
     ul { padding-left: 1.2rem; margin-bottom: 0; color: #94a3b8; }
+  }
+
+  .spotlight-action .btn {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    padding: 0.65rem 1.2rem;
+    border-radius: 8px;
   }
 }
 
+// -----------------------------------------------------------------------------
+// Chronological Timeline Feed
+// -----------------------------------------------------------------------------
 .media-timeline-feed {
   padding-left: 0.5rem;
 
   .feed-heading {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: #0f172a;
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.5rem;
   }
 
   .timeline-items-list {
     position: relative;
     border-left: 2px solid #e2e8f0;
-    padding-left: 1.25rem;
+    padding-left: 1.35rem;
     margin-left: 0.5rem;
   }
 
   .timeline-item {
     position: relative;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
+
+    &:last-child {
+      margin-bottom: 0.5rem;
+    }
 
     .timeline-marker {
       position: absolute;
-      left: -1.65rem;
+      left: -1.75rem;
       top: 0.2rem;
       width: 12px;
       height: 12px;
@@ -786,7 +743,7 @@ p {
       display: flex;
       gap: 0.5rem;
       align-items: center;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.35rem;
 
       .timeline-date {
         font-family: 'Roboto Mono', monospace;
@@ -796,10 +753,19 @@ p {
       .timeline-badge {
         font-size: 0.65rem;
         font-weight: 700;
-        padding: 0.1rem 0.4rem;
-        background: #f1f5f9;
+        padding: 0.12rem 0.45rem;
         border-radius: 4px;
-        color: #475569;
+        letter-spacing: 0.04em;
+        &.badge-pod {
+          background: #f0fdfa;
+          color: #0d9488;
+          border: 1px solid rgba(13, 148, 136, 0.2);
+        }
+        &.badge-pres {
+          background: #f1f5f9;
+          color: #475569;
+          border: 1px solid #e2e8f0;
+        }
       }
       .timeline-loc {
         font-size: 0.75rem;
@@ -809,153 +775,32 @@ p {
 
     .timeline-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 600;
-      margin-bottom: 0.25rem;
+      line-height: 1.35;
+      margin-bottom: 0.3rem;
       a {
         color: #0f172a;
-        &:hover { color: #0d9488; }
+        transition: color 0.2s ease;
+        &:hover { color: #0d9488; text-decoration: none; }
       }
     }
 
     .timeline-desc {
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       color: #64748b;
-      line-height: 1.45;
-      margin-bottom: 0.4rem;
+      line-height: 1.5;
+      margin-bottom: 0.5rem;
     }
 
-    .timeline-link-btn {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: #0d9488;
-      margin-right: 0.6rem;
-      &:hover { text-decoration: underline; }
-    }
-  }
-}
-
-// -----------------------------------------------------------------------------
-// VARIANT C: Bento Media Grid Styles
-// -----------------------------------------------------------------------------
-.bento-media-grid {
-  .bento-media-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    padding: 1.4rem;
-    height: 100%;
-    box-shadow: 0 4px 16px -4px rgba(15, 23, 42, 0.05);
-  }
-
-  .bento-series-card {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    color: #ffffff;
-    border-color: #334155;
-
-    .series-tag {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #2dd4bf;
-      letter-spacing: 0.06em;
-    }
-    .series-status {
-      font-size: 0.75rem;
-      color: #94a3b8;
-      font-family: 'Roboto Mono', monospace;
-    }
-    .bento-series-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin-bottom: 0.4rem;
-    }
-    .bento-series-desc {
-      font-size: 0.88rem;
-      color: #94a3b8;
-      margin-bottom: 1.2rem;
-    }
-
-    .bento-ep-item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      padding: 0.75rem 1rem;
-      margin-bottom: 0.6rem;
-
-      .ep-num {
-        font-family: 'Roboto Mono', monospace;
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: #2dd4bf;
-      }
-      .ep-info {
-        flex-grow: 1;
-        strong { display: block; font-size: 0.88rem; color: #f8fafc; }
-        p { font-size: 0.75rem; color: #94a3b8; margin-bottom: 0; }
-      }
-    }
-  }
-
-  .bento-labs-card {
-    .labs-tag {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #0d9488;
-      margin-bottom: 0.4rem;
-    }
-    .labs-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 0.3rem;
-    }
-    .labs-desc { font-size: 0.82rem; color: #64748b; margin-bottom: 1rem; }
-
-    .labs-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-
-      li {
-        padding: 0.5rem 0;
-        border-bottom: 1px solid #f1f5f9;
-        &:last-child { border-bottom: none; }
-        strong { display: block; font-size: 0.85rem; color: #0f172a; }
-        span { font-size: 0.75rem; color: #64748b; }
-      }
-    }
-  }
-
-  .bento-academic-card, .bento-inquire-card {
-    .academic-tag, .inquire-tag {
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #0d9488;
-      letter-spacing: 0.05em;
-    }
-    h4 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 0.3rem;
-    }
-    .academic-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      .badge-item {
-        font-size: 0.75rem;
-        padding: 0.25rem 0.6rem;
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        color: #475569;
+    .timeline-links {
+      .timeline-link-btn {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #0d9488;
+        margin-right: 0.75rem;
+        transition: all 0.2s ease;
+        &:hover { color: #0f766e; text-decoration: underline; }
       }
     }
   }
@@ -967,49 +812,25 @@ p {
 .dark {
   .media-main-title { color: #f8fafc; }
   .media-main-subtitle { color: #94a3b8; }
-  .media-filter-bar {
-    .filter-group { background: #0f172a; border-color: #1e293b; }
-    .filter-pill {
-      color: #94a3b8;
-      &.active { background: #1e293b; color: #2dd4bf; }
-    }
-  }
-  .media-card {
-    background: #0f172a;
-    border-color: #1e293b;
-    .badge-keynote { background: #1e293b; border-color: #334155; color: #cbd5e1; }
-    .badge-podcast { background: rgba(45, 212, 191, 0.1); border-color: rgba(45, 212, 191, 0.3); color: #2dd4bf; }
-    .media-card-title a { color: #f8fafc; &:hover { color: #2dd4bf; } }
-    .media-abstract { color: #94a3b8; }
-    .media-card-footer {
-      border-color: #1e293b;
-      .media-tag-pill { background: #1e293b; color: #cbd5e1; }
-    }
-  }
   .media-timeline-feed {
     .feed-heading { color: #f8fafc; }
     .timeline-items-list { border-color: #1e293b; }
     .timeline-item {
-      .timeline-marker { background: #0f172a; }
+      .timeline-marker {
+        background: #0f172a;
+        &.marker-podcast { border-color: #2dd4bf; }
+        &.marker-talk { border-color: #60a5fa; }
+      }
       .timeline-title a { color: #f8fafc; &:hover { color: #2dd4bf; } }
       .timeline-desc { color: #94a3b8; }
-      .timeline-link-btn { color: #2dd4bf; }
-      .timeline-meta .timeline-badge { background: #1e293b; color: #cbd5e1; }
-    }
-  }
-  .bento-media-grid {
-    .bento-media-card { background: #0f172a; border-color: #1e293b; }
-    .bento-labs-card {
-      .labs-title { color: #f8fafc; }
-      .labs-list li {
-        border-color: #1e293b;
-        strong { color: #f8fafc; }
-        span { color: #94a3b8; }
+      .timeline-links .timeline-link-btn { color: #2dd4bf; &:hover { color: #5eead4; } }
+      .timeline-meta {
+        .timeline-date { color: #94a3b8; }
+        .timeline-badge {
+          &.badge-pod { background: rgba(45, 212, 191, 0.12); color: #2dd4bf; border-color: rgba(45, 212, 191, 0.3); }
+          &.badge-pres { background: #1e293b; color: #cbd5e1; border-color: #334155; }
+        }
       }
-    }
-    .bento-academic-card, .bento-inquire-card {
-      h4 { color: #f8fafc; }
-      .academic-badges .badge-item { background: #1e293b; border-color: #334155; color: #cbd5e1; }
     }
   }
 }
