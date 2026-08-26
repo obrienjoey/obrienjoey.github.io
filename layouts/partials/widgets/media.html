@@ -1,0 +1,450 @@
+{{ $ := .root }}
+{{ $page := .page }}
+
+{{ $talks := where site.RegularPages "Type" "talk" }}
+{{ $talks = sort $talks "Date" "desc" }}
+
+<!-- Media & Speaking Prototype Container (Switchable via ?variant=A|B|C or Floating Switcher) -->
+<div id="media-prototype-wrapper">
+  
+  <div class="section-heading text-center mb-4">
+    <h1 class="media-main-title">{{ $page.Title | default "Media & Speaking" }}</h1>
+    <p class="media-main-subtitle">{{ $page.Params.subtitle | default "Podcasts, Keynotes, Industry Labs & Academic Seminars" }}</p>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- VARIANT A: Segmented Interactive Media Hub (Filter Pills + Dynamic Cards) -->
+  <!-- ========================================================================= -->
+  <div id="variant-A" class="media-variant-panel active" data-variant-name="A — Segmented Filter Hub">
+    
+    <!-- Interactive Category Filter Tabs -->
+    <div class="media-filter-bar">
+      <div class="filter-group">
+        <button type="button" class="filter-pill active" data-filter="all">
+          <i class="fas fa-layer-group mr-1"></i> All Appearances <span class="filter-count">({{ len $talks }})</span>
+        </button>
+        <button type="button" class="filter-pill" data-filter="podcast">
+          <i class="fas fa-podcast mr-1 text-teal"></i> Podcasts & Audio <span class="filter-count">(4)</span>
+        </button>
+        <button type="button" class="filter-pill" data-filter="industry">
+          <i class="fas fa-city mr-1 text-teal"></i> Industry Labs & Summits <span class="filter-count">(5)</span>
+        </button>
+        <button type="button" class="filter-pill" data-filter="academic">
+          <i class="fas fa-graduation-cap mr-1 text-teal"></i> Academic Seminars
+        </button>
+      </div>
+    </div>
+
+    <!-- Media Cards Stream Grid -->
+    <div class="row media-cards-grid mt-4">
+      {{ range first 8 $talks }}
+        {{ $is_podcast := in .Params.tags "Podcast" }}
+        {{ $is_academic := or (in .Params.tags "Applied Mathematics") (in .Params.tags "Presentation") }}
+        {{ $category_type := "industry" }}
+        {{ if $is_podcast }}
+          {{ $category_type = "podcast" }}
+        {{ else if $is_academic }}
+          {{ $category_type = "academic" }}
+        {{ end }}
+
+        <div class="col-12 col-md-6 mb-4 media-item-card-wrapper" data-category="{{ $category_type }}">
+          <div class="media-card {{ if $is_podcast }}media-card-podcast{{ else }}media-card-talk{{ end }}">
+            
+            <div class="media-card-header">
+              <div class="media-type-badge">
+                {{ if $is_podcast }}
+                  <span class="badge-podcast"><i class="fas fa-podcast mr-1"></i> Podcast / Audio</span>
+                {{ else }}
+                  <span class="badge-keynote"><i class="fas fa-microphone-alt mr-1"></i> {{ .Params.event | default "Keynote & Lab" }}</span>
+                {{ end }}
+              </div>
+              <div class="media-date">
+                <i class="far fa-calendar-alt mr-1"></i> {{ .Date.Format "Jan 2006" }}
+              </div>
+            </div>
+
+            <h3 class="media-card-title">
+              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            </h3>
+
+            {{ if .Params.location }}
+            <div class="media-location">
+              <i class="fas fa-map-marker-alt text-teal mr-1"></i> {{ .Params.location }}
+            </div>
+            {{ end }}
+
+            <p class="media-abstract">
+              {{ .Params.abstract | default .Summary | truncate 150 }}
+            </p>
+
+            <div class="media-card-footer">
+              <div class="media-tags">
+                {{ range first 2 .Params.tags }}
+                  <span class="media-tag-pill">{{ . }}</span>
+                {{ end }}
+              </div>
+
+              <div class="media-action-links">
+                {{ range .Params.links }}
+                  <a href="{{ .url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">
+                    <i class="{{ .icon_pack }} fa-{{ .icon }} mr-1"></i> {{ .name }}
+                  </a>
+                {{ else }}
+                  <a href="{{ .RelPermalink }}" class="btn btn-sm btn-outline-secondary">
+                    View Details &rarr;
+                  </a>
+                {{ end }}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      {{ end }}
+    </div>
+
+    <div class="text-center mt-3">
+      <a href="/talk/" class="btn btn-outline-primary px-4"><i class="fas fa-archive mr-2"></i>Browse All Speaking Appearances & Talks Archive</a>
+    </div>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- VARIANT B: Featured Spotlight & Chronological Timeline Feed              -->
+  <!-- ========================================================================= -->
+  <div id="variant-B" class="media-variant-panel" data-variant-name="B — Spotlight & Timeline">
+    <div class="row align-items-start">
+      
+      <!-- Left: High-Impact Featured Spotlight Card -->
+      <div class="col-12 col-lg-5 mb-4">
+        <div class="spotlight-media-frame">
+          <div class="spotlight-badge-row">
+            <span class="spotlight-pill"><i class="fas fa-star mr-1"></i> FEATURED PODCAST</span>
+            <span class="spotlight-series">LSEG Ahead of the Curve</span>
+          </div>
+
+          <h2 class="spotlight-title">
+            <a href="https://lseg.group/4dt4uey" target="_blank" rel="noopener">
+              Agentic AI in Quantitative Risk Management
+            </a>
+          </h2>
+
+          <div class="spotlight-waveform-visual">
+            <div class="wave-bar h-40"></div>
+            <div class="wave-bar h-70"></div>
+            <div class="wave-bar h-100"></div>
+            <div class="wave-bar h-60"></div>
+            <div class="wave-bar h-90"></div>
+            <div class="wave-bar h-45"></div>
+            <div class="wave-bar h-80"></div>
+            <div class="wave-bar h-100"></div>
+            <div class="wave-bar h-55"></div>
+            <div class="wave-bar h-30"></div>
+            <div class="wave-bar h-65"></div>
+            <div class="wave-bar h-90"></div>
+            <div class="wave-bar h-40"></div>
+          </div>
+
+          <p class="spotlight-summary">
+            Discussing the real-world operational transformation and governance challenges of deploying autonomous AI agents 
+            and Open Source Risk Engine (ORE) architectures on institutional trading and risk desks.
+          </p>
+
+          <div class="spotlight-topics">
+            <strong>Key Discussion Topics:</strong>
+            <ul>
+              <li>Autonomous agents for model validation & stress testing</li>
+              <li>ORE architecture & multi-asset valuation workflows</li>
+              <li>Bank of England PRA SS1/23 supervisory alignment</li>
+            </ul>
+          </div>
+
+          <div class="spotlight-action mt-3">
+            <a href="https://lseg.group/4dt4uey" target="_blank" rel="noopener" class="btn btn-primary btn-block">
+              <i class="fas fa-play-circle mr-2"></i> Listen & Watch Episode (LSEG)
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Chronological Timeline Feed -->
+      <div class="col-12 col-lg-7">
+        <div class="media-timeline-feed">
+          <h3 class="feed-heading"><i class="fas fa-history mr-2 text-teal"></i> Recent Talks, Summits & Appearances</h3>
+          
+          <div class="timeline-items-list">
+            {{ range first 6 $talks }}
+              {{ $is_podcast := in .Params.tags "Podcast" }}
+              <div class="timeline-item">
+                <div class="timeline-marker {{ if $is_podcast }}marker-podcast{{ else }}marker-talk{{ end }}"></div>
+                <div class="timeline-content">
+                  <div class="timeline-meta">
+                    <span class="timeline-date">{{ .Date.Format "Jan 2006" }}</span>
+                    <span class="timeline-badge">{{ if $is_podcast }}PODCAST{{ else }}PRESENTATION{{ end }}</span>
+                    {{ with .Params.location }}<span class="timeline-loc"><i class="fas fa-map-pin mr-1"></i>{{ . }}</span>{{ end }}
+                  </div>
+                  <h4 class="timeline-title">
+                    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                  </h4>
+                  <p class="timeline-desc">{{ .Params.abstract | default .Summary | truncate 130 }}</p>
+                  <div class="timeline-links">
+                    {{ range .Params.links }}
+                      <a href="{{ .url }}" target="_blank" rel="noopener" class="timeline-link-btn">
+                        <i class="{{ .icon_pack }} fa-{{ .icon }} mr-1"></i> {{ .name }}
+                      </a>
+                    {{ end }}
+                  </div>
+                </div>
+              </div>
+            {{ end }}
+          </div>
+
+          <div class="mt-3 text-right">
+            <a href="/talk/" class="btn btn-sm btn-outline-secondary">View Full Speaking Archive &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- VARIANT C: The Bento Media Grid (Structured Channel Clusters)             -->
+  <!-- ========================================================================= -->
+  <div id="variant-C" class="media-variant-panel" data-variant-name="C — Bento Media Grid">
+    <div class="row bento-media-grid">
+      
+      <!-- Bento 1: Large Audio Series Hub -->
+      <div class="col-12 col-lg-8 mb-4">
+        <div class="bento-media-card bento-series-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="series-tag"><i class="fas fa-broadcast-tower mr-2"></i> LSEG PODCAST SERIES</div>
+            <span class="series-status">4 Recorded Episodes</span>
+          </div>
+          <h2 class="bento-series-title">Ahead of the Curve</h2>
+          <p class="bento-series-desc">
+            In-depth technical conversations on derivatives pricing, counterparty risk engines (ORE), 
+            and modern AI workflows in quantitative finance.
+          </p>
+
+          <div class="bento-episodes-list">
+            <div class="bento-ep-item">
+              <span class="ep-num">2026</span>
+              <div class="ep-info">
+                <strong>Agentic AI in Quantitative Risk Management</strong>
+                <p>Autonomous validation agents and ORE developments</p>
+              </div>
+              <a href="https://lseg.group/4dt4uey" target="_blank" rel="noopener" class="btn btn-sm btn-primary"><i class="fas fa-play"></i></a>
+            </div>
+
+            <div class="bento-ep-item">
+              <span class="ep-num">2025</span>
+              <div class="ep-info">
+                <strong>SS1/23 Model Risk Management Principles</strong>
+                <p>PRA regulatory expectations, benchmarking, and implementation</p>
+              </div>
+              <a href="https://lseg.group/4dt4uey" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary"><i class="fas fa-headphones"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento 2: Global Risk Labs & Summits -->
+      <div class="col-12 col-lg-4 mb-4">
+        <div class="bento-media-card bento-labs-card">
+          <div class="labs-tag"><i class="fas fa-globe-americas mr-2 text-teal"></i> GLOBAL LABS</div>
+          <h3 class="labs-title">Industry Summits</h3>
+          <p class="labs-desc">Hands-on workshops & executive briefings for tier-1 risk teams.</p>
+          
+          <ul class="labs-list">
+            <li>
+              <strong>Tokyo, Japan</strong>
+              <span>ORE & Risk Analytics Lab (APAC)</span>
+            </li>
+            <li>
+              <strong>London, UK</strong>
+              <span>LSEG Quant Summit — CVA & ORE Adoption</span>
+            </li>
+            <li>
+              <strong>New York, USA</strong>
+              <span>Acadia Quant Summit</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bento 3: Academic Seminars & Research Talks -->
+      <div class="col-12 col-lg-6 mb-4">
+        <div class="bento-media-card bento-academic-card">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="academic-tag"><i class="fas fa-university mr-2 text-teal"></i> ACADEMIC LECTURES</span>
+            <span class="text-muted small">Maths & Statistics</span>
+          </div>
+          <h4>Applied Mathematics & Complex Systems</h4>
+          <p class="small text-muted mb-3">Conferences including NetSci, SIAM, and university mathematics colloquia.</p>
+          
+          <div class="academic-badges">
+            <span class="badge-item">SIAM Dublin / Galway</span>
+            <span class="badge-item">NetSci 2020</span>
+            <span class="badge-item">MACSI Seminars</span>
+            <span class="badge-item">WhyR? Conference</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento 4: Archive Directory & Booking Card -->
+      <div class="col-12 col-lg-6 mb-4">
+        <div class="bento-media-card bento-inquire-card">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="inquire-tag"><i class="fas fa-comment-dots mr-2 text-teal"></i> SPEAKING INQUIRIES</span>
+          </div>
+          <h4>Workshops, Panels & Guest Lectures</h4>
+          <p class="small text-muted mb-3">Available for keynote presentations, panel moderation on quantitative finance, and ORE workshops.</p>
+          
+          <div class="d-flex gap-2">
+            <a href="#contact" class="btn btn-primary btn-sm mr-2"><i class="fas fa-envelope mr-1"></i> Contact Joey</a>
+            <a href="/talk/" class="btn btn-outline-secondary btn-sm"><i class="fas fa-list mr-1"></i> Full Index</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ========================================================================= -->
+<!-- FLOATING PROTOTYPE SWITCHER TOOLBAR (Fixed bottom pill)                   -->
+<!-- ========================================================================= -->
+<div id="media-prototype-toolbar" class="prototype-floating-bar" aria-label="Media Prototype Variant Switcher">
+  <div class="proto-bar-inner">
+    <button type="button" id="proto-media-prev" class="proto-btn proto-arrow" title="Previous Variant (or press Left Arrow)">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <div class="proto-info">
+      <span class="proto-label">MEDIA PROTOTYPE:</span>
+      <span id="proto-media-current-name" class="proto-name">A — Segmented Filter Hub</span>
+    </div>
+    <div class="proto-pills">
+      <button type="button" class="proto-pill-btn active" data-target="A">Variant A</button>
+      <button type="button" class="proto-pill-btn" data-target="B">Variant B</button>
+      <button type="button" class="proto-pill-btn" data-target="C">Variant C</button>
+    </div>
+    <button type="button" id="proto-media-next" class="proto-btn proto-arrow" title="Next Variant (or press Right Arrow)">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+</div>
+
+<script>
+(function() {
+  const VARIANTS = ['A', 'B', 'C'];
+  
+  function getRequestedVariant() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const vParam = (urlParams.get('variant') || '').toUpperCase();
+    if (VARIANTS.includes(vParam)) return vParam;
+    const stored = (localStorage.getItem('media_prototype_variant') || '').toUpperCase();
+    if (VARIANTS.includes(stored)) return stored;
+    return 'A';
+  }
+
+  function setVariant(variantKey, updateHistory) {
+    if (typeof updateHistory === 'undefined') updateHistory = true;
+    if (!VARIANTS.includes(variantKey)) variantKey = 'A';
+    
+    // Update DOM panels
+    VARIANTS.forEach(key => {
+      const panel = document.getElementById('variant-' + key);
+      if (panel) {
+        if (key === variantKey) {
+          panel.classList.add('active');
+          panel.style.display = 'block';
+          const name = panel.getAttribute('data-variant-name') || key;
+          const labelEl = document.getElementById('proto-media-current-name');
+          if (labelEl) labelEl.textContent = name;
+        } else {
+          panel.classList.remove('active');
+          panel.style.display = 'none';
+        }
+      }
+    });
+
+    // Update switcher pills
+    document.querySelectorAll('#media-prototype-toolbar .proto-pill-btn').forEach(btn => {
+      if (btn.getAttribute('data-target') === variantKey) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // Update storage & URL
+    localStorage.setItem('media_prototype_variant', variantKey);
+    if (updateHistory) {
+      const url = new URL(window.location);
+      url.searchParams.set('variant', variantKey);
+      window.history.replaceState({}, '', url);
+    }
+  }
+
+  function cycleVariant(direction) {
+    const current = getRequestedVariant();
+    let idx = VARIANTS.indexOf(current);
+    if (direction === 'next') {
+      idx = (idx + 1) % VARIANTS.length;
+    } else {
+      idx = (idx - 1 + VARIANTS.length) % VARIANTS.length;
+    }
+    setVariant(VARIANTS[idx]);
+  }
+
+  function initSwitcher() {
+    const initialVariant = getRequestedVariant();
+    setVariant(initialVariant, false);
+
+    const prevBtn = document.getElementById('proto-media-prev');
+    const nextBtn = document.getElementById('proto-media-next');
+    if (prevBtn) prevBtn.addEventListener('click', () => cycleVariant('prev'));
+    if (nextBtn) nextBtn.addEventListener('click', () => cycleVariant('next'));
+
+    document.querySelectorAll('#media-prototype-toolbar .proto-pill-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const target = this.getAttribute('data-target');
+        setVariant(target);
+      });
+    });
+
+    // Interactive category pill filtering for Variant A
+    document.querySelectorAll('.media-filter-bar .filter-pill').forEach(pill => {
+      pill.addEventListener('click', function() {
+        document.querySelectorAll('.media-filter-bar .filter-pill').forEach(p => p.classList.remove('active'));
+        this.classList.add('active');
+        const filter = this.getAttribute('data-filter');
+        document.querySelectorAll('.media-item-card-wrapper').forEach(card => {
+          if (filter === 'all' || card.getAttribute('data-category') === filter) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Keyboard navigation (Left/Right Arrow)
+    window.addEventListener('keydown', function(e) {
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes((document.activeElement && document.activeElement.tagName) || '')) return;
+      if (e.key === 'ArrowRight') {
+        cycleVariant('next');
+      } else if (e.key === 'ArrowLeft') {
+        cycleVariant('prev');
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSwitcher);
+  } else {
+    initSwitcher();
+  }
+})();
+</script>

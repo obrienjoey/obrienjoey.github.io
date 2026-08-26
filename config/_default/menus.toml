@@ -24,14 +24,9 @@
   weight = 30
 
 [[main]]
-  name = "Podcasts"
-  url = "#podcasts"
+  name = "Media & Speaking"
+  url = "#media"
   weight = 35
-
-[[main]]
-  name = "Talks"
-  url = "#talks"
-  weight = 40
 
 [[main]]
   name = "Portfolio"
