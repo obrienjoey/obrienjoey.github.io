@@ -768,3 +768,263 @@ p {
     }
   }
 }
+
+// =============================================================================
+// PROTOTYPE: GLOBAL PALETTE & UI ACCENTS
+// =============================================================================
+
+// Base Custom Scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0d9488;
+}
+
+// Floating Prototype Switcher Bar
+.proto-switcher-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99999;
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50px;
+  padding: 8px 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.3s ease;
+
+  .proto-switcher-label {
+    font-size: 0.82rem;
+    color: #94a3b8;
+    strong { color: #f8fafc; }
+  }
+
+  .proto-btn-group {
+    display: flex;
+    gap: 6px;
+  }
+
+  .proto-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #cbd5e1;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    .proto-badge {
+      font-size: 0.65rem;
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.16);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    &.active {
+      background: #0d9488;
+      color: #ffffff;
+      border-color: #0d9488;
+      box-shadow: 0 0 16px rgba(13, 148, 136, 0.5);
+      .proto-badge {
+        background: #042f2e;
+        color: #2dd4bf;
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// VARIANT A: Executive Glass & Teal (Institutional Authority)
+// -----------------------------------------------------------------------------
+body.proto-palette-a {
+  ::selection {
+    background: rgba(13, 148, 136, 0.25);
+    color: inherit;
+  }
+
+  .navbar {
+    background: rgba(15, 23, 42, 0.88) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
+  }
+
+  .home-section:first-of-type {
+    background-image: radial-gradient(rgba(13, 148, 136, 0.07) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  #proto-palette-switcher .proto-btn[data-variant="a"].active {
+    background: #0d9488;
+    border-color: #2dd4bf;
+    box-shadow: 0 0 16px rgba(13, 148, 136, 0.6);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// VARIANT B: Quant Lab & Electric Cyan (High-Tech Terminal Glow)
+// -----------------------------------------------------------------------------
+body.proto-palette-b {
+  ::selection {
+    background: rgba(6, 182, 212, 0.35);
+    color: inherit;
+  }
+
+  .navbar {
+    background: rgba(11, 17, 33, 0.92) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 2px solid #06b6d4;
+    border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+    box-shadow: 0 4px 25px rgba(6, 182, 212, 0.12);
+  }
+
+  .navbar-brand .dot {
+    color: #06b6d4 !important;
+    text-shadow: 0 0 10px rgba(6, 182, 212, 0.8);
+  }
+
+  .home-section:first-of-type {
+    background-image: 
+      linear-gradient(rgba(6, 182, 212, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .btn-primary, .btn-tag:hover {
+    background: #06b6d4 !important;
+    border-color: #06b6d4 !important;
+    box-shadow: 0 0 14px rgba(6, 182, 212, 0.4);
+  }
+
+  .badge-journal, .badge-pod {
+    color: #0891b2 !important;
+    border-color: rgba(6, 182, 212, 0.35) !important;
+    background: #ecfeff !important;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #06b6d4;
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.8);
+  }
+
+  #proto-palette-switcher .proto-btn[data-variant="b"].active {
+    background: #06b6d4;
+    border-color: #22d3ee;
+    box-shadow: 0 0 18px rgba(6, 182, 212, 0.7);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// VARIANT C: Oxford Navy & Amber Gold (Academic Prestige / Research Monograph)
+// -----------------------------------------------------------------------------
+body.proto-palette-c {
+  ::selection {
+    background: rgba(217, 119, 6, 0.3);
+    color: inherit;
+  }
+
+  .navbar {
+    background: rgba(10, 25, 47, 0.94) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(217, 119, 6, 0.35);
+    box-shadow: 0 4px 20px rgba(10, 25, 47, 0.4);
+  }
+
+  .navbar-brand .dot {
+    color: #d97706 !important;
+  }
+
+  .nav-link.active {
+    color: #f59e0b !important;
+  }
+
+  .home-section:first-of-type {
+    background-image: 
+      repeating-linear-gradient(45deg, rgba(217, 119, 6, 0.03) 0, rgba(217, 119, 6, 0.03) 1px, transparent 0, transparent 20px);
+  }
+
+  .btn-primary {
+    background: #d97706 !important;
+    border-color: #d97706 !important;
+    color: #ffffff !important;
+    &:hover {
+      background: #b45309 !important;
+      border-color: #b45309 !important;
+    }
+  }
+
+  .btn-outline-primary {
+    color: #d97706 !important;
+    border-color: #d97706 !important;
+    &:hover {
+      background: #d97706 !important;
+      color: #ffffff !important;
+    }
+  }
+
+  .pub-list-item, .stream-item {
+    border-left-color: #d97706 !important;
+  }
+
+  .badge-journal, .badge-pod {
+    color: #b45309 !important;
+    border-color: rgba(217, 119, 6, 0.3) !important;
+    background: #fffbeb !important;
+  }
+
+  .spotlight-media-frame {
+    border-color: rgba(217, 119, 6, 0.3);
+    .spotlight-pill {
+      color: #f59e0b;
+      border-color: rgba(245, 158, 11, 0.4);
+      background: rgba(245, 158, 11, 0.12);
+    }
+    .wave-bar {
+      background: #f59e0b;
+    }
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #d97706;
+  }
+
+  #proto-palette-switcher .proto-btn[data-variant="c"].active {
+    background: #d97706;
+    border-color: #f59e0b;
+    box-shadow: 0 0 18px rgba(217, 119, 6, 0.6);
+  }
+}
+
