@@ -816,4 +816,350 @@ p {
   background-size: 24px 24px;
 }
 
+// =============================================================================
+// TECHNICAL BLOG POST & READING EXPERIENCE
+// =============================================================================
+
+#reading-progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: transparent;
+  z-index: 999999;
+}
+
+#reading-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #0d9488;
+  transition: width 0.1s ease;
+}
+
+.technical-article {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+
+  .article-header-wrapper {
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 2rem;
+
+    .article-series-badge {
+      margin-bottom: 0.85rem;
+      .series-pill {
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.76rem;
+        font-weight: 700;
+        color: #0d9488;
+        background: #f0fdfa;
+        border: 1px solid rgba(13, 148, 136, 0.25);
+        padding: 0.25rem 0.65rem;
+        border-radius: 6px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+    }
+
+    .article-main-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: #0f172a;
+      margin-bottom: 0.75rem;
+    }
+
+    .article-main-subtitle {
+      font-size: 1.2rem;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+    }
+
+    .article-meta-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.8rem;
+      color: #64748b;
+
+      .meta-dot {
+        color: #cbd5e1;
+      }
+
+      .meta-tags-list {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+
+        .tech-tag-pill {
+          font-family: 'Inter', sans-serif;
+          font-size: 0.72rem;
+          font-weight: 600;
+          background: #f1f5f9;
+          color: #475569;
+          padding: 0.15rem 0.5rem;
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+
+  .technical-body {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #334155;
+
+    h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      margin-top: 2.75rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #0f172a;
+      letter-spacing: -0.015em;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      margin-bottom: 1.35rem;
+    }
+
+    strong {
+      color: #0f172a;
+    }
+
+    blockquote {
+      background: #f8fafc;
+      border-left: 4px solid #0d9488;
+      border-radius: 6px;
+      padding: 1.2rem 1.5rem;
+      margin: 1.75rem 0;
+      color: #334155;
+      h3, h4 {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        color: #0d9488;
+        font-size: 1.1rem;
+      }
+      p:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  // Sticky TOC Sidebar
+  .sticky-toc-wrapper {
+    position: sticky;
+    top: 100px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.03);
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+
+    .toc-header {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #0f172a;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .custom-toc {
+      ul {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 0;
+
+        li {
+          margin-bottom: 0.5rem;
+          font-size: 0.88rem;
+
+          a {
+            color: #64748b;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: block;
+            line-height: 1.4;
+
+            &:hover {
+              color: #0d9488;
+              transform: translateX(3px);
+            }
+          }
+
+          ul {
+            padding-left: 1rem;
+            margin-top: 0.4rem;
+            border-left: 1px solid #e2e8f0;
+
+            li {
+              font-size: 0.82rem;
+              margin-bottom: 0.4rem;
+            }
+          }
+        }
+      }
+    }
+
+    .sidebar-action-box .back-to-top-link {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #0d9488;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  // Code Block Copy Button & Formatting
+  .code-block-wrapper {
+    position: relative;
+    margin: 1.75rem 0;
+
+    pre {
+      margin: 0;
+      border-radius: 10px;
+      padding: 1.25rem;
+      background: #0f172a !important;
+      border: 1px solid #1e293b;
+      code {
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.88rem;
+        line-height: 1.6;
+      }
+    }
+
+    .code-copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #cbd5e1;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+      z-index: 10;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Dark Mode Overrides for Technical Posts
+// -----------------------------------------------------------------------------
+.dark .technical-article {
+  .article-header-wrapper {
+    border-color: #1e293b;
+    .article-series-badge .series-pill {
+      background: rgba(45, 212, 191, 0.12);
+      color: #2dd4bf;
+      border-color: rgba(45, 212, 191, 0.3);
+    }
+    .article-main-title { color: #f8fafc; }
+    .article-main-subtitle { color: #94a3b8; }
+    .article-meta-bar {
+      color: #94a3b8;
+      .meta-tags-list .tech-tag-pill {
+        background: #1e293b;
+        color: #cbd5e1;
+      }
+    }
+  }
+
+  .technical-body {
+    color: #cbd5e1;
+    h2, h3 { color: #f8fafc; border-color: #1e293b; }
+    strong { color: #f8fafc; }
+    blockquote {
+      background: #111e33;
+      border-left-color: #2dd4bf;
+      color: #cbd5e1;
+      h3, h4 { color: #2dd4bf; }
+    }
+  }
+
+  .sticky-toc-wrapper {
+    background: #0f172a;
+    border-color: #1e293b;
+    .toc-header { color: #f8fafc; border-color: #1e293b; }
+    .custom-toc ul li a {
+      color: #94a3b8;
+      &:hover { color: #2dd4bf; }
+    }
+    .custom-toc ul li ul { border-color: #1e293b; }
+    .sidebar-action-box .back-to-top-link { color: #2dd4bf; }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// VARIANT B OVERRIDES: Quant Lab Editorial (Centered Breakout)
+// -----------------------------------------------------------------------------
+body.proto-post-b {
+  .article-sidebar-col { display: none !important; }
+  .article-main-col {
+    max-width: 860px !important;
+    margin: 0 auto !important;
+    flex: 0 0 100% !important;
+  }
+  #reading-progress-bar { background: #06b6d4; }
+  .series-pill { color: #06b6d4 !important; border-color: rgba(6, 182, 212, 0.3) !important; }
+}
+
+// -----------------------------------------------------------------------------
+// VARIANT C OVERRIDES: Academic Monograph (ArXiv / Proof Layout)
+// -----------------------------------------------------------------------------
+body.proto-post-c {
+  .article-sidebar-col { display: none !important; }
+  .article-main-col {
+    max-width: 780px !important;
+    margin: 0 auto !important;
+    flex: 0 0 100% !important;
+  }
+  #reading-progress-bar { background: #d97706; }
+  .technical-body blockquote {
+    border-left-color: #d97706;
+    h3, h4 { color: #d97706; }
+  }
+  .series-pill { color: #d97706 !important; border-color: rgba(217, 119, 6, 0.3) !important; }
+}
+
+
 

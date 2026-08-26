@@ -1,0 +1,187 @@
+{{- define "main" -}}
+
+<div id="reading-progress-container">
+  <div id="reading-progress-bar"></div>
+</div>
+
+<article class="article technical-article">
+
+  <!-- Header Section -->
+  <header class="article-header-wrapper">
+    <div class="article-container">
+      {{ with .Params.series }}
+      <div class="article-series-badge">
+        <span class="series-pill"><i class="fas fa-layer-group mr-1"></i> {{ index . 0 }}</span>
+      </div>
+      {{ end }}
+
+      <h1 class="article-main-title">{{ .Title }}</h1>
+
+      {{ with .Params.subtitle }}
+      <p class="article-main-subtitle">{{ . | markdownify | emojify }}</p>
+      {{ end }}
+
+      <div class="article-meta-bar">
+        <div class="meta-item">
+          <i class="far fa-calendar-alt mr-1"></i>
+          <span>{{ .Date.Format "January 2, 2006" }}</span>
+        </div>
+        <span class="meta-dot">&middot;</span>
+        <div class="meta-item">
+          <i class="far fa-clock mr-1"></i>
+          <span>{{ .ReadingTime }} min read</span>
+        </div>
+        {{ with .Params.tags }}
+        <span class="meta-dot">&middot;</span>
+        <div class="meta-tags-list">
+          {{ range . }}
+          <span class="tech-tag-pill">{{ . }}</span>
+          {{ end }}
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  </header>
+
+  <!-- Body & Layout Container -->
+  <div class="article-content-layout container">
+    <div class="row">
+      <!-- Main Content Column -->
+      <div class="col-lg-8 article-main-col">
+        <div class="article-style technical-body">
+          {{ .Content }}
+        </div>
+
+        <div class="article-footer-meta mt-5 pt-4 border-top">
+          {{ partial "page_footer" . }}
+        </div>
+      </div>
+
+      <!-- Sticky Table of Contents Sidebar -->
+      <aside class="col-lg-4 article-sidebar-col">
+        <div class="sticky-toc-wrapper">
+          <div class="toc-header">
+            <i class="fas fa-list-ul mr-2"></i> Table of Contents
+          </div>
+          <nav id="TableOfContents" class="custom-toc">
+            {{ .TableOfContents }}
+          </nav>
+
+          <div class="sidebar-action-box mt-4">
+            <a href="#reading-progress-container" class="back-to-top-link">
+              <i class="fas fa-arrow-up mr-1"></i> Back to Top
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+</article>
+
+<!-- Floating Switcher Bar for Technical Blog Layouts -->
+<div id="proto-post-switcher" class="proto-switcher-bar">
+  <div class="proto-switcher-label">
+    <i class="fas fa-columns mr-1"></i> <strong>Reading Layout</strong>
+  </div>
+  <div class="proto-btn-group">
+    <button class="proto-btn active" data-variant="a" title="Press 1 to switch">
+      <span class="proto-badge">1</span> Research Paper & Sticky TOC
+    </button>
+    <button class="proto-btn" data-variant="b" title="Press 2 to switch">
+      <span class="proto-badge">2</span> Quant Lab Editorial
+    </button>
+    <button class="proto-btn" data-variant="c" title="Press 3 to switch">
+      <span class="proto-badge">3</span> Academic Monograph
+    </button>
+  </div>
+</div>
+
+<script>
+(function() {
+  // Reading Progress Bar
+  window.addEventListener('scroll', function() {
+    var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var scrolled = (winScroll / height) * 100;
+    var bar = document.getElementById('reading-progress-bar');
+    if (bar) bar.style.width = scrolled + '%';
+  });
+
+  // Code Block Copy Buttons & Language Badges
+  document.addEventListener('DOMContentLoaded', function() {
+    var codeBlocks = document.querySelectorAll('pre');
+    codeBlocks.forEach(function(codeBlock) {
+      if (codeBlock.querySelector('.code-copy-btn')) return;
+      
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      var btn = document.createElement('button');
+      btn.className = 'code-copy-btn';
+      btn.innerHTML = '<i class="far fa-copy"></i> Copy';
+      btn.addEventListener('click', function() {
+        var code = codeBlock.querySelector('code') ? codeBlock.querySelector('code').innerText : codeBlock.innerText;
+        navigator.clipboard.writeText(code).then(function() {
+          btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+          setTimeout(function() { btn.innerHTML = '<i class="far fa-copy"></i> Copy'; }, 2000);
+        });
+      });
+      wrapper.appendChild(btn);
+    });
+  });
+
+  // Variant Switcher logic
+  function getVariant() {
+    var params = new URLSearchParams(window.location.search);
+    var v = params.get('variant');
+    if (['a', 'b', 'c'].indexOf(v) !== -1) return v;
+    return localStorage.getItem('proto_post_variant') || 'a';
+  }
+
+  function setVariant(v) {
+    localStorage.setItem('proto_post_variant', v);
+    var url = new URL(window.location.href);
+    url.searchParams.set('variant', v);
+    window.history.replaceState({}, '', url.toString());
+
+    document.body.classList.remove('proto-post-a', 'proto-post-b', 'proto-post-c');
+    document.body.classList.add('proto-post-' + v);
+
+    var buttons = document.querySelectorAll('#proto-post-switcher .proto-btn');
+    buttons.forEach(function(btn) {
+      if (btn.getAttribute('data-variant') === v) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var activeVar = getVariant();
+    setVariant(activeVar);
+
+    var buttons = document.querySelectorAll('#proto-post-switcher .proto-btn');
+    buttons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        setVariant(this.getAttribute('data-variant'));
+      });
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.key === '1') setVariant('a');
+      if (e.key === '2') setVariant('b');
+      if (e.key === '3') setVariant('c');
+    });
+  });
+
+  var initialVar = getVariant();
+  document.body.classList.add('proto-post-' + initialVar);
+})();
+</script>
+
+{{- end -}}
