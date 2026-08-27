@@ -4,15 +4,15 @@ name = "Joey Custom"
 # Is theme light or dark? (This defines the default mode; day_night allows toggling)
 light = true
 
-# Primary Accent (Sophisticated Emerald / Teal tone instead of raw green)
-primary = "#0d9488" # Teal 600
+# Primary Accent (Institutional Oxblood instead of teal — reads "financial desk/ledger")
+primary = "#b4232e" # Oxblood
 
 # Menu (Navbar Styling)
 menu_primary = "#0f172a"      # Deep Slate 900
 menu_text = "rgba(255, 255, 255, 0.7)"
-menu_text_active = "#2dd4bf" # Light Teal / Turquoise accent
+menu_text_active = "#e05a66"  # Bright rose accent (oxblood light)
 menu_title = "#fff"
 
-# Home sections (Light background alternation)
-home_section_odd = "#ffffff"
-home_section_even = "#f8fafc" # Very soft blue-grey slate
+# Home sections (Light background alternation — warm bone / ledger paper)
+home_section_odd = "#fffdf9"
+home_section_even = "#f6f3ed" # Warm bone

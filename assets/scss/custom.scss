@@ -1,3 +1,15 @@
+// =============================================================================
+// PALETTE TOKENS — Institutional Oxblood & Bone (was Teal & Slate)
+// Edit once here to re-tune the whole accent.
+// =============================================================================
+$accent: #b4232e;        // primary accent (was teal #0d9488)
+$accent-strong: #8e1a24; // hover / darker accent (was #0f766e)
+$accent-bright: #e05a66; // bright accent on dark (was #2dd4bf)
+$accent-soft: #fbeef0;   // soft accent tint (was #f0fdfa)
+$paper: #f6f3ed;         // bone / ledger paper (was #f8fafc)
+$paper-card: #fffdf9;    // card surface (was #ffffff)
+$hairline: #e7e1d6;      // warm hairline (was #e2e8f0)
+
 // Custom Typography Overrides
 h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
@@ -41,7 +53,7 @@ p {
   font-size: 1.4rem !important;
   color: #ffffff !important;
   .dot {
-    color: #0d9488 !important;
+    color: $accent !important;
   }
 }
 
@@ -52,7 +64,7 @@ p {
   #profile {
     text-align: center;
     .portrait {
-      border: 3px solid #e2e8f0;
+      border: 3px solid $hairline;
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
       border-radius: 50%;
       margin-bottom: 1.5rem;
@@ -88,7 +100,7 @@ p {
         margin: 0 0.5rem;
         transition: color 0.2s ease;
         &:hover {
-          color: #0d9488;
+          color: $accent;
         }
       }
     }
@@ -114,7 +126,7 @@ p {
 }
 .dark .wg-about #profile .network-icon li a {
   color: #94a3b8;
-  &:hover { color: #2dd4bf; }
+  &:hover { color: $accent-bright; }
 }
 
 // Enhanced table styling for technical posts
@@ -129,16 +141,16 @@ p {
     font-weight: 600;
     text-align: left;
     padding: 0.75rem 1rem;
-    border-bottom: 2px solid #e2e8f0;
+    border-bottom: 2px solid $hairline;
   }
 
   td {
     padding: 0.6rem 1rem;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid $hairline;
   }
 
   tr:nth-child(even) td {
-    background: #f8fafc;
+    background: $paper;
   }
 }
 
@@ -180,7 +192,7 @@ p {
   border-radius: 4px;
   margin: 1.5rem 0;
   
-  &-info { border-color: #0d9488; background: #f0fdfa; }
+  &-info { border-color: $accent; background: $accent-soft; }
   &-warning { border-color: #f59e0b; background: #fffbeb; }
   &-important { border-color: #ef4444; background: #fef2f2; }
 
@@ -221,26 +233,26 @@ p {
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px -4px rgba(13, 148, 136, 0.35);
+      box-shadow: 0 6px 20px -4px rgba($accent, 0.35);
     }
   }
 
   .btn-primary {
-    background: #0d9488;
-    border-color: #0d9488;
+    background: $accent;
+    border-color: $accent;
     color: #ffffff;
     &:hover {
-      background: #0f766e;
-      border-color: #0f766e;
+      background: $accent-strong;
+      border-color: $accent-strong;
     }
   }
 
   .btn-outline-primary {
-    color: #0d9488;
-    border-color: #0d9488;
+    color: $accent;
+    border-color: $accent;
     background: transparent;
     &:hover {
-      background: #0d9488;
+      background: $accent;
       color: #ffffff;
     }
   }
@@ -259,10 +271,10 @@ p {
 
 .dark .hero-cta-group {
   .btn-outline-primary {
-    color: #2dd4bf;
-    border-color: #2dd4bf;
+    color: $accent-bright;
+    border-color: $accent-bright;
     &:hover {
-      background: #2dd4bf;
+      background: $accent-bright;
       color: #0f172a;
     }
   }
@@ -283,18 +295,18 @@ p {
 .stream-item, .card-simple {
   padding: 1.35rem 1.6rem !important;
   margin-bottom: 1.25rem !important;
-  border: 1px solid #e2e8f0;
+  border: 1px solid $hairline;
   border-left: 3px solid transparent;
   border-radius: 14px;
-  background: #ffffff;
+  background: $paper-card;
   box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.08);
-    border-color: rgba(13, 148, 136, 0.4);
-    border-left-color: #0d9488;
+    border-color: rgba($accent, 0.4);
+    border-left-color: $accent;
   }
 
   .article-title {
@@ -307,7 +319,7 @@ p {
       color: #0f172a;
       transition: color 0.2s ease;
       &:hover {
-        color: #0d9488;
+        color: $accent;
         text-decoration: none;
       }
     }
@@ -331,9 +343,9 @@ p {
 // ACADEMIC & APPLIED RESEARCH PUBLICATION CARDS
 // =============================================================================
 .pub-list-item {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-left: 3px solid #0d9488;
+  background: $paper-card;
+  border: 1px solid $hairline;
+  border-left: 3px solid $accent;
   border-radius: 14px;
   padding: 1.35rem 1.6rem;
   margin-bottom: 1.25rem;
@@ -343,7 +355,7 @@ p {
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.08);
-    border-color: rgba(13, 148, 136, 0.4);
+    border-color: rgba($accent, 0.4);
   }
 
   .pub-card-header {
@@ -356,9 +368,9 @@ p {
       font-family: 'Outfit', sans-serif;
       font-size: 0.74rem;
       font-weight: 700;
-      color: #0d9488;
-      background: #f0fdfa;
-      border: 1px solid rgba(13, 148, 136, 0.25);
+      color: $accent;
+      background: $accent-soft;
+      border: 1px solid rgba($accent, 0.25);
       padding: 0.2rem 0.55rem;
       border-radius: 5px;
       text-transform: uppercase;
@@ -384,7 +396,7 @@ p {
       color: #0f172a;
       transition: color 0.2s ease;
       &:hover {
-        color: #0d9488;
+        color: $accent;
         text-decoration: none;
       }
     }
@@ -430,13 +442,13 @@ p {
   font-weight: 600;
   border-radius: 6px;
   padding: 0.25em 0.6em;
-  background: #f0fdfa !important;
-  color: #0d9488 !important;
-  border: 1px solid rgba(13, 148, 136, 0.25) !important;
+  background: $accent-soft !important;
+  color: $accent !important;
+  border: 1px solid rgba($accent, 0.25) !important;
   transition: all 0.2s ease;
 
   &:hover {
-    background: #0d9488 !important;
+    background: $accent !important;
     color: #ffffff !important;
   }
 }
@@ -448,12 +460,12 @@ p {
     border-color: #1e293b;
     &:hover {
       box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.5);
-      border-color: rgba(45, 212, 191, 0.4);
-      border-left-color: #2dd4bf;
+      border-color: rgba($accent-bright, 0.4);
+      border-left-color: $accent-bright;
     }
     .article-title a {
       color: #f8fafc;
-      &:hover { color: #2dd4bf; }
+      &:hover { color: $accent-bright; }
     }
     .article-style {
       color: #94a3b8;
@@ -466,22 +478,22 @@ p {
   .pub-list-item {
     background: #0f172a;
     border-color: #1e293b;
-    border-left-color: #2dd4bf;
+    border-left-color: $accent-bright;
     &:hover {
       box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.5);
-      border-color: rgba(45, 212, 191, 0.4);
+      border-color: rgba($accent-bright, 0.4);
     }
     .badge-journal {
-      background: rgba(45, 212, 191, 0.12);
-      color: #2dd4bf;
-      border-color: rgba(45, 212, 191, 0.3);
+      background: rgba($accent-bright, 0.12);
+      color: $accent-bright;
+      border-color: rgba($accent-bright, 0.3);
     }
     .pub-year {
       color: #94a3b8;
     }
     .pub-title a {
       color: #f8fafc;
-      &:hover { color: #2dd4bf; }
+      &:hover { color: $accent-bright; }
     }
     .pub-authors {
       color: #94a3b8;
@@ -493,11 +505,11 @@ p {
   }
 
   .badge, .article-tags .badge, .btn-tag {
-    background: rgba(45, 212, 191, 0.1) !important;
-    color: #2dd4bf !important;
-    border-color: rgba(45, 212, 191, 0.3) !important;
+    background: rgba($accent-bright, 0.1) !important;
+    color: $accent-bright !important;
+    border-color: rgba($accent-bright, 0.3) !important;
     &:hover {
-      background: #2dd4bf !important;
+      background: $accent-bright !important;
       color: #0f172a !important;
     }
   }
@@ -549,9 +561,9 @@ p {
     .spotlight-pill {
       font-size: 0.72rem;
       font-weight: 700;
-      color: #2dd4bf;
-      background: rgba(45, 212, 191, 0.12);
-      border: 1px solid rgba(45, 212, 191, 0.3);
+      color: $accent-bright;
+      background: rgba($accent-bright, 0.12);
+      border: 1px solid rgba($accent-bright, 0.3);
       padding: 0.2rem 0.6rem;
       border-radius: 6px;
       letter-spacing: 0.06em;
@@ -573,7 +585,7 @@ p {
     a {
       color: #ffffff;
       transition: color 0.2s ease;
-      &:hover { color: #2dd4bf; text-decoration: none; }
+      &:hover { color: $accent-bright; text-decoration: none; }
     }
   }
 
@@ -589,7 +601,7 @@ p {
 
     .wave-bar {
       width: 4px;
-      background: #2dd4bf;
+      background: $accent-bright;
       border-radius: 2px;
       &.h-30 { height: 30%; }
       &.h-40 { height: 40%; }
@@ -618,7 +630,7 @@ p {
     padding: 0.85rem 1rem;
     font-size: 0.82rem;
     margin-bottom: 1rem;
-    strong { color: #2dd4bf; display: block; margin-bottom: 0.35rem; }
+    strong { color: $accent-bright; display: block; margin-bottom: 0.35rem; }
     ul { padding-left: 1.2rem; margin-bottom: 0; color: #94a3b8; }
   }
 
@@ -646,7 +658,7 @@ p {
 
   .timeline-items-list {
     position: relative;
-    border-left: 2px solid #e2e8f0;
+    border-left: 2px solid $hairline;
     padding-left: 1.35rem;
     margin-left: 0.5rem;
   }
@@ -666,10 +678,10 @@ p {
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      background: #ffffff;
-      border: 3px solid #0d9488;
+      background: $paper-card;
+      border: 3px solid $accent;
 
-      &.marker-podcast { border-color: #0d9488; }
+      &.marker-podcast { border-color: $accent; }
       &.marker-talk { border-color: #3b82f6; }
     }
 
@@ -691,14 +703,14 @@ p {
         border-radius: 4px;
         letter-spacing: 0.04em;
         &.badge-pod {
-          background: #f0fdfa;
-          color: #0d9488;
-          border: 1px solid rgba(13, 148, 136, 0.2);
+          background: $accent-soft;
+          color: $accent;
+          border: 1px solid rgba($accent, 0.2);
         }
         &.badge-pres {
           background: #f1f5f9;
           color: #475569;
-          border: 1px solid #e2e8f0;
+          border: 1px solid $hairline;
         }
       }
       .timeline-loc {
@@ -716,7 +728,7 @@ p {
       a {
         color: #0f172a;
         transition: color 0.2s ease;
-        &:hover { color: #0d9488; text-decoration: none; }
+        &:hover { color: $accent; text-decoration: none; }
       }
     }
 
@@ -731,10 +743,10 @@ p {
       .timeline-link-btn {
         font-size: 0.78rem;
         font-weight: 600;
-        color: #0d9488;
+        color: $accent;
         margin-right: 0.75rem;
         transition: all 0.2s ease;
-        &:hover { color: #0f766e; text-decoration: underline; }
+        &:hover { color: $accent-strong; text-decoration: underline; }
       }
     }
   }
@@ -752,16 +764,16 @@ p {
     .timeline-item {
       .timeline-marker {
         background: #0f172a;
-        &.marker-podcast { border-color: #2dd4bf; }
+        &.marker-podcast { border-color: $accent-bright; }
         &.marker-talk { border-color: #60a5fa; }
       }
-      .timeline-title a { color: #f8fafc; &:hover { color: #2dd4bf; } }
+      .timeline-title a { color: #f8fafc; &:hover { color: $accent-bright; } }
       .timeline-desc { color: #94a3b8; }
-      .timeline-links .timeline-link-btn { color: #2dd4bf; &:hover { color: #5eead4; } }
+      .timeline-links .timeline-link-btn { color: $accent-bright; &:hover { color: $accent-bright; } }
       .timeline-meta {
         .timeline-date { color: #94a3b8; }
         .timeline-badge {
-          &.badge-pod { background: rgba(45, 212, 191, 0.12); color: #2dd4bf; border-color: rgba(45, 212, 191, 0.3); }
+          &.badge-pod { background: rgba($accent-bright, 0.12); color: $accent-bright; border-color: rgba($accent-bright, 0.3); }
           &.badge-pres { background: #1e293b; color: #cbd5e1; border-color: #334155; }
         }
       }
@@ -787,12 +799,12 @@ p {
   transition: background 0.2s ease;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #0d9488;
+  background: $accent;
 }
 
 // Cohesive Text Selection
 ::selection {
-  background: rgba(13, 148, 136, 0.25);
+  background: rgba($accent, 0.25);
   color: inherit;
 }
 
@@ -807,12 +819,12 @@ p {
 
 // Subtle Engineering Graph Paper / Dot Matrix Background for Hero
 .home-section:first-of-type {
-  background-image: radial-gradient(rgba(13, 148, 136, 0.07) 1px, transparent 1px);
+  background-image: radial-gradient(rgba($accent, 0.07) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
 .dark .home-section:first-of-type {
-  background-image: radial-gradient(rgba(45, 212, 191, 0.08) 1px, transparent 1px);
+  background-image: radial-gradient(rgba($accent-bright, 0.08) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
@@ -833,7 +845,7 @@ p {
 #reading-progress-bar {
   height: 100%;
   width: 0%;
-  background: #0d9488;
+  background: $accent;
   transition: width 0.1s ease;
 }
 
@@ -843,7 +855,7 @@ p {
 
   .article-header-wrapper {
     margin-bottom: 2.5rem;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid $hairline;
     padding-bottom: 2rem;
 
     .article-series-badge {
@@ -852,9 +864,9 @@ p {
         font-family: 'Outfit', sans-serif;
         font-size: 0.76rem;
         font-weight: 700;
-        color: #0d9488;
-        background: #f0fdfa;
-        border: 1px solid rgba(13, 148, 136, 0.25);
+        color: $accent;
+        background: $accent-soft;
+        border: 1px solid rgba($accent, 0.25);
         padding: 0.25rem 0.65rem;
         border-radius: 6px;
         letter-spacing: 0.04em;
@@ -946,8 +958,8 @@ p {
     }
 
     blockquote {
-      background: #f8fafc;
-      border-left: 4px solid #0d9488;
+      background: $paper;
+      border-left: 4px solid $accent;
       border-radius: 6px;
       padding: 1.2rem 1.5rem;
       margin: 1.75rem 0;
@@ -955,7 +967,7 @@ p {
       h3, h4 {
         margin-top: 0;
         margin-bottom: 0.5rem;
-        color: #0d9488;
+        color: $accent;
         font-size: 1.1rem;
       }
       p:last-child {
@@ -968,8 +980,8 @@ p {
   .sticky-toc-wrapper {
     position: sticky;
     top: 100px;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+    background: $paper-card;
+    border: 1px solid $hairline;
     border-radius: 12px;
     padding: 1.25rem 1.5rem;
     box-shadow: 0 4px 15px rgba(15, 23, 42, 0.03);
@@ -1006,7 +1018,7 @@ p {
             line-height: 1.4;
 
             &:hover {
-              color: #0d9488;
+              color: $accent;
               transform: translateX(3px);
             }
           }
@@ -1014,7 +1026,7 @@ p {
           ul {
             padding-left: 1rem;
             margin-top: 0.4rem;
-            border-left: 1px solid #e2e8f0;
+            border-left: 1px solid $hairline;
 
             li {
               font-size: 0.82rem;
@@ -1029,7 +1041,7 @@ p {
       font-family: 'Outfit', sans-serif;
       font-size: 0.8rem;
       font-weight: 600;
-      color: #0d9488;
+      color: $accent;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
@@ -1043,7 +1055,7 @@ p {
   .article-featured-image-box {
     border-radius: 12px;
     overflow: hidden;
-    border: 1px solid #e2e8f0;
+    border: 1px solid $hairline;
     box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
 
     .article-featured-img {
@@ -1056,8 +1068,8 @@ p {
 
     .article-img-caption {
       padding: 0.6rem 1rem;
-      background: #f8fafc;
-      border-top: 1px solid #e2e8f0;
+      background: $paper;
+      border-top: 1px solid $hairline;
       font-size: 0.85rem;
       color: #64748b;
       font-style: italic;
@@ -1074,8 +1086,8 @@ p {
       margin: 0;
       border-radius: 10px;
       padding: 1.25rem;
-      background: #f8fafc !important;
-      border: 1px solid #e2e8f0;
+      background: $paper !important;
+      border: 1px solid $hairline;
       overflow-x: auto;
 
       code {
@@ -1095,7 +1107,7 @@ p {
       position: absolute;
       top: 10px;
       right: 10px;
-      background: #ffffff;
+      background: $paper-card;
       border: 1px solid #cbd5e1;
       color: #475569;
       font-family: 'Outfit', sans-serif;
@@ -1124,9 +1136,9 @@ p {
   .article-header-wrapper {
     border-color: #1e293b;
     .article-series-badge .series-pill {
-      background: rgba(45, 212, 191, 0.12);
-      color: #2dd4bf;
-      border-color: rgba(45, 212, 191, 0.3);
+      background: rgba($accent-bright, 0.12);
+      color: $accent-bright;
+      border-color: rgba($accent-bright, 0.3);
     }
     .article-main-title { color: #f8fafc; }
     .article-main-subtitle { color: #94a3b8; }
@@ -1174,9 +1186,9 @@ p {
     strong { color: #f8fafc; }
     blockquote {
       background: #111e33;
-      border-left-color: #2dd4bf;
+      border-left-color: $accent-bright;
       color: #cbd5e1;
-      h3, h4 { color: #2dd4bf; }
+      h3, h4 { color: $accent-bright; }
     }
   }
 
@@ -1186,10 +1198,10 @@ p {
     .toc-header { color: #f8fafc; border-color: #1e293b; }
     .custom-toc ul li a {
       color: #94a3b8;
-      &:hover { color: #2dd4bf; }
+      &:hover { color: $accent-bright; }
     }
     .custom-toc ul li ul { border-color: #1e293b; }
-    .sidebar-action-box .back-to-top-link { color: #2dd4bf; }
+    .sidebar-action-box .back-to-top-link { color: $accent-bright; }
   }
 }
 
@@ -1224,7 +1236,7 @@ p {
     display: block;
     margin-bottom: 0.25rem;
     .dot {
-      color: #0d9488;
+      color: $accent;
     }
   }
 
@@ -1253,11 +1265,11 @@ p {
       text-decoration: none;
 
       &:hover {
-        background: #0d9488;
+        background: $accent;
         color: #ffffff;
-        border-color: #0d9488;
+        border-color: $accent;
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(13, 148, 136, 0.4);
+        box-shadow: 0 6px 16px rgba($accent, 0.4);
       }
     }
   }
@@ -1289,7 +1301,7 @@ p {
     align-items: center;
 
     &:hover {
-      color: #2dd4bf;
+      color: $accent-bright;
     }
   }
 }
