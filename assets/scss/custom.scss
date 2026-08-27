@@ -10,6 +10,15 @@ $paper: #f6f3ed;         // bone / ledger paper (was #f8fafc)
 $paper-card: #fffdf9;    // card surface (was #ffffff)
 $hairline: #e7e1d6;      // warm hairline (was #e2e8f0)
 
+// Warm Ink Text Scale (on bone) — replaces the cool slate greys on light surfaces.
+// Dark chrome (nav, footer, code panels, .dark overrides) keeps its slate on purpose.
+$ink-strong: #262019;  // strong text / card titles (was slate #0f172a)
+$ink-body: #3d3830;    // body copy (was slate #334155)
+$ink: #4d4437;         // secondary text / roles (was slate #475569)
+$ink-soft: #6e6353;    // meta / captions / TOC (was slate #64748b)
+$ink-faint: #b9ac96;   // faint dots / tag borders (was slate #94a3b8 / #cbd5e1)
+$wash: #f0eadd;        // table + tag washes (was slate #f1f5f9)
+
 // Custom Typography Overrides
 h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
@@ -83,7 +92,7 @@ p {
       }
       h3 {
         font-size: 1rem;
-        color: #475569;
+        color: $ink;
         font-weight: 500;
         margin-bottom: 0.25rem;
       }
@@ -95,7 +104,7 @@ p {
         display: inline-block;
       }
       li a {
-        color: #475569;
+        color: $ink;
         font-size: 1.5rem;
         margin: 0 0.5rem;
         transition: color 0.2s ease;
@@ -110,7 +119,7 @@ p {
     font-size: 0.95rem;
     padding: 0.25rem 0;
     list-style-type: square;
-    color: #475569;
+    color: $ink;
   }
 }
 
@@ -137,7 +146,7 @@ p {
   font-size: 0.9rem;
 
   th {
-    background: #f1f5f9;
+    background: $wash;
     font-weight: 600;
     text-align: left;
     padding: 0.75rem 1rem;
@@ -258,13 +267,13 @@ p {
   }
 
   .btn-outline-secondary {
-    color: #475569;
-    border-color: #cbd5e1;
+    color: $ink;
+    border-color: $ink-faint;
     background: transparent;
     &:hover {
-      background: #f1f5f9;
-      color: #0f172a;
-      border-color: #94a3b8;
+      background: $wash;
+      color: $ink-strong;
+      border-color: $ink-soft;
     }
   }
 }
@@ -316,7 +325,7 @@ p {
     letter-spacing: -0.02em;
     margin-bottom: 0.45rem;
     a {
-      color: #0f172a;
+      color: $ink-strong;
       transition: color 0.2s ease;
       &:hover {
         color: $accent;
@@ -327,7 +336,7 @@ p {
 
   .article-style {
     font-size: 0.93rem;
-    color: #475569;
+    color: $ink;
     line-height: 1.62;
     margin-bottom: 0.75rem;
   }
@@ -335,7 +344,7 @@ p {
   .stream-meta.article-metadata {
     font-family: 'Roboto Mono', monospace;
     font-size: 0.76rem;
-    color: #64748b;
+    color: $ink-soft;
   }
 }
 
@@ -380,7 +389,7 @@ p {
     .pub-year {
       font-family: 'Roboto Mono', monospace;
       font-size: 0.76rem;
-      color: #64748b;
+      color: $ink-soft;
       font-weight: 600;
     }
   }
@@ -393,7 +402,7 @@ p {
     letter-spacing: -0.02em;
     margin-bottom: 0.35rem;
     a {
-      color: #0f172a;
+      color: $ink-strong;
       transition: color 0.2s ease;
       &:hover {
         color: $accent;
@@ -404,16 +413,16 @@ p {
 
   .pub-authors {
     font-size: 0.85rem;
-    color: #475569;
+    color: $ink;
     margin-bottom: 0.5rem;
     strong {
-      color: #0f172a;
+      color: $ink-strong;
     }
   }
 
   .pub-abstract {
     font-size: 0.88rem;
-    color: #64748b;
+    color: $ink-soft;
     line-height: 1.55;
     margin-bottom: 0.85rem;
   }
@@ -528,14 +537,14 @@ p {
   font-family: 'Outfit', sans-serif;
   font-size: 2.2rem;
   font-weight: 700;
-  color: #0f172a;
+  color: $ink-strong;
   letter-spacing: -0.03em;
   margin-bottom: 0.35rem;
 }
 
 .media-main-subtitle {
   font-size: 1.05rem;
-  color: #64748b;
+  color: $ink-soft;
   margin-bottom: 1.75rem;
 }
 
@@ -652,7 +661,7 @@ p {
     font-family: 'Outfit', sans-serif;
     font-size: 1.25rem;
     font-weight: 700;
-    color: #0f172a;
+    color: $ink-strong;
     margin-bottom: 1.5rem;
   }
 
@@ -694,7 +703,7 @@ p {
       .timeline-date {
         font-family: 'Roboto Mono', monospace;
         font-size: 0.75rem;
-        color: #64748b;
+        color: $ink-soft;
       }
       .timeline-badge {
         font-size: 0.65rem;
@@ -708,14 +717,14 @@ p {
           border: 1px solid rgba($accent, 0.2);
         }
         &.badge-pres {
-          background: #f1f5f9;
-          color: #475569;
+          background: $wash;
+          color: $ink;
           border: 1px solid $hairline;
         }
       }
       .timeline-loc {
         font-size: 0.75rem;
-        color: #94a3b8;
+        color: $ink-faint;
       }
     }
 
@@ -726,7 +735,7 @@ p {
       line-height: 1.35;
       margin-bottom: 0.3rem;
       a {
-        color: #0f172a;
+        color: $ink-strong;
         transition: color 0.2s ease;
         &:hover { color: $accent; text-decoration: none; }
       }
@@ -734,7 +743,7 @@ p {
 
     .timeline-desc {
       font-size: 0.85rem;
-      color: #64748b;
+      color: $ink-soft;
       line-height: 1.5;
       margin-bottom: 0.5rem;
     }
@@ -880,13 +889,13 @@ p {
       font-weight: 700;
       letter-spacing: -0.03em;
       line-height: 1.2;
-      color: #0f172a;
+      color: $ink-strong;
       margin-bottom: 0.75rem;
     }
 
     .article-main-subtitle {
       font-size: 1.2rem;
-      color: #64748b;
+      color: $ink-soft;
       line-height: 1.5;
       margin-bottom: 1.25rem;
     }
@@ -898,10 +907,10 @@ p {
       gap: 0.6rem;
       font-family: 'Roboto Mono', monospace;
       font-size: 0.8rem;
-      color: #64748b;
+      color: $ink-soft;
 
       .meta-dot {
-        color: #cbd5e1;
+        color: $ink-faint;
       }
 
       .meta-tags-list {
@@ -913,8 +922,8 @@ p {
           font-family: 'Inter', sans-serif;
           font-size: 0.72rem;
           font-weight: 600;
-          background: #f1f5f9;
-          color: #475569;
+          background: $wash;
+          color: $ink;
           padding: 0.15rem 0.5rem;
           border-radius: 4px;
         }
@@ -925,25 +934,25 @@ p {
   .technical-body {
     font-size: 1.05rem;
     line-height: 1.75;
-    color: #334155;
+    color: $ink-body;
 
     h2 {
       font-family: 'Outfit', sans-serif;
       font-size: 1.75rem;
       font-weight: 700;
-      color: #0f172a;
+      color: $ink-strong;
       letter-spacing: -0.02em;
       margin-top: 2.75rem;
       margin-bottom: 1rem;
       padding-bottom: 0.4rem;
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 1px solid $wash;
     }
 
     h3 {
       font-family: 'Outfit', sans-serif;
       font-size: 1.35rem;
       font-weight: 600;
-      color: #0f172a;
+      color: $ink-strong;
       letter-spacing: -0.015em;
       margin-top: 2rem;
       margin-bottom: 0.75rem;
@@ -954,7 +963,7 @@ p {
     }
 
     strong {
-      color: #0f172a;
+      color: $ink-strong;
     }
 
     blockquote {
@@ -963,7 +972,7 @@ p {
       border-radius: 6px;
       padding: 1.2rem 1.5rem;
       margin: 1.75rem 0;
-      color: #334155;
+      color: $ink-body;
       h3, h4 {
         margin-top: 0;
         margin-bottom: 0.5rem;
@@ -994,10 +1003,10 @@ p {
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: #0f172a;
+      color: $ink-strong;
       margin-bottom: 1rem;
       padding-bottom: 0.5rem;
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 1px solid $wash;
     }
 
     .custom-toc {
@@ -1011,7 +1020,7 @@ p {
           font-size: 0.88rem;
 
           a {
-            color: #64748b;
+            color: $ink-soft;
             text-decoration: none;
             transition: all 0.2s ease;
             display: block;
@@ -1071,7 +1080,7 @@ p {
       background: $paper;
       border-top: 1px solid $hairline;
       font-size: 0.85rem;
-      color: #64748b;
+      color: $ink-soft;
       font-style: italic;
       text-align: center;
     }
@@ -1095,7 +1104,7 @@ p {
         font-size: 0.88rem;
         line-height: 1.6;
         background: transparent !important;
-        color: #0f172a;
+        color: $ink-strong;
 
         span {
           background: transparent !important;
@@ -1108,8 +1117,8 @@ p {
       top: 10px;
       right: 10px;
       background: $paper-card;
-      border: 1px solid #cbd5e1;
-      color: #475569;
+      border: 1px solid $ink-faint;
+      color: $ink;
       font-family: 'Outfit', sans-serif;
       font-size: 0.72rem;
       font-weight: 600;
@@ -1121,9 +1130,9 @@ p {
       z-index: 10;
 
       &:hover {
-        background: #f1f5f9;
-        color: #0f172a;
-        border-color: #94a3b8;
+        background: $wash;
+        color: $ink-strong;
+        border-color: $ink-soft;
       }
     }
   }
