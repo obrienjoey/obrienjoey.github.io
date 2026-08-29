@@ -1,34 +1,56 @@
-<div class="pub-list-item">
-  <div class="pub-card-header">
-    <div class="pub-journal-badge">
-      {{ if .Params.publication_short }}
-        <span class="badge-journal"><i class="fas fa-book-open mr-1"></i> {{ .Params.publication_short | markdownify }}</span>
-      {{ else if .Params.publication }}
-        <span class="badge-journal"><i class="fas fa-book-open mr-1"></i> {{ .Params.publication | markdownify }}</span>
-      {{ else }}
-        <span class="badge-journal"><i class="fas fa-file-alt mr-1"></i> Research Paper</span>
-      {{ end }}
+{{/* Editorial feature-first citation (Variant C) */}}
+{{ $item := .page }}
+{{ $featured := .featured }}
+{{ $summary := "" }}
+{{ if $item.Params.abstract }}
+  {{ $summary = $item.Params.abstract | markdownify | emojify }}
+{{ end }}
+
+{{ if $featured }}
+<div class="pub-list-item pub-feature">
+  <div class="pub-feature-top">
+    <div class="pub-card-header">
+      <div class="pub-journal-badge">
+        {{ if $item.Params.publication_short }}
+          <span class="badge-journal badge-journal-on-dark"><i class="fas fa-book-open mr-1"></i> {{ $item.Params.publication_short | markdownify }}</span>
+        {{ else if $item.Params.publication }}
+          <span class="badge-journal badge-journal-on-dark"><i class="fas fa-book-open mr-1"></i> {{ $item.Params.publication | markdownify }}</span>
+        {{ else }}
+          <span class="badge-journal badge-journal-on-dark"><i class="fas fa-file-alt mr-1"></i> Research Paper</span>
+        {{ end }}
+      </div>
+      <div class="pub-year">
+        {{ $item.Date.Format "2006" }}
+      </div>
     </div>
-    <div class="pub-year font-mono">
-      {{ .Date.Format "2006" }}
+    <h3 class="pub-title pub-title-on-dark">
+      <a href="{{ $item.RelPermalink }}">{{ $item.Title }}</a>
+    </h3>
+  </div>
+  <div class="pub-feature-body">
+    <div class="pub-authors">
+      {{ partial "page_metadata_authors" $item }}
     </div>
-  </div>
-
-  <h3 class="pub-title">
-    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-  </h3>
-
-  <div class="pub-authors">
-    {{ partial "page_metadata_authors" . }}
-  </div>
-
-  {{ with .Params.abstract }}
-  <p class="pub-abstract">
-    {{ . | markdownify | emojify | truncate 160 }}
-  </p>
-  {{ end }}
-
-  <div class="pub-actions">
-    {{ partial "page_links" (dict "page" . "is_list" 1) }}
+    {{ with $summary }}
+    <p class="pub-abstract">
+      {{ . | truncate 240 }}
+    </p>
+    {{ end }}
+    <div class="pub-actions">
+      {{ partial "page_links" (dict "page" $item "is_list" 1) }}
+    </div>
   </div>
 </div>
+{{ else }}
+<div class="pub-list-item pub-compact">
+  <span class="pub-compact-year">{{ $item.Date.Format "2006" }}</span>
+  <h3 class="pub-compact-title">
+    <a href="{{ $item.RelPermalink }}">{{ $item.Title }}</a>
+  </h3>
+  {{ if $item.Params.publication_short }}
+  <span class="pub-compact-journal">{{ $item.Params.publication_short | markdownify }}</span>
+  {{ else if $item.Params.publication }}
+  <span class="pub-compact-journal">{{ $item.Params.publication | markdownify }}</span>
+  {{ end }}
+</div>
+{{ end }}
