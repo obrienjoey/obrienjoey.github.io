@@ -5,7 +5,7 @@
 widget = "pages"
 headless = true
 active = false
-weight = 45
+weight = 50
 
 title = "Podcasts & Media"
 subtitle = "Discussions on ORE, XVA, and Model Risk Regulation"

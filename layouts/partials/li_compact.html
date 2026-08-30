@@ -1,6 +1,11 @@
 {{/* Editorial feature-first stream item for posts (Variant C) */}}
-{{ $item := .page }}
-{{ $featured := .featured }}
+{{/* Accepts either a dict (page/featured) or a bare page context. */}}
+{{ $item := . }}
+{{ $featured := false }}
+{{ if reflect.IsMap . }}
+  {{ $item = .page }}
+  {{ with .featured }}{{ $featured = . }}{{ end }}
+{{ end }}
 
 {{ $show_authors_only := false }}
 {{ $show_buttons := false }}
@@ -25,28 +30,40 @@
 {{ end }}
 
 {{ if $featured }}
-<div class="stream-item stream-feature">
-  <div class="stream-feature-top">
-    <div class="stream-feature-kicker">
-      <span class="badge-journal badge-journal-on-dark">Featured Post</span>
-      <span class="pub-year">{{ $item.Date.Format "2006" }}</span>
+{{ $media := "" }}
+{{ with $item.Resources.GetMatch "featured*" }}
+  {{ $media = (.Resize "640x q85").RelPermalink }}
+{{ end }}
+<div class="stream-item stream-feature{{ if $media }} has-media{{ end }}">
+  <div class="stream-feature-content">
+    <div class="stream-feature-top">
+      <div class="stream-feature-kicker">
+        <span class="badge-journal badge-journal-on-dark">Featured Post</span>
+        <span class="pub-year">{{ $item.Date.Format "2006" }}</span>
+      </div>
+      <h3 class="pub-title pub-title-on-dark">
+        <a href="{{ $link }}" {{ $target | safeHTMLAttr }}>{{ $item.Title }}</a>
+      </h3>
     </div>
-    <h3 class="pub-title pub-title-on-dark">
-      <a href="{{ $link }}" {{ $target | safeHTMLAttr }}>{{ $item.Title }}</a>
-    </h3>
-  </div>
-  <div class="stream-feature-body">
-    {{ with $summary }}
-    <div class="article-style">
-      {{ . | truncate 200 }}
-    </div>
-    {{ end }}
-    <div class="stream-meta article-metadata">
-      {{ if $item.Params.authors }}
-        {{ partial "page_metadata" (dict "page" $item "is_list" 1) }}
+    <div class="stream-feature-body">
+      {{ with $summary }}
+      <div class="article-style">
+        {{ . | truncate 200 }}
+      </div>
       {{ end }}
+      <div class="stream-meta article-metadata">
+        {{ if $item.Params.authors }}
+          {{ partial "page_metadata" (dict "page" $item "is_list" 1) }}
+        {{ end }}
+      </div>
     </div>
   </div>
+  {{ with $media }}
+  <div class="stream-feature-media">
+    <img src="{{ . }}" alt="" loading="lazy">
+    <div class="stream-feature-overlay"></div>
+  </div>
+  {{ end }}
 </div>
 {{ else }}
 <div class="stream-item stream-compact">

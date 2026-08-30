@@ -1,6 +1,11 @@
 {{/* Editorial feature-first citation (Variant C) */}}
-{{ $item := .page }}
-{{ $featured := .featured }}
+{{/* Accepts either a dict (page/featured) or a bare page context. */}}
+{{ $item := . }}
+{{ $featured := false }}
+{{ if reflect.IsMap . }}
+  {{ $item = .page }}
+  {{ with .featured }}{{ $featured = . }}{{ end }}
+{{ end }}
 {{ $summary := "" }}
 {{ if $item.Params.abstract }}
   {{ $summary = $item.Params.abstract | markdownify | emojify }}

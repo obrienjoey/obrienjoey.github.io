@@ -3,7 +3,7 @@
 widget = "blank"
 headless = true
 active = true
-weight = 12
+weight = 55  # Demoted below expertise/publications/posts/media — news is for returning readers, not first impression.
 
 title = "News & Updates"
 subtitle = ""
