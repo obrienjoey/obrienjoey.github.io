@@ -1441,7 +1441,7 @@ p {
   }
 }
 
-// Feature post card with side media column (Variant B)
+// Feature post card with side media column (Variant B + Fix 3 Mobile Inset)
 .stream-item.stream-feature {
   .stream-feature-content {
     display: flex;
@@ -1484,17 +1484,38 @@ p {
     }
   }
 
+  // Mobile Fix 3: Inset Framed Visual Box with zero crop
   @media (max-width: 768px) {
     &.has-media {
       grid-template-columns: 1fr;
 
+      .stream-feature-content {
+        padding: 1.35rem 1.4rem 0.85rem;
+      }
+
       .stream-feature-media {
-        height: 200px;
-        border-left: none;
-        border-top: 1px solid #334155;
+        margin: 0 1.25rem 1.25rem;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: #090e17;
+        height: auto;
+        max-height: 220px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-left: 1px solid rgba(255, 255, 255, 0.12);
+
+        img {
+          width: 100%;
+          height: auto;
+          max-height: 210px;
+          object-fit: contain;
+          display: block;
+        }
 
         .stream-feature-overlay {
-          background: linear-gradient(180deg, rgba(15, 23, 42, 0.35) 0%, transparent 40%);
+          display: none;
         }
       }
     }
@@ -1525,6 +1546,7 @@ p {
     font-size: 0.75rem;
     color: $ink-soft;
     font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
   }
 
   .pub-compact-title {
@@ -1534,7 +1556,11 @@ p {
     letter-spacing: -0.01em;
     color: $ink-strong;
     margin: 0;
-    flex: 1;
+    flex: 1 1 auto;
+    min-width: 0; // Crucial: prevents flex shrink squishing text to 1ch vertical columns
+    word-break: normal;
+    overflow-wrap: break-word;
+
     a {
       color: $ink-strong;
       &:hover { color: $accent; text-decoration: none; }
@@ -1553,6 +1579,35 @@ p {
     padding: 0.1rem 0.5rem;
     border-radius: 4px;
     white-space: nowrap;
+    flex-shrink: 0;
+
+    p { margin: 0; display: inline; }
+  }
+
+  // Mobile: stack to 2-row layout so title gets 100% width and never gets squashed
+  @media (max-width: 640px) {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.35rem 0.75rem;
+    align-items: baseline;
+
+    .pub-compact-year {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .pub-compact-journal {
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: end;
+    }
+
+    .pub-compact-title {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      width: 100%;
+    }
   }
 }
 
