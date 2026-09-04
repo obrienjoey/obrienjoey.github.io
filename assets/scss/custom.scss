@@ -582,7 +582,9 @@ p {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.85rem;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.1rem;
 
     .spotlight-pill {
       font-size: 0.72rem;
@@ -607,7 +609,9 @@ p {
     font-size: 1.35rem;
     font-weight: 700;
     line-height: 1.3;
-    margin-bottom: 1rem;
+    margin-top: 0;
+    margin-bottom: 1.1rem;
+    padding-top: 0.1rem;
     a {
       color: #ffffff;
       transition: color 0.2s ease;
@@ -1398,6 +1402,23 @@ p {
     margin: 0;
   }
 
+  // High-specificity overrides: feature cards are always dark navy, even in
+  // light mode. Without these, the generic light-mode rules
+  // (.pub-list-item .pub-title a → $ink-strong, .badge-journal → $wash)
+  // outrank the single-class .pub-title-on-dark / .badge-journal-on-dark
+  // helpers and render dark-on-navy unreadable text.
+  .pub-title a,
+  .pub-title-on-dark a {
+    color: #ffffff;
+    &:hover { color: $accent-bright; text-decoration: none; }
+  }
+
+  .badge-journal.badge-journal-on-dark {
+    color: $accent-bright;
+    background: rgba($accent-bright, 0.12);
+    border-color: rgba($accent-bright, 0.3);
+  }
+
   .pub-authors {
     font-size: 0.85rem;
     color: #cbd5e1;
@@ -1445,21 +1466,24 @@ p {
       border-left: 1px solid #334155;
       background: #090e17;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem;
+      min-height: 200px;
 
       img {
         width: 100%;
-        height: 100%;
-        object-fit: cover;
+        height: auto;
+        max-height: 260px;
+        object-fit: contain;
         object-position: center;
         display: block;
         filter: saturate(0.95);
       }
 
       .stream-feature-overlay {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(90deg, rgba(15, 23, 42, 0.35) 0%, transparent 40%);
-        pointer-events: none;
+        display: none;
       }
     }
   }
