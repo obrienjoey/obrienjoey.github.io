@@ -19,6 +19,13 @@ $ink-soft: #6e6353;    // meta / captions / TOC (was slate #64748b)
 $ink-faint: #b9ac96;   // faint dots / tag borders (was slate #94a3b8 / #cbd5e1)
 $wash: #f0eadd;        // table + tag washes (was slate #f1f5f9)
 
+// Page canvas — bone throughout. Without this the <body> defaults to white,
+// leaving a white stripe in the footer's margin-top and around short pages,
+// which is what made the footer read as a pasted-on block.
+body {
+  background: $paper;
+}
+
 // Custom Typography Overrides
 h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
@@ -1244,9 +1251,30 @@ p {
 .custom-site-footer {
   background: #0f172a;
   color: #94a3b8;
-  padding: 3.5rem 0 2.5rem 0;
+  padding: 3rem 0 2.25rem 0;
   border-top: 1px solid #1e293b;
-  margin-top: 4rem;
+  margin-top: 0;
+
+  .footer-curve-rule {
+    display: block;
+    width: 100%;
+    height: 26px;
+    margin-bottom: 1.25rem;
+    path {
+      fill: none;
+      stroke: $accent-bright;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+    }
+    circle {
+      fill: transparent;
+      stroke: $accent-bright;
+      stroke-width: 1.75;
+    }
+    line {
+      stroke: rgba(255, 255, 255, 0.12);
+    }
+  }
 
   .footer-top-row {
     display: flex;
@@ -1254,7 +1282,7 @@ p {
     align-items: center;
     flex-wrap: wrap;
     gap: 1.5rem;
-    padding-bottom: 2rem;
+    padding-bottom: 1.75rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
@@ -1268,7 +1296,7 @@ p {
     display: block;
     margin-bottom: 0.25rem;
     .dot {
-      color: $accent;
+      color: $accent-bright;
     }
   }
 
@@ -1280,26 +1308,32 @@ p {
 
   .footer-social-links {
     display: flex;
-    gap: 0.6rem;
+    gap: 1.25rem;
+    flex-wrap: wrap;
 
     .footer-social-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
-      background: #1e293b;
+      display: inline-block;
+      width: auto;
+      height: auto;
+      border-radius: 0;
+      background: transparent;
       color: #cbd5e1;
-      border: 1px solid #334155;
-      font-size: 1rem;
-      transition: background 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      border: none;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
       text-decoration: none;
+      padding: 0.25rem 0;
 
       &:hover {
-        background: #334155;
-        color: #ffffff;
-        border-color: #475569;
+        background: transparent;
+        color: $accent-bright;
+        border: none;
+        text-decoration: underline;
+        text-underline-offset: 3px;
       }
     }
   }
@@ -1642,6 +1676,174 @@ p {
 
 
 
+
+// =============================================================================
+// VARIANT B WINNER (prototype-mobile-nav.html) — bottom sheet + contrast pass
+// =============================================================================
+$ink-soft-fixed: #574d3e; // AA on bone for small mono meta (replaces $ink-soft there)
+
+// Menu links: full #e2e8f0 instead of 70% white — AA on slate.
+.navbar .navbar-nav .nav-link,
+.navbar .nav-icons .nav-link {
+  color: #e2e8f0;
+}
+
+// 44px minimum targets on toggler + icons.
+.navbar-toggler.joey-sheet-trigger,
+.navbar .nav-icons .nav-link {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.navbar .navbar-nav .nav-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+// Small mono meta uses the darkened warm ink.
+.stream-meta.article-metadata,
+.media-timeline-feed .timeline-date,
+.pub-list-item .pub-year,
+.pub-compact-year {
+  color: $ink-soft-fixed;
+}
+
+// Bottom sheet — mobile only (<lg to match navbar-expand-lg).
+.joey-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.6);
+  z-index: 1040;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.joey-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1050;
+  background: $paper-card;
+  border-top: 1px solid $hairline;
+  border-radius: 16px 16px 0 0;
+  transform: translateY(105%);
+  transition: transform 0.25s ease;
+  max-height: 82vh;
+  overflow-y: auto;
+  box-shadow: 0 -16px 40px rgba(15, 23, 42, 0.3);
+}
+.joey-sheet-handle {
+  width: 44px;
+  height: 5px;
+  border-radius: 3px;
+  background: $hairline;
+  margin: 0.7rem auto 0.3rem;
+}
+.joey-sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 1.25rem 0.6rem;
+  border-bottom: 1px solid $hairline;
+}
+.joey-sheet-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  color: $ink-strong;
+  small {
+    display: block;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 400;
+    font-size: 0.68rem;
+    color: $ink-soft-fixed;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+}
+.joey-sheet-close {
+  background: $wash;
+  border: 1px solid $hairline;
+  color: $ink-strong;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.joey-sheet nav a {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.85rem 1.25rem;
+  min-height: 52px;
+  text-decoration: none;
+  border-bottom: 1px solid $hairline;
+  &:hover { background: $wash; }
+  .n {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.7rem;
+    color: $accent;
+    flex: none;
+    width: 2ch;
+  }
+  .tt {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    color: $ink-strong;
+    flex: 1;
+  }
+  .ss {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.68rem;
+    color: $ink-soft-fixed;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+.joey-sheet-foot {
+  display: flex;
+  gap: 0.6rem;
+  padding: 1rem 1.25rem 1.4rem;
+  a {
+    flex: 1;
+    text-align: center;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $hairline;
+    border-radius: 8px;
+    color: $ink-strong;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+}
+body.joey-sheet-open {
+  overflow: hidden;
+  .joey-sheet { transform: none; }
+  .joey-sheet-backdrop { opacity: 1; }
+}
+@media (min-width: 992px) {
+  .joey-sheet,
+  .joey-sheet-backdrop { display: none; }
+}
+.dark {
+  .joey-sheet { background: #0f172a; border-color: #1e293b; }
+  .joey-sheet-head { border-color: #1e293b; }
+  .joey-sheet-title { color: #f8fafc; small { color: #94a3b8; } }
+  .joey-sheet-close { background: #1e293b; border-color: #334155; color: #f8fafc; }
+  .joey-sheet nav a {
+    border-color: #1e293b;
+    &:hover { background: #1e293b; }
+    .tt { color: #f8fafc; }
+    .ss { color: #94a3b8; }
+  }
+  .joey-sheet-foot a { border-color: #334155; color: #f8fafc; }
+}
 
 // =============================================================================
 // REDUCED MOTION — honour the OS-level preference everywhere.

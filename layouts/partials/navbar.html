@@ -24,8 +24,8 @@
     {{end}}
 
     {{ if site.Menus.main }}
-    <button type="button" class="navbar-toggler" data-toggle="collapse"
-            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="{{ i18n "toggle_navigation" }}">
+    <button type="button" class="navbar-toggler joey-sheet-trigger" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="joey-sheet navbar-content" aria-expanded="false" aria-label="{{ i18n "toggle_navigation" }}">
     <span><i class="fas fa-bars"></i></span>
     </button>
     {{ end }}
@@ -158,3 +158,72 @@
 
   </div><!-- /.container -->
 </nav>
+
+{{/* Variant B winner from prototype-mobile-nav.html — bottom sheet for <lg.
+     Keeps #navbar-content collapse as no-JS fallback; JS intercepts the
+     toggler on mobile and opens this sheet instead. */}}
+{{ if site.Menus.main }}
+{{ $subs := dict "Home" "Start" "Expertise" "CVA · PFE · SS1/23" "Publications" "Peer-reviewed" "Posts" "Field notes" "Media & Speaking" "Podcast · Talks" "Portfolio" "ORE work" "Contact" "Validation work" }}
+<div class="joey-sheet-backdrop" id="joey-sheet-backdrop" hidden></div>
+<section class="joey-sheet" id="joey-sheet" role="dialog" aria-modal="true" aria-label="Sections" hidden>
+  <div class="joey-sheet-handle" aria-hidden="true"></div>
+  <div class="joey-sheet-head">
+    <div class="joey-sheet-title">Sections<small>Joey O'Brien · LSEG Quant</small></div>
+    <button type="button" class="joey-sheet-close" data-joey-sheet-close aria-label="Close menu">✕</button>
+  </div>
+  <nav aria-label="Mobile sections">
+    {{ range $i, $m := site.Menus.main }}
+    <a href="{{ $m.URL | relLangURL }}">
+      <span class="n">{{ printf "%02d" (add $i 1) }}</span>
+      <span class="tt">{{ $m.Name | safeHTML }}</span>
+      <span class="ss">{{ index $subs $m.Name | default "" }}</span>
+    </a>
+    {{ end }}
+  </nav>
+  <div class="joey-sheet-foot">
+    <a href="#" class="js-search">⌕ Search</a>
+    <a href="#" class="js-dark-toggle">☾ Light / dark</a>
+  </div>
+</section>
+<script>
+(function () {
+  var trigger = document.querySelector('.joey-sheet-trigger');
+  var sheet = document.getElementById('joey-sheet');
+  var backdrop = document.getElementById('joey-sheet-backdrop');
+  if (!trigger || !sheet || !backdrop) return;
+  var LG = window.matchMedia('(max-width: 991.98px)');
+  var lastFocus = null;
+  function openSheet() {
+    lastFocus = document.activeElement;
+    sheet.hidden = false; backdrop.hidden = false;
+    requestAnimationFrame(function () {
+      document.body.classList.add('joey-sheet-open');
+    });
+    trigger.setAttribute('aria-expanded', 'true');
+    var first = sheet.querySelector('nav a');
+    if (first) first.focus();
+  }
+  function closeSheet() {
+    document.body.classList.remove('joey-sheet-open');
+    trigger.setAttribute('aria-expanded', 'false');
+    setTimeout(function () {
+      sheet.hidden = true; backdrop.hidden = true;
+    }, 200);
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  trigger.addEventListener('click', function (e) {
+    if (!LG.matches) return; // desktop: let Bootstrap collapse handle it
+    e.preventDefault(); e.stopPropagation();
+    var open = document.body.classList.contains('joey-sheet-open');
+    open ? closeSheet() : openSheet();
+  });
+  backdrop.addEventListener('click', closeSheet);
+  sheet.querySelector('[data-joey-sheet-close]').addEventListener('click', closeSheet);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.body.classList.contains('joey-sheet-open')) closeSheet();
+  });
+  // Keep Bootstrap's collapse from fighting the sheet on mobile.
+  document.getElementById('navbar-content').classList.remove('show');
+})();
+</script>
+{{ end }}

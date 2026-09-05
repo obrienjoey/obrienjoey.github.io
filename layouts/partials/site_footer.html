@@ -1,5 +1,10 @@
 <footer class="site-footer custom-site-footer">
   <div class="container">
+    <svg class="footer-curve-rule" viewBox="0 0 640 26" aria-hidden="true" focusable="false">
+      <line x1="0" y1="20" x2="640" y2="20"/>
+      <path d="M4 17 C 60 16, 120 15, 180 13 S 320 8, 440 5 S 560 3, 636 2"/>
+      <circle cx="180" cy="13" r="3"/><circle cx="300" cy="9" r="3"/><circle cx="440" cy="5" r="3"/><circle cx="636" cy="2" r="3"/>
+    </svg>
     <div class="footer-top-row">
       <div class="footer-brand-col">
         <a class="footer-logo" href="{{ site.BaseURL }}">
@@ -11,23 +16,13 @@
       </div>
 
       <div class="footer-social-col">
-        <div class="footer-social-links">
-          <a href="https://www.linkedin.com/in/joeyobrien/" target="_blank" rel="noopener" class="footer-social-btn" title="LinkedIn">
-            <i class="fab fa-linkedin-in"></i>
-          </a>
-          <a href="https://github.com/obrienjoey" target="_blank" rel="noopener" class="footer-social-btn" title="GitHub">
-            <i class="fab fa-github"></i>
-          </a>
-          <a href="https://scholar.google.com/citations?user=IrhV4UwAAAAJ&hl=en" target="_blank" rel="noopener" class="footer-social-btn" title="Google Scholar">
-            <i class="ai ai-google-scholar"></i>
-          </a>
-          <a href="https://orcid.org/0000-0002-9516-0175" target="_blank" rel="noopener" class="footer-social-btn" title="ORCID">
-            <i class="ai ai-orcid"></i>
-          </a>
-          <a href="mailto:obrienjoeyd@gmail.com" class="footer-social-btn" title="Email">
-            <i class="fas fa-envelope"></i>
-          </a>
-        </div>
+        <nav class="footer-social-links" aria-label="Profiles">
+          <a href="https://www.linkedin.com/in/joeyobrien/" target="_blank" rel="noopener" class="footer-social-btn">LinkedIn</a>
+          <a href="https://github.com/obrienjoey" target="_blank" rel="noopener" class="footer-social-btn">GitHub</a>
+          <a href="https://scholar.google.com/citations?user=IrhV4UwAAAAJ&hl=en" target="_blank" rel="noopener" class="footer-social-btn">Scholar</a>
+          <a href="https://orcid.org/0000-0002-9516-0175" target="_blank" rel="noopener" class="footer-social-btn">ORCID</a>
+          <a href="mailto:obrienjoeyd@gmail.com" class="footer-social-btn">Email</a>
+        </nav>
       </div>
     </div>
 
