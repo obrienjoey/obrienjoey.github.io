@@ -162,6 +162,49 @@ p {
   color: #cbd5e1;
 }
 
+// Compact mobile hero (Variant B from prototype/mobile-hero) — the stacked
+// portrait/name/role/icons run ~700px before any bio at phone width; this
+// halves it so the first bio lines and the CTAs reach the first screen.
+// Tablets keep the roomy centered layout.
+@media (max-width: 767px) {
+  .wg-about #profile {
+    .portrait {
+      width: 128px;
+      height: 128px;
+      margin-bottom: 0.75rem;
+    }
+
+    .portrait-title {
+      h2 {
+        font-size: 1.4rem;
+        margin-bottom: 0.3rem;
+      }
+      // Role and organization flow as one line: "Principal Consultant · LSEG"
+      h3 {
+        display: inline;
+        font-size: 0.8rem;
+
+        &::after {
+          content: " \00B7  ";
+        }
+
+        &:last-of-type::after {
+          content: "";
+        }
+      }
+    }
+
+    .network-icon {
+      margin-top: 0.75rem;
+
+      li a {
+        font-size: 1.2rem;
+        margin: 0 0.25rem;
+      }
+    }
+  }
+}
+
 .dark .wg-about #profile .portrait {
   border-color: #334155;
 }
