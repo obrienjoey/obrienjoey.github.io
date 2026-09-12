@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- ============================================================
+PROTOTYPE — throwaway, not production.
+Question: how should the homepage's mid-page sections carry
+typographic drama (review: "Typography has no mid-page drama")?
+
+Three variants of the homepage section headers, switchable via
+?variant=a|b|c (default a) with a floating bottom bar + arrow keys.
+Follows the repo's prototype-*.html convention. Real site palette,
+fonts, and content. Serve or open directly in a browser.
+============================================================ -->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROTOTYPE — Section typography drama</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:ital,wght@0,400;0,600;0,700;1,400&family=Roboto+Mono:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #b4232e;
+    --accent-strong: #8e1a24;
+    --accent-bright: #e05a66;
+    --accent-soft: #fbeef0;
+    --paper: #f6f3ed;
+    --paper-card: #fffdf9;
+    --hairline: #e7e1d6;
+    --ink-strong: #262019;
+    --ink-body: #3d3830;
+    --ink: #4d4437;
+    --ink-soft: #6e6353;
+    --ink-soft-fixed: #574d3e;
+    --ink-faint: #b9ac96;
+    --wash: #f0eadd;
+    --navy: #0f172a;
+    --navy-2: #1e293b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    font-family: 'Inter', sans-serif;
+    color: var(--ink-body);
+  }
+  .proto-nav {
+    background: rgba(15, 23, 42, 0.95);
+    color: #e2e8f0;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.9rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+  }
+  .proto-nav .brand { color: #fff; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; }
+  .proto-nav .brand .dot { color: var(--accent-bright); }
+  .proto-nav .active { color: var(--accent-bright); }
+  .proto-container { max-width: 1170px; margin: 0 auto; padding: 0 2rem; }
+  section.proto-section { padding: 5rem 0 3.5rem; }
+  section.proto-section + section.proto-section { border-top: 1px solid var(--hairline); }
+  body[data-variant="a"] .proto-section:not(.v-a),
+  body[data-variant="b"] .proto-section:not(.v-b),
+  body[data-variant="c"] .proto-section:not(.v-c) { display: none; }
+
+  /* shared bits ------------------------------------------------------- */
+  .kicker {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+  }
+  .feature-card {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+    border: 1px solid #334155;
+    border-left: 3px solid var(--accent-bright);
+    border-radius: 16px;
+    padding: 1.5rem 1.75rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+  }
+  .feature-card .fc-kicker {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Roboto Mono', monospace; font-size: 0.75rem; color: #94a3b8;
+    margin-bottom: 0.8rem;
+  }
+  .feature-card .fc-badge {
+    font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 700;
+    color: var(--accent-bright); background: rgba(224, 90, 102, 0.12);
+    border: 1px solid rgba(224, 90, 102, 0.3);
+    padding: 0.2rem 0.6rem; border-radius: 6px; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .feature-card h3 { font-family: 'Outfit', sans-serif; font-size: 1.35rem; margin: 0 0 0.5rem; }
+  .feature-card p { color: #cbd5e1; font-size: 0.92rem; line-height: 1.6; margin: 0; }
+  .compact-row {
+    display: flex; gap: 1rem; align-items: baseline;
+    padding: 0.7rem 0.25rem; border-bottom: 1px solid var(--hairline);
+  }
+  .compact-row .year { font-family: 'Roboto Mono', monospace; font-size: 0.75rem; color: var(--ink-soft-fixed); }
+  .compact-row .title { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.98rem; color: var(--ink-strong); margin: 0; }
+  .compact-row .journal {
+    margin-left: auto; font-family: 'Roboto Mono', monospace; font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink);
+    background: var(--wash); border: 1px solid var(--hairline);
+    padding: 0.1rem 0.5rem; border-radius: 4px; white-space: nowrap;
+  }
+  ul.spec-list { columns: 2; column-gap: 3rem; padding-left: 1.2rem; margin: 0; }
+  ul.spec-list li { font-size: 1rem; line-height: 1.55; margin-bottom: 0.7rem; break-inside: avoid; }
+  ul.spec-list b { color: var(--ink-strong); }
+
+  /* ===================================================================
+     VARIANT A — FOLIO BANDS
+     Chapter-opening treatment: a double ledger rule, a mono folio row
+     (№ + label left, meta right), then the title at full width and
+     3.4rem. Content reflows full-width beneath. Scale is the drama.
+     =================================================================== */
+  .v-a .folio-band { margin-bottom: 2.2rem; }
+  .v-a .folio-rule { border-top: 3px double var(--ink-faint); margin-bottom: 0.9rem; }
+  .v-a .folio-row {
+    display: flex; align-items: baseline; gap: 1rem;
+    font-family: 'Roboto Mono', monospace; font-size: 0.78rem;
+    letter-spacing: 0.12em; color: var(--ink-soft-fixed);
+  }
+  .v-a .folio-row .no { color: var(--accent); font-weight: 700; }
+  .v-a .folio-row .meta { margin-left: auto; color: var(--ink-faint); }
+  .v-a h2.folio-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(2.6rem, 5vw, 3.6rem);
+    font-weight: 700; letter-spacing: -0.035em; line-height: 1.02;
+    color: var(--ink-strong); margin: 0.5rem 0 0.4rem;
+  }
+  .v-a p.folio-sub {
+    font-size: 1.15rem; color: var(--ink-soft); margin: 0 0 2rem; max-width: 46rem;
+  }
+
+  /* ===================================================================
+     VARIANT B — MARGIN INDEX
+     The left column becomes a ruled ledger margin: sticky title block
+     with a giant outlined ghost numeral behind it, mono kicker, 2.3rem
+     title. The numeral keeps watch while the content scrolls.
+     =================================================================== */
+  .v-b .margin-grid {
+    display: grid; grid-template-columns: 330px 1px 1fr; gap: 0 2.5rem;
+  }
+  .v-b .margin-block { position: sticky; top: 2.5rem; align-self: start; }
+  .v-b .ghost-no {
+    display: block;
+    font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 7.5rem;
+    line-height: 0.9; letter-spacing: -0.04em;
+    color: transparent; -webkit-text-stroke: 1.5px #d5cab6;
+  }
+  .v-b .kicker { display: block; margin: 1.1rem 0 0.4rem; }
+  .v-b h2.margin-title {
+    font-family: 'Outfit', sans-serif; font-size: 2.3rem; font-weight: 700;
+    letter-spacing: -0.03em; line-height: 1.05; color: var(--ink-strong);
+    margin: 0 0 0.5rem;
+  }
+  .v-b p.margin-sub { font-size: 1rem; color: var(--ink-soft); margin: 0 0 1.2rem; }
+  .v-b .margin-rule { background: var(--hairline); }
+  .v-b .margin-content { padding: 0.5rem 0 1rem; }
+
+  /* ===================================================================
+     VARIANT C — SERIF COUNTERPOINT
+     Layout unchanged (col-4/col-8); drama comes from the face instead.
+     Titles move to Fraunces (an old-style ledger/banknote serif) at
+     ~3rem with an italic Fraunces subtitle and a short oxblood rule.
+     =================================================================== */
+  .v-c .serif-grid { display: grid; grid-template-columns: 340px 1fr; gap: 2.5rem; }
+  .v-c .kicker { display: block; margin-bottom: 0.65rem; }
+  .v-c h2.serif-title {
+    font-family: 'Fraunces', serif;
+    font-optical-sizing: auto;
+    font-size: clamp(2.4rem, 4vw, 3.1rem);
+    font-weight: 600; letter-spacing: -0.015em; line-height: 1.04;
+    color: var(--ink-strong); margin: 0 0 0.55rem;
+  }
+  .v-c p.serif-sub {
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: 1.18rem; color: var(--ink-soft); margin: 0 0 1.1rem; line-height: 1.45;
+  }
+  .v-c .serif-rule { width: 52px; border-top: 2px solid var(--accent); }
+
+  /* floating switcher -------------------------------------------------- */
+  .proto-switcher {
+    position: fixed; bottom: 1.25rem; left: 50%; transform: translateX(-50%);
+    background: var(--navy); color: #f8fafc;
+    border: 1px solid #334155; border-radius: 999px;
+    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.45);
+    display: flex; align-items: center; gap: 0.35rem;
+    padding: 0.4rem 0.55rem; z-index: 50;
+    font-family: 'Roboto Mono', monospace; font-size: 0.8rem;
+  }
+  .proto-switcher button {
+    background: var(--navy-2); color: #f8fafc; border: 1px solid #334155;
+    border-radius: 999px; width: 34px; height: 34px; cursor: pointer;
+    font-size: 0.9rem; line-height: 1;
+  }
+  .proto-switcher button:hover { background: #24324d; }
+  .proto-switcher .label { min-width: 15rem; text-align: center; letter-spacing: 0.02em; }
+  .proto-switcher .label b { color: var(--accent-bright); }
+  .proto-watermark {
+    position: fixed; top: 0.6rem; right: 0.75rem; z-index: 50;
+    font-family: 'Roboto Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em;
+    background: var(--accent); color: #fff; padding: 0.25rem 0.55rem; border-radius: 4px;
+  }
+  @media (max-width: 900px) {
+    ul.spec-list { columns: 1; }
+    .v-b .margin-grid, .v-c .serif-grid { grid-template-columns: 1fr; }
+    .v-b .ghost-no { font-size: 5rem; }
+    .proto-switcher .label { min-width: 0; }
+  }
+</style>
+</head>
+<body data-variant="a">
+<div class="proto-watermark">PROTOTYPE</div>
+
+<nav class="proto-nav">
+  <span class="brand">Joey O'Brien<span class="dot">.</span></span>
+  <span>Home</span><span class="active">Expertise</span><span>Publications</span><span>Posts</span><span>Media &amp; Speaking</span>
+</nav>
+
+<main class="proto-container">
+
+  <!-- ================= VARIANT A ================= -->
+  <section class="proto-section v-a" data-only="a">
+    <header class="folio-band">
+      <div class="folio-rule"></div>
+      <div class="folio-row">
+        <span class="no">№ 02</span><span>EXPERTISE</span>
+        <span class="meta">CVA · PFE · SS1/23</span>
+      </div>
+      <h2 class="folio-title">Expertise</h2>
+      <p class="folio-sub">Quantitative Risk &amp; Model Validation — validation and implementation of quantitative models across the trade lifecycle.</p>
+    </header>
+    <ul class="spec-list">
+      <li><b>XVA Modelling:</b> CVA, DVA, FVA, MVA, and KVA frameworks; sensitivities and Greeks; regulatory capital</li>
+      <li><b>Counterparty Credit Risk:</b> PFE simulation, ISDA SIMM, netting and collateral agreements</li>
+      <li><b>Derivative Pricing:</b> Interest rate products (swaps, caps, floors, swaptions), credit derivatives, FX derivatives</li>
+      <li><b>Model Validation:</b> Independent model review, backtesting, stress testing, regulatory documentation</li>
+    </ul>
+  </section>
+
+  <section class="proto-section v-a" data-only="a">
+    <header class="folio-band">
+      <div class="folio-rule"></div>
+      <div class="folio-row">
+        <span class="no">№ 03</span><span>PUBLICATIONS</span>
+        <span class="meta">PEER-REVIEWED · 2019–2024</span>
+      </div>
+      <h2 class="folio-title">Publications</h2>
+      <p class="folio-sub">Academic &amp; Applied Mathematical Research</p>
+    </header>
+    <div class="feature-card">
+      <div class="fc-kicker"><span class="fc-badge">LSEG</span><span>2024</span></div>
+      <h3>Backtesting Future Risk Factors Case Study</h3>
+      <p>Backtesting methodologies for Future Risk Factors within derivative exposure models, validating Simulated Exposure profiles against actual historical market realizations to meet regulatory expectations like SS1/23.</p>
+    </div>
+    <div class="compact-row"><span class="year">2020</span><p class="title">A generalization of the classical Kelly betting formula to the case of temporal correlation</p><span class="journal">IEEE Control Systems Letters</span></div>
+    <div class="compact-row"><span class="year">2020</span><p class="title">Quantifying uncertainty in a predictive model for popularity dynamics</p><span class="journal">Physical Review E</span></div>
+  </section>
+
+  <section class="proto-section v-a" data-only="a">
+    <header class="folio-band">
+      <div class="folio-rule"></div>
+      <div class="folio-row">
+        <span class="no">№ 04</span><span>POSTS</span>
+        <span class="meta">FIELD NOTES · 17 MIN AVG</span>
+      </div>
+      <h2 class="folio-title">Recent Posts</h2>
+      <p class="folio-sub">Articles on Mathematics, Data, &amp; Technology</p>
+    </header>
+    <div class="feature-card">
+      <div class="fc-kicker"><span class="fc-badge">Featured Post</span><span>2026</span></div>
+      <h3>Sensitivity Analysis in ORE</h3>
+      <p>Run ORE's native zero-domain interest-rate sensitivities for a single-curve EUR-ESTER OIS, then follow the Jacobian par conversion that maps those deltas onto the liquid OIS quotes a trader can hedge.</p>
+    </div>
+    <div class="compact-row"><span class="year">2026</span><p class="title">Validating Derivative Pricing in ORE</p></div>
+    <div class="compact-row"><span class="year">2026</span><p class="title">From CSV to ORE: Automating Trade Translation with Python</p></div>
+  </section>
+
+  <!-- ================= VARIANT B ================= -->
+  <section class="proto-section v-b" data-only="b">
+    <div class="margin-grid">
+      <div class="margin-block">
+        <span class="ghost-no" aria-hidden="true">02</span>
+        <span class="kicker">EXPERTISE</span>
+        <h2 class="margin-title">Expertise</h2>
+        <p class="margin-sub">Quantitative Risk &amp; Model Validation</p>
+      </div>
+      <div class="margin-rule" aria-hidden="true"></div>
+      <div class="margin-content">
+        <ul class="spec-list">
+          <li><b>XVA Modelling:</b> CVA, DVA, FVA, MVA, and KVA frameworks; sensitivities and Greeks; regulatory capital</li>
+          <li><b>Counterparty Credit Risk:</b> PFE simulation, ISDA SIMM, netting and collateral agreements</li>
+          <li><b>Derivative Pricing:</b> Interest rate products (swaps, caps, floors, swaptions), credit derivatives, FX derivatives</li>
+          <li><b>Model Validation:</b> Independent model review, backtesting, stress testing, regulatory documentation</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="proto-section v-b" data-only="b">
+    <div class="margin-grid">
+      <div class="margin-block">
+        <span class="ghost-no" aria-hidden="true">03</span>
+        <span class="kicker">PUBLICATIONS</span>
+        <h2 class="margin-title">Publications</h2>
+        <p class="margin-sub">Academic &amp; Applied Mathematical Research</p>
+      </div>
+      <div class="margin-rule" aria-hidden="true"></div>
+      <div class="margin-content">
+        <div class="feature-card">
+          <div class="fc-kicker"><span class="fc-badge">LSEG</span><span>2024</span></div>
+          <h3>Backtesting Future Risk Factors Case Study</h3>
+          <p>Backtesting methodologies for Future Risk Factors within derivative exposure models, validating Simulated Exposure profiles against actual historical market realizations.</p>
+        </div>
+        <div class="compact-row"><span class="year">2020</span><p class="title">A generalization of the classical Kelly betting formula to the case of temporal correlation</p><span class="journal">IEEE Control Systems Letters</span></div>
+        <div class="compact-row"><span class="year">2020</span><p class="title">Quantifying uncertainty in a predictive model for popularity dynamics</p><span class="journal">Physical Review E</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="proto-section v-b" data-only="b">
+    <div class="margin-grid">
+      <div class="margin-block">
+        <span class="ghost-no" aria-hidden="true">04</span>
+        <span class="kicker">POSTS</span>
+        <h2 class="margin-title">Recent Posts</h2>
+        <p class="margin-sub">Articles on Mathematics, Data, &amp; Technology</p>
+      </div>
+      <div class="margin-rule" aria-hidden="true"></div>
+      <div class="margin-content">
+        <div class="feature-card">
+          <div class="fc-kicker"><span class="fc-badge">Featured Post</span><span>2026</span></div>
+          <h3>Sensitivity Analysis in ORE</h3>
+          <p>Run ORE's native zero-domain interest-rate sensitivities for a single-curve EUR-ESTER OIS, then follow the Jacobian par conversion onto hedgeable OIS quotes.</p>
+        </div>
+        <div class="compact-row"><span class="year">2026</span><p class="title">Validating Derivative Pricing in ORE</p></div>
+        <div class="compact-row"><span class="year">2026</span><p class="title">From CSV to ORE: Automating Trade Translation with Python</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= VARIANT C ================= -->
+  <section class="proto-section v-c" data-only="c">
+    <div class="serif-grid">
+      <header class="serif-head">
+        <span class="kicker">02 · EXPERTISE</span>
+        <h2 class="serif-title">Expertise</h2>
+        <p class="serif-sub">Quantitative Risk &amp; Model Validation</p>
+        <div class="serif-rule"></div>
+      </header>
+      <ul class="spec-list">
+        <li><b>XVA Modelling:</b> CVA, DVA, FVA, MVA, and KVA frameworks; sensitivities and Greeks; regulatory capital</li>
+        <li><b>Counterparty Credit Risk:</b> PFE simulation, ISDA SIMM, netting and collateral agreements</li>
+        <li><b>Derivative Pricing:</b> Interest rate products (swaps, caps, floors, swaptions), credit derivatives, FX derivatives</li>
+        <li><b>Model Validation:</b> Independent model review, backtesting, stress testing, regulatory documentation</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="proto-section v-c" data-only="c">
+    <div class="serif-grid">
+      <header class="serif-head">
+        <span class="kicker">03 · PUBLICATIONS</span>
+        <h2 class="serif-title">Publications</h2>
+        <p class="serif-sub">Academic &amp; Applied Mathematical Research</p>
+        <div class="serif-rule"></div>
+      </header>
+      <div>
+        <div class="feature-card">
+          <div class="fc-kicker"><span class="fc-badge">LSEG</span><span>2024</span></div>
+          <h3>Backtesting Future Risk Factors Case Study</h3>
+          <p>Backtesting methodologies for Future Risk Factors within derivative exposure models, validating Simulated Exposure profiles against actual historical market realizations.</p>
+        </div>
+        <div class="compact-row"><span class="year">2020</span><p class="title">A generalization of the classical Kelly betting formula to the case of temporal correlation</p><span class="journal">IEEE Control Systems Letters</span></div>
+        <div class="compact-row"><span class="year">2020</span><p class="title">Quantifying uncertainty in a predictive model for popularity dynamics</p><span class="journal">Physical Review E</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="proto-section v-c" data-only="c">
+    <div class="serif-grid">
+      <header class="serif-head">
+        <span class="kicker">04 · POSTS</span>
+        <h2 class="serif-title">Recent Posts</h2>
+        <p class="serif-sub">Articles on Mathematics, Data, &amp; Technology</p>
+        <div class="serif-rule"></div>
+      </header>
+      <div>
+        <div class="feature-card">
+          <div class="fc-kicker"><span class="fc-badge">Featured Post</span><span>2026</span></div>
+          <h3>Sensitivity Analysis in ORE</h3>
+          <p>Run ORE's native zero-domain interest-rate sensitivities for a single-curve EUR-ESTER OIS, then follow the Jacobian par conversion onto hedgeable OIS quotes.</p>
+        </div>
+        <div class="compact-row"><span class="year">2026</span><p class="title">Validating Derivative Pricing in ORE</p></div>
+        <div class="compact-row"><span class="year">2026</span><p class="title">From CSV to ORE: Automating Trade Translation with Python</p></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="proto-switcher" role="group" aria-label="Prototype variant switcher">
+  <button type="button" id="prev" aria-label="Previous variant">←</button>
+  <span class="label" id="label"></span>
+  <button type="button" id="next" aria-label="Next variant">→</button>
+</div>
+
+<script>
+(function () {
+  var VARIANTS = {
+    a: 'A — Folio bands',
+    b: 'B — Margin index',
+    c: 'C — Serif counterpoint'
+  };
+  var KEYS = Object.keys(VARIANTS);
+  function current() {
+    var v = new URLSearchParams(location.search).get('variant');
+    return VARIANTS[v] ? v : 'a';
+  }
+  function apply(v) {
+    document.body.dataset.variant = v;
+    document.getElementById('label').innerHTML =
+      '<b>' + v.toUpperCase() + '</b> · ' + VARIANTS[v];
+    var params = new URLSearchParams(location.search);
+    params.set('variant', v);
+    history.replaceState(null, '', location.pathname + '?' + params);
+  }
+  function step(dir) {
+    var i = KEYS.indexOf(current());
+    apply(KEYS[(i + dir + KEYS.length) % KEYS.length]);
+  }
+  document.getElementById('prev').addEventListener('click', function () { step(-1); });
+  document.getElementById('next').addEventListener('click', function () { step(1); });
+  document.addEventListener('keydown', function (e) {
+    var t = document.activeElement;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    if (e.key === 'ArrowLeft') step(-1);
+    if (e.key === 'ArrowRight') step(1);
+  });
+  apply(current());
+})();
+</script>
+</body>
+</html>
