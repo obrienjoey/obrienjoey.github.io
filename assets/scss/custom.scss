@@ -229,6 +229,94 @@ p {
   }
 }
 
+// =============================================================================
+// MARGIN INDEX — ledger section headers (Variant B from prototype-section-typography)
+// Each standard homepage section shows a ghost folio numeral above a sticky
+// title in the left margin, mirroring the mobile sheet's numbering. About (01)
+// and Media (05) keep their bespoke hero/showcase headers and stay unnumbered.
+// =============================================================================
+$ghost-stroke: #d5cab6; // outlined numeral on bone
+
+#expertise .section-heading,
+#publications .section-heading,
+#posts .section-heading,
+#news .section-heading,
+#contact .section-heading {
+  position: sticky;
+  top: 90px; // 70px navbar + air
+  align-self: flex-start; // flex children stretch by default, which pins sticky
+
+  h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.3rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: $ink-strong;
+  }
+
+  p {
+    color: $ink-soft; // theme default #b2b2b2 is ~2.4:1 on bone
+    font-size: 1.1rem;
+  }
+}
+
+#expertise .section-heading::before { content: "02"; }
+#publications .section-heading::before { content: "03"; }
+#posts .section-heading::before { content: "04"; }
+#news .section-heading::before { content: "06"; }
+#contact .section-heading::before { content: "07"; }
+
+#expertise .section-heading::before,
+#publications .section-heading::before,
+#posts .section-heading::before,
+#news .section-heading::before,
+#contact .section-heading::before {
+  display: block;
+  font-family: 'Outfit', sans-serif;
+  font-size: 7.5rem;
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px $ghost-stroke;
+  margin-bottom: 1.1rem;
+}
+
+@media (max-width: 991px) {
+  #expertise .section-heading,
+  #publications .section-heading,
+  #posts .section-heading,
+  #news .section-heading,
+  #contact .section-heading {
+    position: static;
+
+    &::before {
+      font-size: 4.75rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
+.dark {
+  #expertise .section-heading,
+  #publications .section-heading,
+  #posts .section-heading,
+  #news .section-heading,
+  #contact .section-heading {
+    h1 { color: #f8fafc; }
+    p { color: #94a3b8; }
+  }
+
+  #expertise .section-heading::before,
+  #publications .section-heading::before,
+  #posts .section-heading::before,
+  #news .section-heading::before,
+  #contact .section-heading::before {
+    -webkit-text-stroke-color: #334155;
+  }
+}
+
 // Reusable Admonition/Callout styling
 .callout {
   padding: 1rem 1.25rem;

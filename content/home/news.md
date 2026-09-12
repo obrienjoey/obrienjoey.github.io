@@ -10,7 +10,8 @@ subtitle = ""
 
 [design]
   # Choose how many columns the section has. Valid values: 1 or 2.
-  columns = "1"
+  # 2 = joins the standard col-4 heading + col-8 content margin layout.
+  columns = "2"
 
 [design.background]
 +++
