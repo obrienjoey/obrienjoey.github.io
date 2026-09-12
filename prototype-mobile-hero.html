@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- ============================================================
+PROTOTYPE — throwaway, not production.
+Question: the mobile hero is heavy — ~700px of portrait, name, role
+and wrapped social icons before any bio or CTA (review: "Mobile hero
+is heavy"). What should the compact hero be?
+
+Three variants of the About-widget hero at phone width, switchable
+via ?variant=a|b|c (default a) with a floating bottom bar + arrow
+keys. Content is framed in a 390px device column so it can be judged
+on desktop too. Real site palette, fonts, content. Implementation
+cost: A and B are CSS-only; C needs a small about-widget override.
+============================================================ -->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROTOTYPE — Mobile hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:ital,wght@0,400;0,600;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root {
+    --accent: #b4232e;
+    --accent-strong: #8e1a24;
+    --accent-soft: #fbeef0;
+    --paper: #f6f3ed;
+    --paper-card: #fffdf9;
+    --hairline: #e7e1d6;
+    --ink-strong: #262019;
+    --ink-body: #3d3830;
+    --ink: #4d4437;
+    --ink-soft: #574d3e;
+    --wash: #f0eadd;
+    --navy: #0f172a;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0;
+    background: #e9e4d9;
+    font-family: 'Inter', sans-serif;
+    color: var(--ink-body);
+    display: flex; justify-content: center;
+    min-height: 100vh;
+  }
+  .device {
+    width: min(390px, 100%);
+    background: var(--paper);
+    min-height: 100vh;
+    box-shadow: 0 0 40px rgba(38, 32, 25, 0.18);
+    padding-bottom: 6rem;
+  }
+  .proto-nav {
+    background: var(--navy);
+    color: #e2e8f0;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.75rem 1rem;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .proto-nav .brand { color: #fff; font-weight: 700; letter-spacing: -0.02em; }
+  .proto-nav .brand .dot { color: var(--accent-bright, #e05a66); }
+  .proto-nav .icons span { margin-left: 0.9rem; }
+
+  .hero { padding: 1.5rem 1.25rem 0.5rem; }
+  .bio { padding: 0.5rem 1.25rem 0; }
+  .bio p { font-size: 1rem; line-height: 1.65; margin: 0 0 1rem; }
+  .bio b { color: var(--ink-strong); }
+  .cta-row { display: flex; gap: 0.6rem; padding: 0 1.25rem 1rem; }
+  .cta {
+    font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.9rem;
+    padding: 0.55rem 1rem; border-radius: 8px; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 0.45rem;
+  }
+  .cta.primary { background: var(--accent); color: #fff; }
+  .cta.outline { border: 1px solid var(--accent); color: var(--accent); }
+  .name { font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--ink-strong); margin: 0; }
+  .role { font-size: 0.95rem; color: var(--ink); margin: 0; }
+  .org { font-size: 0.95rem; color: var(--accent); margin: 0; font-weight: 600; }
+  .icons-row { display: flex; list-style: none; margin: 0; padding: 0; }
+  .icons-row a {
+    color: var(--ink); text-decoration: none; font-size: 1.3rem;
+    display: inline-flex; padding: 0.3rem 0.5rem;
+  }
+
+  /* ==================================================================
+     VARIANT A — LETTERHEAD (CSS-only)
+     Small portrait left, name/role/org stacked beside it, then a
+     single 6-across icon row. Header ends ~150px; bio is on the
+     first screen.
+     ================================================================== */
+  .v-a .profile { display: flex; align-items: center; gap: 0.9rem; }
+  .v-a .portrait {
+    width: 84px; height: 84px; border-radius: 50%;
+    border: 3px solid var(--hairline); flex: none;
+  }
+  .v-a .portrait-title .name { font-size: 1.45rem; letter-spacing: -0.02em; }
+  .v-a .portrait-title .role { margin-top: 0.15rem; }
+  .v-a .icons-row { margin-top: 0.9rem; justify-content: flex-start; }
+  .v-a .icons-row a { font-size: 1.25rem; padding: 0.3rem 0.55rem 0.3rem 0; }
+
+  /* ==================================================================
+     VARIANT B — TIGHT CENTER (CSS-only, safest)
+     Keep the centered stack but compress it: 128px portrait, one-line
+     role · org, one icon row, tight margins. Header ends ~330px.
+     ================================================================== */
+  .v-b .profile { text-align: center; }
+  .v-b .portrait {
+    width: 128px; height: 128px; border-radius: 50%;
+    border: 3px solid var(--hairline); margin: 0 auto 0.75rem;
+  }
+  .v-b .portrait-title .name { font-size: 1.55rem; letter-spacing: -0.02em; }
+  .v-b .portrait-title .role { display: inline; }
+  .v-b .portrait-title .org { display: inline; }
+  .v-b .portrait-title .role::after { content: " \00B7  "; color: var(--ink-soft); }
+  .v-b .icons-row { margin-top: 0.75rem; justify-content: center; }
+  .v-b .icons-row a { font-size: 1.2rem; }
+
+  /* ==================================================================
+     VARIANT C — BIO-FIRST (needs a small template override)
+     Name chip only in the header (tiny 56px portrait inline with
+     name/role); social icons are demoted to a quiet mono row AFTER
+     the CTAs. Bio starts ~120px from the top.
+     ================================================================== */
+  .v-c .profile {
+    display: flex; align-items: center; gap: 0.8rem;
+    background: var(--paper-card);
+    border: 1px solid var(--hairline);
+    border-radius: 12px; padding: 0.6rem 0.8rem;
+  }
+  .v-c .portrait {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 2px solid var(--hairline); flex: none;
+  }
+  .v-c .portrait-title .name { font-size: 1.25rem; }
+  .v-c .portrait-title .role, .v-c .portrait-title .org { font-size: 0.85rem; display: inline; }
+  .v-c .portrait-title .role::after { content: " \00B7  "; color: var(--ink-soft); }
+  .v-c .icons-row { padding: 0 1.25rem 1rem; justify-content: center; }
+  .v-c .icons-row a { font-size: 1.1rem; color: var(--ink-soft); }
+
+  /* floating switcher -------------------------------------------------- */
+  .proto-switcher {
+    position: fixed; bottom: 1.25rem; left: 50%; transform: translateX(-50%);
+    background: var(--navy); color: #f8fafc;
+    border: 1px solid #334155; border-radius: 999px;
+    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.45);
+    display: flex; align-items: center; gap: 0.35rem;
+    padding: 0.4rem 0.55rem; z-index: 50;
+    font-family: 'Roboto Mono', monospace; font-size: 0.8rem;
+  }
+  .proto-switcher button {
+    background: #1e293b; color: #f8fafc; border: 1px solid #334155;
+    border-radius: 999px; width: 34px; height: 34px; cursor: pointer;
+    font-size: 0.9rem; line-height: 1;
+  }
+  .proto-switcher button:hover { background: #24324d; }
+  .proto-switcher .label { min-width: 14rem; text-align: center; letter-spacing: 0.02em; }
+  .proto-switcher .label b { color: #e05a66; }
+  .proto-watermark {
+    position: fixed; top: 0.6rem; right: 0.75rem; z-index: 50;
+    font-family: 'Roboto Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em;
+    background: var(--accent); color: #fff; padding: 0.25rem 0.55rem; border-radius: 4px;
+  }
+</style>
+</head>
+<body data-variant="a">
+<div class="proto-watermark">PROTOTYPE</div>
+
+<div class="device">
+  <nav class="proto-nav">
+    <span class="brand">Joey O'Brien<span class="dot">.</span></span>
+    <span class="icons"><span>⌕</span><span>☾</span></span>
+  </nav>
+
+  <!-- ================= VARIANT A ================= -->
+  <div class="hero v-a" data-only="a">
+    <div class="profile">
+      <img class="portrait" src="/img/avatar.jpg" alt=""
+           onerror="this.style.visibility='hidden'">
+      <div class="portrait-title">
+        <p class="name">Joey O'Brien</p>
+        <p class="role">Principal Consultant</p>
+        <p class="org">LSEG</p>
+      </div>
+    </div>
+    <ul class="icons-row">
+      <li><a href="#" aria-label="Email"><i class="fas fa-envelope"></i></a></li><li><a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a></li><li><a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></a></i></li>
+      <li><a href="#" aria-label="ORCID"><i class="fab fa-orcid"></i></a></li><li><a href="#" aria-label="Scholar"><i class="fas fa-graduation-cap"></i></a></li><li><a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a></li>
+    </ul>
+  </div>
+
+  <!-- ================= VARIANT B ================= -->
+  <div class="hero v-b" data-only="b" hidden>
+    <div class="profile">
+      <img class="portrait" src="/img/avatar.jpg" alt=""
+           onerror="this.style.visibility='hidden'">
+      <div class="portrait-title">
+        <p class="name">Joey O'Brien</p>
+        <p class="role">Principal Consultant</p>
+        <p class="org">LSEG</p>
+      </div>
+      <ul class="icons-row">
+        <li><a href="#" aria-label="Email"><i class="fas fa-envelope"></i></a></li><li><a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a></li><li><a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a></li>
+        <li><a href="#" aria-label="ORCID"><i class="fab fa-orcid"></i></a></li><li><a href="#" aria-label="Scholar"><i class="fas fa-graduation-cap"></i></a></li><li><a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ================= VARIANT C ================= -->
+  <div class="hero v-c" data-only="c" hidden>
+    <div class="profile">
+      <img class="portrait" src="/img/avatar.jpg" alt=""
+           onerror="this.style.visibility='hidden'">
+      <div class="portrait-title">
+        <p class="name">Joey O'Brien</p>
+        <p class="role">Principal Consultant</p>
+        <p class="org">LSEG</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bio">
+    <p>I am a <b>Principal Consultant</b> in the Quant Services division of <a href="#" style="color:var(--accent)">LSEG</a>, where I partner with tier-one investment banks, hedge funds, and risk technology teams to design, validate, and implement quantitative models for counterparty credit risk and derivative pricing.</p>
+    <p>My work spans <b>CVA, DVA, FVA, and PFE model validation</b>, regulatory compliance with frameworks such as <b>SS1/23 and FRTB</b>, and the deployment of open-source risk infrastructure using the <b>Open Source Risk Engine (ORE)</b>.</p>
+  </div>
+
+  <div class="cta-row">
+    <a class="cta primary" href="#"><i class="fas fa-chart-line"></i> Quantitative Expertise</a>
+    <a class="cta outline" href="#"><i class="fas fa-podcast"></i> Media &amp; Podcasts</a>
+  </div>
+
+  <!-- variant C only: demoted icon row -->
+  <ul class="icons-row v-c-icons" data-only="c" hidden>
+    <li><a href="#" aria-label="Email"><i class="fas fa-envelope"></i></a></li><li><a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a></li><li><a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a></li>
+    <li><a href="#" aria-label="ORCID"><i class="fab fa-orcid"></i></a></li><li><a href="#" aria-label="Scholar"><i class="fas fa-graduation-cap"></i></a></li><li><a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a></li>
+  </ul>
+</div>
+
+<div class="proto-switcher" role="group" aria-label="Prototype variant switcher">
+  <button type="button" id="prev" aria-label="Previous variant">←</button>
+  <span class="label" id="label"></span>
+  <button type="button" id="next" aria-label="Next variant">→</button>
+</div>
+
+<script>
+(function () {
+  var VARIANTS = {
+    a: 'A — Letterhead (CSS-only)',
+    b: 'B — Tight center (CSS-only)',
+    c: 'C — Bio-first (template override)'
+  };
+  var KEYS = Object.keys(VARIANTS);
+  function current() {
+    var v = new URLSearchParams(location.search).get('variant');
+    return VARIANTS[v] ? v : 'a';
+  }
+  function apply(v) {
+    document.body.dataset.variant = v;
+    document.querySelectorAll('[data-only]').forEach(function (el) {
+      el.hidden = el.dataset.only !== v;
+    });
+    document.getElementById('label').innerHTML =
+      '<b>' + v.toUpperCase() + '</b> · ' + VARIANTS[v];
+    var params = new URLSearchParams(location.search);
+    params.set('variant', v);
+    history.replaceState(null, '', location.pathname + '?' + params);
+  }
+  function step(dir) {
+    var i = KEYS.indexOf(current());
+    apply(KEYS[(i + dir + KEYS.length) % KEYS.length]);
+  }
+  document.getElementById('prev').addEventListener('click', function () { step(-1); });
+  document.getElementById('next').addEventListener('click', function () { step(1); });
+  document.addEventListener('keydown', function (e) {
+    var t = document.activeElement;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    if (e.key === 'ArrowLeft') step(-1);
+    if (e.key === 'ArrowRight') step(1);
+  });
+  apply(current());
+})();
+</script>
+</body>
+</html>
