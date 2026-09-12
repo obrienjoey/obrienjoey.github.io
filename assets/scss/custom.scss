@@ -17,6 +17,7 @@ $ink-body: #3d3830;    // body copy (was slate #334155)
 $ink: #4d4437;         // secondary text / roles (was slate #475569)
 $ink-soft: #6e6353;    // meta / captions / TOC (was slate #64748b)
 $ink-faint: #b9ac96;   // faint dots / tag borders (was slate #94a3b8 / #cbd5e1)
+$ink-soft-fixed: #574d3e; // AA-safe darkened $ink-soft for small mono meta on bone
 $wash: #f0eadd;        // table + tag washes (was slate #f1f5f9)
 
 // Page canvas — bone throughout. Without this the <body> defaults to white,
@@ -252,7 +253,8 @@ p {
 }
 
 .dark .callout {
-  &-info { background: #112d2a; }
+  // Dark oxblood tint, not the old teal — the left borders stay $accent-bright-adjacent.
+  &-info { background: #2d1319; }
   &-warning { background: #2d2411; }
   &-important { background: #2d1313; }
 }
@@ -307,15 +309,47 @@ p {
   }
 }
 
-.dark .hero-cta-group {
-  .btn-outline-primary {
-    color: $accent-bright;
+// Dark-mode outline buttons ride the bright rose globally — oxblood #b4232e
+// is ~2.7:1 on slate navy and fails even the 3:1 UI bar (news/archive buttons).
+.dark .btn-outline-primary {
+  color: $accent-bright;
+  border-color: $accent-bright;
+  &:hover,
+  &:focus {
+    background: $accent-bright;
     border-color: $accent-bright;
-    &:hover {
-      background: $accent-bright;
-      color: #0f172a;
+    color: #0f172a;
+  }
+}
+
+// The theme's dark link rule (.home-section.dark a) never matches because the
+// day/night toggle puts `dark` on <body>, so plain anchors keep the light
+// oxblood (~2.7:1 on navy). Recolor content links to the readable rose.
+.dark {
+  .article-style a:not(.btn),
+  .home-section a:not(.btn) {
+    color: $accent-bright;
+    &:hover,
+    &:focus {
+      color: #ea7d86;
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
   }
+
+  // Same specificity as the rule above but later in source order, so the
+  // always-dark spotlight card keeps its white title links.
+  .spotlight-media-frame .spotlight-title a {
+    color: #ffffff;
+    &:hover,
+    &:focus {
+      color: $accent-bright;
+      text-decoration: none;
+    }
+  }
+}
+
+.dark .hero-cta-group {
   .btn-outline-secondary {
     color: #94a3b8;
     border-color: #475569;
@@ -546,6 +580,12 @@ p {
       border-color: #475569 !important;
     }
   }
+
+  // Card view titles (e.g. /publication/) inherit the theme's oxblood link
+  // color, which is ~2.7:1 on navy — switch them to the bright rose.
+  .card h4 a {
+    color: $accent-bright;
+  }
 }
 
 // =============================================================================
@@ -749,7 +789,7 @@ p {
       }
       .timeline-loc {
         font-size: 0.75rem;
-        color: $ink-faint;
+        color: $ink-soft-fixed; // $ink-faint is ~2:1 on bone — too light for content text
       }
     }
 
@@ -805,6 +845,7 @@ p {
       .timeline-links .timeline-link-btn { color: $accent-bright; &:hover { color: $accent-bright; } }
       .timeline-meta {
         .timeline-date { color: #94a3b8; }
+        .timeline-loc { color: #94a3b8; }
         .timeline-badge {
           &.badge-pod { background: #1e293b; color: #cbd5e1; border-color: #334155; }
           &.badge-pres { background: #1e293b; color: #cbd5e1; border-color: #334155; }
@@ -1346,7 +1387,7 @@ p {
     gap: 1rem;
     padding-top: 1.75rem;
     font-size: 0.82rem;
-    color: #64748b;
+    color: #94a3b8; // #64748b was ~3.7:1 on slate navy — under AA for small text
   }
 
   .footer-copyright {
@@ -1680,7 +1721,6 @@ p {
 // =============================================================================
 // VARIANT B WINNER (prototype-mobile-nav.html) — bottom sheet + contrast pass
 // =============================================================================
-$ink-soft-fixed: #574d3e; // AA on bone for small mono meta (replaces $ink-soft there)
 
 // Menu links: full #e2e8f0 instead of 70% white — AA on slate.
 .navbar .navbar-nav .nav-link,
@@ -1830,6 +1870,9 @@ body.joey-sheet-open {
 @media (min-width: 992px) {
   .joey-sheet,
   .joey-sheet-backdrop { display: none; }
+  // The 44px-target rule below sets display:inline-flex at all widths and
+  // outranks the theme's ≥lg .navbar-toggler{display:none} — re-hide it here.
+  .navbar-toggler.joey-sheet-trigger { display: none; }
 }
 .dark {
   .joey-sheet { background: #0f172a; border-color: #1e293b; }
@@ -1839,6 +1882,7 @@ body.joey-sheet-open {
   .joey-sheet nav a {
     border-color: #1e293b;
     &:hover { background: #1e293b; }
+    .n { color: $accent-bright; } // oxblood default is ~2.7:1 on navy
     .tt { color: #f8fafc; }
     .ss { color: #94a3b8; }
   }
