@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 210" width="100%" height="100%">
+  <defs>
+    <style>
+      .card-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 13px; font-weight: 700; fill: #0F172A; }
+      .card-subtitle { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-weight: 600; fill: #475569; }
+      .card-desc { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 10px; fill: #64748B; line-height: 1.4; }
+      .badge-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 10px; font-weight: 700; fill: #FFFFFF; }
+      .step-num { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-weight: 700; fill: #64748B; }
+    </style>
+    
+    <filter id="shadow" x="-3%" y="-5%" width="106%" height="114%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0F172A" flood-opacity="0.06"/>
+    </filter>
+
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#94A3B8"/>
+    </marker>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect width="960" height="210" fill="#FFFFFF" rx="8"/>
+
+  <!-- ==================== BOX 1: Market Data ==================== -->
+  <g transform="translate(20, 20)">
+    <rect width="200" height="170" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2" filter="url(#shadow)"/>
+    <!-- Top Accent Bar -->
+    <path d="M 0 8 Q 0 0 8 0 L 192 0 Q 200 0 200 8 L 200 12 L 0 12 Z" fill="#2563EB"/>
+    <!-- Step Badge -->
+    <rect x="14" y="24" width="48" height="18" rx="4" fill="#DBEAFE"/>
+    <text x="38" y="37" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="700" fill="#1D4ED8">STEP 1</text>
+    
+    <text x="14" y="62" class="card-title">Historical Scenarios</text>
+    <text x="14" y="78" class="card-subtitle">Market Data Deck</text>
+    
+    <line x1="14" y1="88" x2="186" y2="88" stroke="#E2E8F0" stroke-width="1"/>
+    
+    <text x="14" y="106" class="card-desc">• scenarios.csv input</text>
+    <text x="14" y="122" class="card-desc">• Multi-curve IR &amp; FX spot</text>
+    <text x="14" y="138" class="card-desc">• 817 daily historical states</text>
+    <text x="14" y="154" class="card-desc">• 715 overlapping 10D shifts</text>
+  </g>
+
+  <!-- Arrow 1 -> 2 -->
+  <line x1="228" y1="105" x2="256" y2="105" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ==================== BOX 2: Full Revaluation ==================== -->
+  <g transform="translate(262, 20)">
+    <rect width="200" height="170" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2" filter="url(#shadow)"/>
+    <!-- Top Accent Bar -->
+    <path d="M 0 8 Q 0 0 8 0 L 192 0 Q 200 0 200 8 L 200 12 L 0 12 Z" fill="#4F46E5"/>
+    <!-- Step Badge -->
+    <rect x="14" y="24" width="48" height="18" rx="4" fill="#EEF2FF"/>
+    <text x="38" y="37" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="700" fill="#4338CA">STEP 2</text>
+    
+    <text x="14" y="62" class="card-title">Full Revaluation</text>
+    <text x="14" y="78" class="card-subtitle">ORE Pricing Engine</text>
+    
+    <line x1="14" y1="88" x2="186" y2="88" stroke="#E2E8F0" stroke-width="1"/>
+    
+    <text x="14" y="106" class="card-desc">• Exact non-linear repricing</text>
+    <text x="14" y="122" class="card-desc">• All portfolio trades revalued</text>
+    <text x="14" y="138" class="card-desc">• Clean: static date at t₀</text>
+    <text x="14" y="154" class="card-desc">• Dirty: aging to t₀ + 10D</text>
+  </g>
+
+  <!-- Arrow 2 -> 3 -->
+  <line x1="470" y1="105" x2="498" y2="105" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ==================== BOX 3: Empirical P&L ==================== -->
+  <g transform="translate(504, 20)">
+    <rect width="200" height="170" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2" filter="url(#shadow)"/>
+    <!-- Top Accent Bar -->
+    <path d="M 0 8 Q 0 0 8 0 L 192 0 Q 200 0 200 8 L 200 12 L 0 12 Z" fill="#D97706"/>
+    <!-- Step Badge -->
+    <rect x="14" y="24" width="48" height="18" rx="4" fill="#FEF3C7"/>
+    <text x="38" y="37" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="700" fill="#B45309">STEP 3</text>
+    
+    <text x="14" y="62" class="card-title">Empirical P&amp;L Vector</text>
+    <text x="14" y="78" class="card-subtitle">Distribution Sample</text>
+    
+    <line x1="14" y1="88" x2="186" y2="88" stroke="#E2E8F0" stroke-width="1"/>
+    
+    <text x="14" y="106" class="card-desc">• ΔNPVᵢ = NPV(Sᵢ) - NPV₀</text>
+    <text x="14" y="122" class="card-desc">• 715 simulated outcomes</text>
+    <text x="14" y="138" class="card-desc">• historical_PnL.csv record</text>
+    <text x="14" y="154" class="card-desc">• No normal distribution fit</text>
+  </g>
+
+  <!-- Arrow 3 -> 4 -->
+  <line x1="712" y1="105" x2="740" y2="105" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ==================== BOX 4: Quantile Extraction ==================== -->
+  <g transform="translate(746, 20)">
+    <rect width="194" height="170" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.2" filter="url(#shadow)"/>
+    <!-- Top Accent Bar -->
+    <path d="M 0 8 Q 0 0 8 0 L 186 0 Q 194 0 194 8 L 194 12 L 0 12 Z" fill="#DC2626"/>
+    <!-- Step Badge -->
+    <rect x="14" y="24" width="48" height="18" rx="4" fill="#FEE2E2"/>
+    <text x="38" y="37" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="700" fill="#B91C1C">STEP 4</text>
+    
+    <text x="14" y="62" class="card-title">Quantile Extraction</text>
+    <text x="14" y="78" class="card-subtitle">VaR &amp; Expected Shortfall</text>
+    
+    <line x1="14" y1="88" x2="180" y2="88" stroke="#E2E8F0" stroke-width="1"/>
+    
+    <text x="14" y="106" class="card-desc">• Order statistic: ⌈q · n⌉</text>
+    <text x="14" y="122" class="card-desc">• 95% 10D VaR: €629.9k</text>
+    <text x="14" y="138" class="card-desc">• 99% 10D VaR: €874.5k</text>
+    <text x="14" y="154" class="card-desc">• 99% 10D ES: €949.8k</text>
+  </g>
+</svg>
