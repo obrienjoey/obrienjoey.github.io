@@ -83,7 +83,7 @@ The recipe mirrors ORE's internal execution:
 1. Take two rows from `scenarios.csv`, window start date $d_1$ and end date $d_2$.
 2. Divide row $d_2$ by row $d_1$, pillar by pillar. That ratio forms the factor shock. FX spot follows the same logic.
 3. Multiply ORE's base discount factor at each pillar by its corresponding ratio, and the base FX spot quote by the FX ratio.
-4. Rebuild each curve across pillars. Full curve re-bootstrapping under each scenario is too slow, so ORE takes the 12 simulation market pillars and applies log-linear interpolation on discount factors with $DF(0) = 1$.
+4. Rebuild each curve across pillars. Full curve re-bootstrapping under each scenario would be computationally intensive, so ORE takes the 12 simulation market pillars directly and applies log-linear interpolation on discount factors with $DF(0) = 1$.
 5. Reprice the portfolio. Each floating coupon projects forward rates from the shocked index curve using the index's native value and maturity dates. Cash flows discount along the shocked discount curves, and foreign-currency flows convert to EUR at the curve-adjusted forward FX rate.
 6. Subtract the base NPV to obtain window P&L.
 
