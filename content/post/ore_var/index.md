@@ -2,7 +2,7 @@
 title: "Historical simulation VaR in ORE"
 subtitle: "From a scenario file to a 99% number, and what that number can and can't tell you"
 summary: "How ORE's historical simulation analytic turns a set of past market moves into VaR and expected shortfall. One window repriced by hand, checked against ORE, then sanity-checked and put in context."
-date: 2026-10-07T00:00:00
+date: 2026-10-07T00:00:00Z
 draft: false
 tags: ["ORE", "VaR", "Market Risk", "Python", "Risk"]
 math: true
