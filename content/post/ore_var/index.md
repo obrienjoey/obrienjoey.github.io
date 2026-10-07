@@ -9,7 +9,9 @@ math: true
 series: ["ORE Fundamentals"]
 ---
 
-Market risk analysis usually starts with sensitivities. In [Part 3](/post/ore_sensitivity/), we looked at how ORE calculates zero and par Greeks on a simulation market grid. The next step is turning those shocks into portfolio Value at Risk (VaR). Historical VaR is simple in concept but messy in practice. You have to generate consistent historical scenarios, reprice every trade across hundreds of windows, and decide how to handle holding periods, cash flows, and time decay.
+Market risk analysis can be viewed from several angles. Sensitivities tell us how a portfolio responds to small, individual moves in its risk factors; Value at Risk asks a different question: how large a loss might the portfolio experience over a given horizon when those risk factors move together?
+
+In [Part 3](/post/ore_sensitivity/), we looked at how ORE calculates zero and par Greeks on a simulation market grid. Here, we move from those local measures to historical simulation, using actual historical market moves to generate a distribution of portfolio P&Ls. This concept seems relatively straightforward, but there are several details that matters in practice, both computationally and theoretically. One has to generate consistent historical scenarios, reprice every trade across hundreds of windows (which can quickly lead to multiple million valuations), and decide how to handle holding periods, cash flows, and time decay.
 
 In this post, we walk through ORE's historical simulation VaR (HistSim VaR) analytic end to end. Using a two-trade cross-currency book, we run full revaluation across 715 historical windows to compute a 99% 10-day VaR of EUR 874.5k. To see how ORE actually does the math, we re-implement its scenario interpolation and repricing logic by hand in Python, match ORE's window P&L to the exact cent, verify the tail quantiles, and compare the empirical output with parametric benchmarks.
 
@@ -70,7 +72,7 @@ Date,Scenario,Numeraire,DiscountCurve/EUR/0,...,DiscountCurve/USD/0,...,IndexCur
 01/09/2016,1,1,1.00013288,...,0.9996784,...,1.0000751,...,0.8929
 ```
 
-The values are absolute discount factors from each date to the pillar date. They are not rates, and they are not changes. The trailing index counts pillars, so `/0` is 2W and `/11` is 30Y. The last row, 2019-12-30, equals the base market, which confirms the file aligns with the as-of date.
+The values are absolute discount factors from each date to the pillar date. They are not rates, and they are not changes. The trailing index counts pillars, so `/0` is 2W and `/11` is 30Y. The last row, 2019-12-30, equals the base market, which confirms the file aligns with the as-of date. Note, there is an example of the public ORE repository showing how this can be done for a single date [here](https://github.com/OpenSourceRisk/Engine/blob/master/Examples/MarketRisk/Input/ore_basescenario.xml), which would be run for each date in your historical period.
 
 ---
 
