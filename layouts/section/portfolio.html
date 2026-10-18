@@ -1,0 +1,74 @@
+{{- define "main" -}}
+
+{{ partial "page_header.html" . }}
+
+<div class="universal-wrapper">
+
+  {{ with .Content }}
+  <div class="article-style">{{ . }}</div>
+  {{ end }}
+
+  <div class="row portfolio-grid">
+
+    {{ $paginator := .Paginate .Data.Pages }}
+    {{ range $paginator.Pages }}
+
+    {{/* Card metadata lives in _index.md, keyed by the URL segment. */}}
+    {{ $seg := path.Base .RelPermalink }}
+    {{ $meta := dict }}
+    {{ with $.Params.items }}
+      {{ range . }}
+        {{ if eq (printf "%v" .slug) $seg }}{{ $meta = . }}{{ end }}
+      {{ end }}
+    {{ end }}
+
+    {{ $project := .Title }}
+    {{ $summary := "" }}
+    {{ with $meta.summary }}{{ $summary = . }}{{ else }}
+      {{ with .Params.summary }}{{ $summary = . }}{{ else }}
+        {{ with .Params.subtitle }}{{ $summary = . }}{{ else }}
+          {{ $summary = .Summary | plainify | emojify | truncate 150 }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+
+    <div class="col-12 col-md-6 col-lg-4 portfolio-col">
+      <article class="portfolio-card">
+
+        <header class="portfolio-card-head">
+          {{ with $meta.kind }}<span class="portfolio-kind">{{ . }}</span>{{ end }}
+          <span class="portfolio-year">{{ .Date.Format "2006" }}</span>
+        </header>
+
+        <h2 class="portfolio-title"><a href="{{ .RelPermalink }}">{{ $project }}</a></h2>
+
+        <p class="portfolio-summary">{{ $summary }}</p>
+
+        <div class="portfolio-actions">
+          <a class="portfolio-primary" href="{{ .RelPermalink }}">
+            Read the write-up <i class="fas fa-angle-right" aria-hidden="true"></i>
+          </a>
+
+          {{ with $meta.links }}
+          <nav class="portfolio-links" aria-label="{{ $project }} links">
+            {{ range . }}
+              {{ $external := hasPrefix .url "http" }}
+              <a href="{{ if $external }}{{ .url }}{{ else }}{{ .url | relURL }}{{ end }}"
+                 {{ if $external }}target="_blank" rel="noopener"{{ end }}>{{ .label }}</a>
+            {{ end }}
+          </nav>
+          {{ end }}
+        </div>
+
+      </article>
+    </div>
+
+    {{ end }}
+
+  </div>
+
+  {{ partial "pagination" . }}
+
+</div>
+
+{{- end -}}

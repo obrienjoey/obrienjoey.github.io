@@ -64,9 +64,11 @@ math = true
 highlight = true
   
 # Featured image
-# Place your image in the `static/img/` folder and reference its filename below, e.g. `image = "example.jpg"`.
+# None: `memory_V7.jpg`, referenced here until Oct 2026, is the two-layer cascade
+# schematic from the Hawkes paper (/publication/hawkes/), not an FPL figure.
+# Drop a `featured.*` file in this folder when there is a real one.
 [header]
-image = "memory_V7.jpg"
+image = ""
 # caption = "My caption :smile:"
 
 +++

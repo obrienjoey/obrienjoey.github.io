@@ -64,9 +64,9 @@ math = true
 highlight = true
   
 # Featured image
-# Place your image in the `static/img/` folder and reference its filename below, e.g. `image = "example.jpg"`.
-[header]
-image = "memory_V7.jpg"
-# caption = "My caption :smile:"
+# A file named `featured.*` in this folder is rendered as the framed figure near
+# the top of the page, with `caption` underneath it.
+[image]
+caption = "The model: retweets (RT) and comments (!) shift the timelines of the users they reach — B in the first layer, C and D in the second."
 
 +++

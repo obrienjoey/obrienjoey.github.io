@@ -76,17 +76,24 @@
       </div>
 
       <!-- Sticky Table of Contents Sidebar -->
+      {{ $hasToc := gt (len .TableOfContents) 60 }}
       <aside class="col-lg-4 article-sidebar-col">
         <div class="sticky-toc-wrapper">
+          {{/* Hugo's .TableOfContents brings its own <nav id="TableOfContents">,
+               so this wrapper does not repeat the id — it was duplicated on
+               every page and left an empty "Table of Contents" card on pages
+               with no headings (all of /news/, several posts). */}}
+          {{ if $hasToc }}
           <div class="toc-header">
             <i class="fas fa-list-ul mr-2"></i> Table of Contents
           </div>
-          <nav id="TableOfContents" class="custom-toc">
+          <div class="custom-toc">
             {{ .TableOfContents }}
-          </nav>
+          </div>
+          {{ end }}
 
-          <div class="sidebar-action-box mt-4">
-            <a href="#reading-progress-container" class="back-to-top-link">
+          <div class="sidebar-action-box{{ if $hasToc }} mt-4{{ end }}">
+            <a href="#top" class="back-to-top-link">
               <i class="fas fa-arrow-up mr-1"></i> Back to Top
             </a>
           </div>

@@ -8,6 +8,11 @@ public/
 Output/
 .Rproj.user
 
+# Local drafts and review builds — notes for posts that should not deploy yet,
+# and the throwaway build dir used for local review (review_server.js).
+drafts/
+review_build/
+
 # R
 .RData
 .Rhistory

@@ -27,6 +27,66 @@ body {
   background: $paper;
 }
 
+// =============================================================================
+// SKIP LINK & FOCUS RING — keyboard entry point, and a focus state you can see
+// The browser default (1px auto rgb(16,16,16)) is invisible on the navy chrome
+// and faint on bone, so every focusable gets one explicit ring.
+// =============================================================================
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 1rem;
+  z-index: 2000; // over the fixed navbar
+  transform: translateY(-120%);
+  background: $accent;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.55rem 1rem;
+  border-radius: 0 0 8px 8px;
+  text-decoration: none;
+  transition: transform 0.15s ease;
+
+  &:hover,
+  &:focus {
+    color: #fff;
+  }
+
+  &:focus {
+    transform: translateY(0);
+  }
+}
+
+// The request to jump to #main must clear the fixed navbar (body already
+// carries its 70px / 50px offset).
+#main {
+  scroll-margin-top: 70px;
+}
+
+@media screen and (max-width: 1200px) {
+  #main {
+    scroll-margin-top: 50px;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid $accent;
+  outline-offset: 2px;
+}
+
+// Oxblood disappears against the navy chrome and dark surfaces.
+.navbar :focus-visible,
+.site-footer :focus-visible,
+.dark :focus-visible {
+  outline-color: $accent-bright;
+}
+
+// The skip link rides over the navy bar, on an accent fill — white reads.
+.skip-link:focus-visible {
+  outline-color: #fff;
+}
+
 // Custom Typography Overrides
 h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
@@ -98,6 +158,23 @@ p {
     .dot {
       color: $accent-bright;
     }
+  }
+}
+
+// Under ~380px the wordmark runs into the search icon (measured: the trailing
+// dot overlaps it below ~364px). Keep the text in the accessible name, take it
+// out of the visual row — the "JO." mark carries the brand there.
+@media screen and (max-width: 379.98px) {
+  .navbar-brand-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 }
 
@@ -1412,8 +1489,65 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
       &:hover { color: $accent-bright; }
     }
     .custom-toc ul li ul { border-color: #1e293b; }
+    // The theme draws its TOC rule as #eee; on the navy card that is a bright
+    // line, so take the site's dark hairline instead.
+    nav#TableOfContents { border-left-color: #1e293b; }
     .sidebar-action-box .back-to-top-link { color: $accent-bright; }
   }
+}
+
+// =============================================================================
+// DARK SURFACE — one navy page instead of the theme's Dracula slate
+// -----------------------------------------------------------------------------
+// functions/parse_theme.html bakes the theme's dark palette into the compiled
+// CSS (dark_background = rgb(40,42,54), dark home sections = hsla(231,15%,
+// 18% / 16%)) and spends it on body.dark, the search sheet, dark fields,
+// selects, nested tables and pagination. That purple-grey slate sat under a
+// navy nav, footer, cards and TOC panel, so dark mode read as two surfaces.
+// Rather than fork the theme partial, the site re-points each of those
+// surfaces at the navy the chrome already uses.
+// =============================================================================
+$dark-page: #0f172a;   // the page itself — same navy as nav, footer, cards
+$dark-lift: #111e33;   // odd home sections, striped table rows, flat panels
+$dark-field: #1e293b;  // inputs and selects — a step up so fields read as fields
+
+body.dark {
+  background-color: $dark-page;
+}
+
+.dark {
+  // Home page: odd sections lift off the page, even sections sit on it — the
+  // same relationship as the light pair (#fffdf9 odd over #f6f3ed even).
+  .home-section { background-color: $dark-lift; }
+  .home-section:nth-of-type(even) { background-color: $dark-page; }
+
+  // The search sheet is rendered on every page, so its slate band was the most
+  // visible piece of the old palette.
+  .search-results,
+  .search-header { background-color: $dark-page; }
+  #search-query,
+  input,
+  .form-control,
+  .form-control:focus,
+  select { background-color: $dark-field; border-color: #334155; }
+
+  // List and taxonomy pages fall through to the theme's slate-grey headings —
+  // the article and home layouts already set their own near-white.
+  .universal-wrapper h1,
+  .universal-wrapper h2,
+  .search-header h1 { color: #f8fafc; }
+
+  // Tables: the theme striped odd rows with a slate grey. Stripe them with the
+  // section lift instead so the zebra stays inside the navy.
+  table table { background-color: $dark-page; }
+  table > tbody > tr:nth-child(odd) > td,
+  table > tbody > tr:nth-child(odd) > th { background-color: $dark-lift; }
+
+  // Publication cards and the pagination chips on the taxonomy pages. The chip
+  // text needs the bright accent — oxblood on navy is ~2.4:1.
+  .card-simple { background-color: $dark-lift; border-color: #1e293b; }
+  .pagination li > a,
+  .pagination li > span { background-color: $dark-lift; border-color: #1e293b; color: $accent-bright; }
 }
 
 // =============================================================================
@@ -1797,7 +1931,10 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
   // Mobile: stack to 2-row layout so title gets 100% width and never gets squashed
   @media (max-width: 640px) {
     display: grid;
-    grid-template-columns: auto 1fr;
+    // minmax(0, …) both tracks: a bare `1fr` refuses to shrink below the
+    // journal chip's min-content, which pushed the whole row past a 320px
+    // viewport on the home page ("IEEE Transactions on Automatic Control").
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr);
     grid-template-rows: auto auto;
     gap: 0.35rem 0.75rem;
     align-items: baseline;
@@ -1811,6 +1948,9 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
       grid-column: 2;
       grid-row: 1;
       justify-self: end;
+      // Let the chip wrap once the track is narrower than the journal name,
+      // instead of forcing the grid (and the title with it) wider.
+      white-space: normal;
     }
 
     .pub-compact-title {
@@ -2018,6 +2158,295 @@ body.joey-sheet-open {
     .ss { color: #94a3b8; }
   }
   .joey-sheet-foot a { border-color: #334155; color: #f8fafc; }
+}
+
+// =============================================================================
+// PUBLICATION FIGURES — the featured image on a paper page (/publication/<slug>/)
+// The theme renders it two ways: a bundle `featured.*` file becomes a
+// .featured-image-wrapper inside the reading column, while `[header] image` in
+// front matter becomes a .article-banner that ignores every container and spans
+// the viewport (which put the title below the fold). Both get the same frame and
+// the same caption band as a post's figure — see `.article-featured-image-box`
+// under `.technical-article` for the twin of this treatment.
+// =============================================================================
+
+.pub {
+
+  // Bundle image. The wrapper is itself an .article-container, and the theme
+  // gives it the image's own width as an inline max-width (and its height as an
+  // inline max-height), so a 303px figure sat centred in a 720px column and a
+  // caption would have overflowed the box. Pin the wrapper to the text column
+  // and let the box inside it hug the image instead.
+  .featured-image-wrapper {
+    max-width: 760px !important; // the text column; 720 of it once padded
+    max-height: none !important;
+    // The theme zeroes the container padding so figures bleed to the screen edge.
+    // Restore it: a hairline frame touching the edge looks cut off, and posts
+    // keep their gutter at this size.
+    padding-left: 20px;
+    padding-right: 20px;
+
+    > div {
+      display: inline-block;
+      border: 1px solid $hairline;
+      border-radius: 12px;
+      overflow: hidden;
+      background: $paper-card;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+    }
+  }
+
+  // `[header] image` pages render a .article-banner that ignores every container
+  // and spanned the viewport, which pushed the title below the fold. No page
+  // uses that shape now; kept contained so a future one cannot go full-bleed.
+  // It is not inside .article-container, so `auto` centres it in the viewport.
+  .article-header:not(.featured-image-wrapper) {
+    max-width: 720px;
+    margin: 1.5rem auto;
+    border: 1px solid $hairline;
+    border-radius: 12px;
+    overflow: hidden;
+    background: $paper-card;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+  }
+
+  .featured-image,
+  .article-banner {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  // The theme pins the caption over the image on a black chip. Read it as a
+  // caption instead: below the figure, in the site's caption voice.
+  .article-header-caption {
+    position: static;
+    display: block;
+    padding: 0.6rem 1rem;
+    background: $paper;
+    border-top: 1px solid $hairline;
+    border-radius: 0;
+    color: $ink-soft;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    font-style: italic;
+    text-align: center;
+    opacity: 1;
+
+    a {
+      color: $accent;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.dark .pub {
+  .featured-image-wrapper > div,
+  .article-header:not(.featured-image-wrapper) {
+    background: #0f172a;
+    border-color: #1e293b;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .article-header-caption {
+    background: #0f172a;
+    border-color: #1e293b;
+    color: #94a3b8;
+
+    a {
+      color: $accent-bright;
+    }
+  }
+}
+
+// =============================================================================
+// PORTFOLIO — project cards (/portfolio/)
+// Three peer artifacts, so they get equal weight: same card grammar as
+// .pub-list-item / .stream-item (bone surface, hairline, 14px radius), a
+// kind + year eyebrow at the top, destinations anchored to the bottom edge.
+// =============================================================================
+
+.portfolio-col {
+  display: flex; // Bootstrap cols are flex items already; this stretches the card
+  margin-bottom: 1.25rem;
+}
+
+.portfolio-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: $paper-card;
+  border: 1px solid $hairline;
+  border-left: 3px solid transparent;
+  border-radius: 14px;
+  padding: 1.35rem 1.6rem;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+
+  &:hover {
+    border-color: #d8cfbf;
+  }
+
+  .portfolio-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.9rem;
+  }
+
+  // Deliberately not `.badge`: that class is `!important`-ed globally for tags.
+  .portfolio-kind {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: $ink;
+    background: $wash;
+    border: 1px solid $hairline;
+    padding: 0.15rem 0.5rem;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+
+  .portfolio-year {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: $ink-soft-fixed;
+    font-variant-numeric: tabular-nums;
+    margin-left: auto; // stays right-aligned if a project has no kind
+    flex: none;
+  }
+
+  .portfolio-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: $ink-strong;
+    margin: 0 0 0.45rem;
+
+    a {
+      color: $ink-strong;
+      text-decoration: none;
+      transition: color 0.15s ease;
+
+      &:hover,
+      &:focus {
+        color: $accent;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .portfolio-summary {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: $ink-soft;
+    margin-bottom: 1.1rem;
+  }
+
+  .portfolio-actions {
+    display: flex;
+    flex-direction: column; // stacked, not wrapped: a destination list that
+    align-items: flex-start; // hovers on one line for some cards looks ragged
+    gap: 0.5rem;
+    margin-top: auto; // pushes the row down so action lines align across cards
+    padding-top: 0.9rem;
+    border-top: 1px solid $wash;
+  }
+
+  .portfolio-primary {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $accent;
+    text-decoration: none;
+    white-space: nowrap;
+
+    i {
+      font-size: 0.78rem;
+      margin-left: 0.15rem;
+    }
+
+    &:hover,
+    &:focus {
+      color: $accent-strong;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  }
+
+  .portfolio-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.9rem;
+
+    a {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: $ink-soft-fixed;
+      text-decoration: none;
+      white-space: nowrap;
+
+      &:hover,
+      &:focus {
+        color: $accent;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+    }
+  }
+}
+
+@media (max-width: 575px) {
+  .portfolio-card {
+    padding: 1.15rem 1.25rem;
+  }
+}
+
+.dark .portfolio-card {
+  background: #0f172a;
+  border-color: #1e293b;
+
+  &:hover {
+    border-color: #334155;
+  }
+
+  .portfolio-kind {
+    background: #1e293b;
+    color: #cbd5e1;
+    border-color: #334155;
+  }
+  .portfolio-year { color: #94a3b8; }
+  .portfolio-title a {
+    color: #f8fafc;
+    &:hover,
+    &:focus { color: $accent-bright; }
+  }
+  .portfolio-summary { color: #94a3b8; }
+  .portfolio-actions { border-color: #1e293b; }
+  .portfolio-primary {
+    color: $accent-bright;
+    &:hover,
+    &:focus { color: #ea7d86; }
+  }
+  .portfolio-links a {
+    color: #94a3b8;
+    &:hover,
+    &:focus { color: $accent-bright; }
+  }
 }
 
 // =============================================================================
