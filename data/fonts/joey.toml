@@ -2,15 +2,11 @@
 name = "joey"
 
 # Optional Google font URL
-# Weights here are the ones the stylesheets actually ask for: Inter 500 is the
-# about-page portrait subtitle, Roboto Mono 500 is every mono label
-# (.badge-journal, .pub-compact-journal, .portfolio-*). Without them the browser
-# fakes the weight from 400 and the 500 text renders identical to body text.
-google_fonts = "Outfit:400,600,700|Inter:400,400i,500,600,600i,700,700i|Roboto+Mono:400,500"
+google_fonts = "Fraunces:600,600i,700|Inter:400,400i,500,600,600i,700,700i|JetBrains+Mono:400,500,600"
 
 # Font families
-heading_font = "Outfit"
+heading_font = "Fraunces"
 body_font = "Inter"
 nav_font = "Inter"
-mono_font = "Roboto Mono"
+mono_font = "JetBrains Mono"
 

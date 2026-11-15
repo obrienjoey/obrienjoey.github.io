@@ -1,0 +1,159 @@
+{{ $ := .root }}
+{{ $page := .page }}
+
+{{ $author := "" }}
+{{ if .author }}
+  {{ $author = .author }}
+{{ else }}
+  {{ $author = $page.Params.author }}
+{{ end }}
+
+{{ $person_page_path := (printf "/authors/%s" (anchorize $author)) }}
+{{ $person_page := site.GetPage $person_page_path }}
+{{ if not $person_page }}
+  {{ errorf "Could not find an author page at `%s`. Please check the value of `author` in your About widget and create an associated author page if one does not already exist. See https://sourcethemes.com/academic/docs/page-builder/#about " $person_page_path }}
+{{ end }}
+{{ $person := $person_page.Params }}
+{{ $avatar := ($person_page.Resources.ByType "image").GetMatch "*avatar*" }}
+
+{{ if $person.superuser }}
+<!-- About widget (Quant Dossier) -->
+<div class="proto-hero-b">
+  <div class="row align-items-start">
+    <div class="col-12 col-lg-4 mb-4 mb-lg-0">
+      <div class="proto-dossier-card">
+        <div class="proto-dossier-top">
+          {{ if site.Params.gravatar }}
+          <img class="proto-dossier-avatar" src="https://s.gravatar.com/avatar/{{ md5 $person.email }}?s=200" alt="{{ $person.name }}">
+          {{ else if $avatar }}
+          {{ $avatar_image := $avatar.Fill "250x250 Center" }}
+          <img class="proto-dossier-avatar" src="{{ $avatar_image.RelPermalink }}" alt="{{ $person.name }}">
+          {{ end }}
+          <h2 class="proto-dossier-name">{{ $person.name }}</h2>
+          <div class="proto-dossier-sub">{{ $person.role | markdownify | emojify }}{{ range first 1 $person.organizations }} · {{ .name }}{{ end }}</div>
+        </div>
+        <ul class="proto-dossier-rows">
+          <li><span class="dk">Division</span><span class="dv">Quant Services</span></li>
+          <li><span class="dk">Doctorate</span><span class="dv">Applied Math, UL</span></li>
+          <li><span class="dk">Focus</span><span class="dv">XVA · CCR · SS1/23</span></li>
+          <li><span class="dk">Stack</span><span class="dv">Python · C++ · R · ORE</span></li>
+        </ul>
+        <div class="proto-dossier-socials" aria-label="Profiles">
+          {{ range $person.social }}
+          {{ $pack := or .icon_pack "fas" }}
+          {{ $pack_prefix := $pack }}
+          {{ if in (slice "fab" "fas" "far" "fal") $pack }}
+            {{ $pack_prefix = "fa" }}
+          {{ end }}
+          {{ $link := .link }}
+          {{ $scheme := (urls.Parse $link).Scheme }}
+          {{ $target := "" }}
+          {{ if not $scheme }}
+            {{ $link = .link | relLangURL }}
+          {{ else if in (slice "http" "https") $scheme }}
+            {{ $target = "target=\"_blank\" rel=\"noopener\"" }}
+          {{ end }}
+          <a href="{{ $link | safeURL }}" {{ $target | safeHTMLAttr }} aria-label="{{ .icon | humanize }}">
+            <i class="{{ $pack }} {{ $pack_prefix }}-{{ .icon }}"></i>
+          </a>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-8">
+      {{ $person_page.Content }}
+    </div>
+  </div>
+</div>
+{{ else }}
+<!-- About widget -->
+<div class="row">
+  <div class="col-12 col-lg-4">
+    <div id="profile">
+
+      {{ if site.Params.gravatar }}
+      <img class="portrait" src="https://s.gravatar.com/avatar/{{ md5 $person.email }}?s=200" alt="Avatar">
+      {{ else if $avatar }}
+      {{ $avatar_image := $avatar.Fill "250x250 Center" }}
+      <img class="portrait" src="{{ $avatar_image.RelPermalink }}" alt="Avatar">
+      {{ end }}
+
+      <div class="portrait-title">
+        <h2>{{ $person.name }}</h2>
+        {{ with $person.role }}<h3>{{ . | markdownify | emojify }}</h3>{{ end }}
+
+        {{ range $person.organizations }}
+        <h3>
+          {{ with .url }}<a href="{{ . }}" target="_blank" rel="noopener">{{ end }}
+          <span>{{ .name }}</span>
+          {{ if .url }}</a>{{ end }}
+        </h3>
+        {{ end }}
+      </div>
+
+      <ul class="network-icon" aria-hidden="true">
+        {{ range $person.social }}
+        {{ $pack := or .icon_pack "fas" }}
+        {{ $pack_prefix := $pack }}
+        {{ if in (slice "fab" "fas" "far" "fal") $pack }}
+          {{ $pack_prefix = "fa" }}
+        {{ end }}
+        {{ $link := .link }}
+        {{ $scheme := (urls.Parse $link).Scheme }}
+        {{ $target := "" }}
+        {{ if not $scheme }}
+          {{ $link = .link | relLangURL }}
+        {{ else if in (slice "http" "https") $scheme }}
+          {{ $target = "target=\"_blank\" rel=\"noopener\"" }}
+        {{ end }}
+        <li>
+          <a href="{{ $link | safeURL }}" {{ $target | safeHTMLAttr }}>
+            <i class="{{ $pack }} {{ $pack_prefix }}-{{ .icon }} big-icon"></i>
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+
+    </div>
+  </div>
+  <div class="col-12 col-lg-8">
+
+    {{/* Only display widget title in explicit instances of about widget, not in author pages. */}}
+    {{ if and $page.Params.widget $page.Title }}<h1>{{ $page.Title | markdownify | emojify }}</h1>{{ end }}
+
+    {{ $person_page.Content }}
+
+    <div class="row">
+
+      {{ with $person.interests }}
+      <div class="col-md-5">
+        <h3>{{ i18n "interests" | markdownify }}</h3>
+        <ul class="ul-interests">
+          {{ range . }}
+          <li>{{ . | markdownify | emojify }}</li>
+          {{ end }}
+        </ul>
+      </div>
+      {{ end }}
+
+      {{ with $person.education }}
+      <div class="col-md-7">
+        <h3>{{ i18n "education" | markdownify }}</h3>
+        <ul class="ul-edu fa-ul">
+          {{ range .courses }}
+          <li>
+            <i class="fa-li fas fa-graduation-cap"></i>
+            <div class="description">
+              <p class="course">{{ .course }}{{ with .year }}, {{ . }}{{ end }}</p>
+              <p class="institution">{{ .institution }}</p>
+            </div>
+          </li>
+          {{ end }}
+        </ul>
+      </div>
+      {{ end }}
+
+    </div>
+  </div>
+</div>
+{{ end }}

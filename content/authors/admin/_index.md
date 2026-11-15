@@ -75,16 +75,32 @@ user_groups:
 - Visitors
 ---
 
-I am a **Principal Consultant** in the Quant Services division of [LSEG](https://www.lseg.com/en/post-trade/solutions), where I partner with tier-one investment banks, hedge funds, and risk technology teams to design, validate, and implement quantitative models for counterparty credit risk and derivative pricing. My work spans **CVA, DVA, FVA, and PFE model validation**, regulatory compliance with frameworks such as **SS1/23 and FRTB**, and the deployment of open-source risk infrastructure using the **Open Source Risk Engine (ORE)**.
+<h1 class="proto-thesis-b">Quantitative risk modelling, open-source pricing engines, and complex data.</h1>
 
-I hold a PhD in Applied Mathematics from the University of Limerick, where my research focused on describing the dynamics of complex systems (such as online social networks and popularity dynamics) using mathematical modelling and large-scale data analysis. This background in applied statistics and network science now informs my approach to building robust, mathematically rigorous financial risk analytics.
+<p class="proto-lead-b">I partner with investment banks, hedge funds, and risk technology teams at <a href="https://www.lseg.com/en/post-trade/solutions" target="_blank" rel="noopener">LSEG</a> to validate counterparty credit risk and XVA models. Away from client engagements, I write practical notes on ORE workflows and publish research rooted in applied probability and network science.</p>
 
-My technical toolkit includes **Python** (NumPy, SciPy, pandas, QuantLib Python), **C++** for performance-critical pricing components, and **R** for statistical analysis and diagnostics. I also regularly contribute to LSEG's *Ahead of the Curve* podcast series, discussing ORE developments, model risk regulation, and the future of quantitative risk management.
+<div class="proto-pillars-b">
+  <div class="proto-pillar-card">
+    <div class="proto-pillar-num">Pillar I</div>
+    <h3>Quant Finance &amp; XVA</h3>
+    <p>CVA, FVA, PFE, and SIMM validation built around reproducible challenger pricing.</p>
+  </div>
+  <div class="proto-pillar-card">
+    <div class="proto-pillar-num">Pillar II</div>
+    <h3>Open-Source Risk</h3>
+    <p>Production ORE architectures, automated trade translation, and Jacobian sensitivities.</p>
+  </div>
+  <div class="proto-pillar-card">
+    <div class="proto-pillar-num">Pillar III</div>
+    <h3>Data &amp; Networks</h3>
+    <p>Reproducible R and Python pipelines, Hawkes point processes, and network rankings.</p>
+  </div>
+</div>
 
-<div class="hero-cta-group">
-  <a href="#expertise" class="btn btn-primary"><i class="fas fa-chart-line mr-2"></i>Quantitative Expertise</a>
-  <a href="#media" class="btn btn-outline-primary"><i class="fas fa-podcast mr-2"></i>Media & Podcasts</a>
-  <a href="#publications" class="btn btn-outline-primary"><i class="fas fa-book-open mr-2"></i>Research & Papers</a>
-  <a href="#contact" class="btn btn-outline-secondary"><i class="fas fa-envelope mr-2"></i>Get in Touch</a>
+<div class="proto-cta-row">
+  <a href="#expertise" class="proto-btn-primary">See Lifecycle Expertise</a>
+  <a href="#media" class="proto-btn-outline">Podcast &amp; Talks</a>
+  <a href="#publications" class="proto-btn-outline">Research &amp; Papers</a>
+  <a href="#contact" class="proto-btn-outline">Get in Touch</a>
 </div>
 

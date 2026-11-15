@@ -20,6 +20,44 @@ $ink-faint: #b9ac96;   // faint dots / tag borders (was slate #94a3b8 / #cbd5e1)
 $ink-soft-fixed: #574d3e; // AA-safe darkened $ink-soft for small mono meta on bone
 $wash: #f0eadd;        // table + tag washes (was slate #f1f5f9)
 
+$font-display: 'Fraunces', Georgia, serif;
+$font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+$font-mono: 'JetBrains Mono', monospace;
+
+:root {
+  --p-accent: #{$accent};
+  --p-accent-strong: #{$accent-strong};
+  --p-accent-bright: #{$accent-bright};
+  --p-accent-soft: #{$accent-soft};
+  --p-blue: #1e3a5f;
+  --p-green: #2d5a4c;
+  --p-paper: #{$paper};
+  --p-card: #{$paper-card};
+  --p-wash: #{$wash};
+  --p-hairline: #{$hairline};
+  --p-ink-strong: #{$ink-strong};
+  --p-ink-body: #{$ink-body};
+  --p-ink: #{$ink};
+  --p-ink-soft: #{$ink-soft};
+  --p-ink-meta: #{$ink-soft-fixed};
+  --p-ghost: #cfc3ae;
+}
+
+body.dark {
+  --p-paper: #0f172a;
+  --p-card: #111e33;
+  --p-wash: #1e293b;
+  --p-hairline: #273549;
+  --p-ink-strong: #f8fafc;
+  --p-ink-body: #cbd5e1;
+  --p-ink: #cbd5e1;
+  --p-ink-soft: #94a3b8;
+  --p-ink-meta: #94a3b8;
+  --p-ghost: #334155;
+  --p-blue: #60a5fa;
+  --p-green: #34d399;
+}
+
 // Page canvas — bone throughout. Without this the <body> defaults to white,
 // leaving a white stripe in the footer's margin-top and around short pages,
 // which is what made the footer read as a pasted-on block.
@@ -40,7 +78,7 @@ body {
   transform: translateY(-120%);
   background: $accent;
   color: #fff;
-  font-family: 'Outfit', sans-serif;
+  font-family: $font-sans;
   font-weight: 600;
   font-size: 0.85rem;
   padding: 0.55rem 1rem;
@@ -89,7 +127,9 @@ body {
 
 // Custom Typography Overrides
 h1, h2, h3, h4, h5, h6 {
-  letter-spacing: -0.02em;
+  font-family: $font-display;
+  font-variation-settings: "SOFT" 0, "WONK" 0;
+  letter-spacing: -0.025em;
   font-weight: 600;
   line-height: 1.2;
 }
@@ -129,7 +169,7 @@ p {
   text-decoration: none;
 
   .navbar-brand-mark {
-    font-family: 'Outfit', sans-serif;
+    font-family: $font-sans;
     font-weight: 700;
     font-size: 0.82rem;
     letter-spacing: 0.02em;
@@ -149,9 +189,10 @@ p {
   }
 
   .navbar-brand-text {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-family: $font-display;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
+    font-weight: 600;
+    letter-spacing: -0.03em;
     font-size: 1.15rem;
     color: #ffffff;
 
@@ -197,9 +238,10 @@ p {
     
     .portrait-title {
       h2 {
-        font-family: 'Outfit', sans-serif;
+        font-family: $font-display;
+        font-variation-settings: "SOFT" 0, "WONK" 0;
         font-size: 1.8rem;
-        font-weight: 700;
+        font-weight: 600;
         margin-bottom: 0.5rem;
       }
       h3 {
@@ -367,9 +409,10 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
   align-self: flex-start; // flex children stretch by default, which pins sticky
 
   h1 {
-    font-family: 'Outfit', sans-serif;
+    font-family: $font-display;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
     font-size: 2.3rem;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: -0.03em;
     line-height: 1.05;
     color: $ink-strong;
@@ -395,9 +438,9 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
 #news .section-heading::before,
 #contact .section-heading::before {
   display: block;
-  font-family: 'Outfit', sans-serif;
-  font-size: 7.5rem;
-  font-weight: 700;
+  font-family: $font-mono;
+  font-size: 4.25rem;
+  font-weight: 600;
   line-height: 0.9;
   letter-spacing: -0.04em;
   color: transparent;
@@ -415,7 +458,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
     position: static;
 
     &::before {
-      font-size: 4.75rem;
+      font-size: 3.4rem;
       margin-bottom: 0.5rem;
     }
   }
@@ -480,7 +523,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
   gap: 0.75rem;
 
   .btn {
-    font-family: 'Outfit', sans-serif;
+    font-family: $font-sans;
     font-weight: 600;
     font-size: 0.95rem;
     padding: 0.6rem 1.25rem;
@@ -592,10 +635,11 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
   }
 
   .article-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: $font-display;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
     font-weight: 600;
     font-size: 1.2rem;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     margin-bottom: 0.45rem;
     a {
       color: $ink-strong;
@@ -615,7 +659,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
   }
 
   .stream-meta.article-metadata {
-    font-family: 'Roboto Mono', monospace;
+    font-family: $font-mono;
     font-size: 0.76rem;
     color: $ink-soft;
   }
@@ -645,7 +689,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
     margin-bottom: 0.5rem;
 
     .badge-journal {
-      font-family: 'Roboto Mono', monospace;
+      font-family: $font-mono;
       font-size: 0.72rem;
       font-weight: 500;
       color: $ink;
@@ -658,7 +702,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
     }
 
     .pub-year {
-      font-family: 'Roboto Mono', monospace;
+      font-family: $font-mono;
       font-size: 0.76rem;
       color: $ink-soft;
       font-weight: 600;
@@ -666,11 +710,12 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
   }
 
   .pub-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: $font-display;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
     font-size: 1.18rem;
     font-weight: 600;
     line-height: 1.35;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     margin-bottom: 0.35rem;
     a {
       color: $ink-strong;
@@ -811,9 +856,10 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
 }
 
 .media-main-title {
-  font-family: 'Outfit', sans-serif;
+  font-family: $font-display;
+  font-variation-settings: "SOFT" 0, "WONK" 0;
   font-size: 2.2rem;
-  font-weight: 700;
+  font-weight: 600;
   color: $ink-strong;
   letter-spacing: -0.03em;
   margin-bottom: 0.35rem;
@@ -878,14 +924,16 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
     .spotlight-series {
       font-size: 0.75rem;
       color: #94a3b8;
-      font-family: 'Roboto Mono', monospace;
+      font-family: $font-mono;
     }
   }
 
   .spotlight-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: $font-display;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
     font-size: 1.35rem;
-    font-weight: 700;
+    font-weight: 600;
+    letter-spacing: -0.025em;
     line-height: 1.3;
     margin-top: 0;
     margin-bottom: 1.1rem;
@@ -907,6 +955,20 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
     padding: 0 14px;
     margin-bottom: 1.1rem;
 
+    &.is-proto-svg {
+      height: auto;
+      padding: 0.65rem 0.85rem;
+      background: rgba(2, 6, 23, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: block;
+
+      svg {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+    }
+
     .wave-bar {
       width: 4px;
       background: $accent-bright;
@@ -922,6 +984,17 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
       &.h-90 { height: 90%; }
       &.h-100 { height: 100%; }
     }
+  }
+
+  .proto-spotlight-caption {
+    display: flex;
+    justify-content: space-between;
+    font-family: $font-mono;
+    font-size: 0.64rem;
+    color: #94a3b8;
+    margin-top: 0.35rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 
   .spotlight-summary {
@@ -943,7 +1016,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
   }
 
   .spotlight-action .btn {
-    font-family: 'Outfit', sans-serif;
+    font-family: $font-sans;
     font-weight: 600;
     padding: 0.65rem 1.2rem;
     border-radius: 8px;
@@ -957,9 +1030,11 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
   padding-left: 0;
 
   .feed-heading {
-    font-family: 'Outfit', sans-serif;
+    font-family: $font-display;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
     font-size: 1.25rem;
-    font-weight: 700;
+    font-weight: 600;
+    letter-spacing: -0.02em;
     color: $ink-strong;
     margin-bottom: 1.5rem;
 
@@ -1001,7 +1076,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
       margin-bottom: 0.35rem;
 
       .timeline-date {
-        font-family: 'Roboto Mono', monospace;
+        font-family: $font-mono;
         font-size: 0.75rem;
         color: $ink-soft;
       }
@@ -1029,7 +1104,9 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
     }
 
     .timeline-title {
-      font-family: 'Outfit', sans-serif;
+      font-family: $font-display;
+      font-variation-settings: "SOFT" 0, "WONK" 0;
+      letter-spacing: -0.02em;
       font-size: 1.05rem;
       font-weight: 600;
       line-height: 1.35;
@@ -1183,7 +1260,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
     .article-series-badge {
       margin-bottom: 0.85rem;
       .series-pill {
-        font-family: 'Outfit', sans-serif;
+        font-family: $font-sans;
         font-size: 0.76rem;
         font-weight: 700;
         color: $accent;
@@ -1197,9 +1274,10 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
     }
 
     .article-main-title {
-      font-family: 'Outfit', sans-serif;
+      font-family: $font-display;
+      font-variation-settings: "SOFT" 0, "WONK" 0;
       font-size: 2.5rem;
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: -0.03em;
       line-height: 1.2;
       color: $ink-strong;
@@ -1218,7 +1296,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
       flex-wrap: wrap;
       align-items: center;
       gap: 0.6rem;
-      font-family: 'Roboto Mono', monospace;
+      font-family: $font-mono;
       font-size: 0.8rem;
       color: $ink-soft;
 
@@ -1232,7 +1310,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
         gap: 0.35rem;
 
         .tech-tag-pill {
-          font-family: 'Inter', sans-serif;
+          font-family: $font-sans;
           font-size: 0.72rem;
           font-weight: 600;
           background: $wash;
@@ -1250,11 +1328,12 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
     color: $ink-body;
 
     h2 {
-      font-family: 'Outfit', sans-serif;
+      font-family: $font-display;
+      font-variation-settings: "SOFT" 0, "WONK" 0;
       font-size: 1.75rem;
-      font-weight: 700;
+      font-weight: 600;
       color: $ink-strong;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
       margin-top: 2.75rem;
       margin-bottom: 1rem;
       padding-bottom: 0.4rem;
@@ -1262,11 +1341,12 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
     }
 
     h3 {
-      font-family: 'Outfit', sans-serif;
+      font-family: $font-display;
+      font-variation-settings: "SOFT" 0, "WONK" 0;
       font-size: 1.35rem;
       font-weight: 600;
       color: $ink-strong;
-      letter-spacing: -0.015em;
+      letter-spacing: -0.02em;
       margin-top: 2rem;
       margin-bottom: 0.75rem;
     }
@@ -1311,7 +1391,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
     overflow-y: auto;
 
     .toc-header {
-      font-family: 'Outfit', sans-serif;
+      font-family: $font-sans;
       font-size: 0.92rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -1359,7 +1439,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
     }
 
     .sidebar-action-box .back-to-top-link {
-      font-family: 'Outfit', sans-serif;
+      font-family: $font-sans;
       font-size: 0.8rem;
       font-weight: 600;
       color: $accent;
@@ -1410,7 +1490,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
       overflow-x: auto;
 
       code {
-        font-family: 'Roboto Mono', monospace;
+        font-family: $font-mono;
         font-size: 0.88rem;
         line-height: 1.6;
         background: transparent !important;
@@ -1429,7 +1509,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
       background: $paper-card;
       border: 1px solid $ink-faint;
       color: $ink;
-      font-family: 'Outfit', sans-serif;
+      font-family: $font-sans;
       font-size: 0.72rem;
       font-weight: 600;
       padding: 3px 8px;
@@ -1624,9 +1704,10 @@ body.dark {
   }
 
   .footer-logo {
-    font-family: 'Outfit', sans-serif;
+    font-family: $font-display;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
     font-size: 1.4rem;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: -0.03em;
     color: #ffffff;
     text-decoration: none;
@@ -1656,7 +1737,7 @@ body.dark {
       background: transparent;
       color: #cbd5e1;
       border: none;
-      font-family: 'Roboto Mono', monospace;
+      font-family: $font-mono;
       font-size: 0.74rem;
       font-weight: 500;
       letter-spacing: 0.08em;
@@ -1687,12 +1768,12 @@ body.dark {
   }
 
   .footer-copyright {
-    font-family: 'Roboto Mono', monospace;
+    font-family: $font-mono;
     font-size: 0.78rem;
   }
 
   .back-to-top-btn {
-    font-family: 'Outfit', sans-serif;
+    font-family: $font-sans;
     font-size: 0.82rem;
     font-weight: 600;
     color: #94a3b8;
@@ -1714,7 +1795,7 @@ body.dark {
 // =============================================================================
 
 .badge-journal-on-dark {
-  font-family: 'Outfit', sans-serif;
+  font-family: $font-sans;
   font-size: 0.72rem;
   font-weight: 700;
   color: $accent-bright;
@@ -1764,7 +1845,7 @@ body.dark {
   }
 
   .pub-year {
-    font-family: 'Roboto Mono', monospace;
+    font-family: $font-mono;
     font-size: 0.75rem;
     color: #94a3b8;
   }
@@ -1812,7 +1893,7 @@ body.dark {
   }
 
   .stream-meta.article-metadata {
-    font-family: 'Roboto Mono', monospace;
+    font-family: $font-mono;
     font-size: 0.76rem;
     color: #94a3b8;
   }
@@ -1917,7 +1998,7 @@ body.dark {
   }
 
   .pub-compact-year {
-    font-family: 'Roboto Mono', monospace;
+    font-family: $font-mono;
     font-size: 0.75rem;
     color: $ink-soft;
     font-variant-numeric: tabular-nums;
@@ -1925,10 +2006,11 @@ body.dark {
   }
 
   .pub-compact-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: $font-display;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
     font-size: 0.98rem;
     font-weight: 600;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     color: $ink-strong;
     margin: 0;
     flex: 1 1 auto;
@@ -1943,7 +2025,7 @@ body.dark {
   }
 
   .pub-compact-journal {
-    font-family: 'Roboto Mono', monospace;
+    font-family: $font-mono;
     font-size: 0.7rem;
     font-weight: 500;
     text-transform: uppercase;
@@ -2092,12 +2174,13 @@ body.dark {
   border-bottom: 1px solid $hairline;
 }
 .joey-sheet-title {
-  font-family: 'Outfit', sans-serif;
-  font-weight: 700;
+  font-family: $font-display;
+  font-variation-settings: "SOFT" 0, "WONK" 0;
+  font-weight: 600;
   color: $ink-strong;
   small {
     display: block;
-    font-family: 'Roboto Mono', monospace;
+    font-family: $font-mono;
     font-weight: 400;
     font-size: 0.68rem;
     color: $ink-soft-fixed;
@@ -2125,20 +2208,21 @@ body.dark {
   border-bottom: 1px solid $hairline;
   &:hover { background: $wash; }
   .n {
-    font-family: 'Roboto Mono', monospace;
+    font-family: $font-mono;
     font-size: 0.7rem;
     color: $accent;
     flex: none;
     width: 2ch;
   }
   .tt {
-    font-family: 'Outfit', sans-serif;
+    font-family: $font-display;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
     font-weight: 600;
     color: $ink-strong;
     flex: 1;
   }
   .ss {
-    font-family: 'Roboto Mono', monospace;
+    font-family: $font-mono;
     font-size: 0.68rem;
     color: $ink-soft-fixed;
     text-transform: uppercase;
@@ -2333,7 +2417,7 @@ body.joey-sheet-open {
 
   // Deliberately not `.badge`: that class is `!important`-ed globally for tags.
   .portfolio-kind {
-    font-family: 'Roboto Mono', monospace;
+    font-family: $font-mono;
     font-size: 0.7rem;
     font-weight: 500;
     text-transform: uppercase;
@@ -2347,7 +2431,7 @@ body.joey-sheet-open {
   }
 
   .portfolio-year {
-    font-family: 'Roboto Mono', monospace;
+    font-family: $font-mono;
     font-size: 0.75rem;
     font-weight: 500;
     color: $ink-soft-fixed;
@@ -2357,7 +2441,8 @@ body.joey-sheet-open {
   }
 
   .portfolio-title {
-    font-family: 'Outfit', sans-serif;
+    font-family: $font-display;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
     font-size: 1.15rem;
     font-weight: 600;
     line-height: 1.3;
@@ -2396,7 +2481,7 @@ body.joey-sheet-open {
   }
 
   .portfolio-primary {
-    font-family: 'Outfit', sans-serif;
+    font-family: $font-sans;
     font-size: 0.85rem;
     font-weight: 600;
     color: $accent;
@@ -2422,7 +2507,7 @@ body.joey-sheet-open {
     gap: 0.4rem 0.9rem;
 
     a {
-      font-family: 'Roboto Mono', monospace;
+      font-family: $font-mono;
       font-size: 0.7rem;
       font-weight: 500;
       letter-spacing: 0.06em;
@@ -2477,6 +2562,368 @@ body.joey-sheet-open {
     color: #94a3b8;
     &:hover,
     &:focus { color: $accent-bright; }
+  }
+}
+
+// =============================================================================
+// HERO DOSSIER & THREE-STAGE RISK LIFECYCLE (Variant B)
+// =============================================================================
+
+.proto-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.proto-btn-primary,
+.proto-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.62rem 1.25rem;
+  border-radius: 8px;
+  font-family: $font-sans;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.proto-btn-primary {
+  background: var(--p-accent);
+  border: 1px solid var(--p-accent);
+  color: #ffffff !important;
+
+  &:hover,
+  &:focus {
+    background: var(--p-accent-strong);
+    border-color: var(--p-accent-strong);
+    color: #ffffff !important;
+    text-decoration: none !important;
+  }
+}
+
+.proto-btn-outline {
+  background: transparent;
+  border: 1px solid var(--p-hairline);
+  color: var(--p-ink-strong) !important;
+
+  &:hover,
+  &:focus {
+    background: var(--p-wash);
+    border-color: var(--p-ink-soft);
+    text-decoration: none !important;
+  }
+}
+
+.proto-dossier-card {
+  background: var(--p-card);
+  border: 1px solid var(--p-hairline);
+  border-radius: 16px;
+  padding: 1.55rem;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+}
+
+.proto-dossier-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 1.15rem;
+  border-bottom: 1px solid var(--p-hairline);
+  margin-bottom: 1.15rem;
+}
+
+.proto-dossier-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--p-hairline);
+  margin-bottom: 0.85rem;
+}
+
+.proto-dossier-name {
+  font-family: $font-display;
+  font-variation-settings: "SOFT" 0, "WONK" 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--p-ink-strong);
+  margin: 0 0 0.25rem;
+}
+
+.proto-dossier-sub {
+  font-family: $font-mono;
+  font-size: 0.74rem;
+  color: var(--p-ink-meta);
+}
+
+.proto-dossier-rows {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.2rem;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.42rem 0;
+    border-bottom: 1px dashed var(--p-hairline);
+    font-family: $font-mono;
+    font-size: 0.72rem;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .dk {
+    color: var(--p-ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .dv {
+    color: var(--p-ink-strong);
+    font-weight: 500;
+    text-align: right;
+  }
+}
+
+.proto-dossier-socials {
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+
+  a {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: var(--p-wash);
+    border: 1px solid var(--p-hairline);
+    color: var(--p-ink-strong) !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    text-decoration: none !important;
+    transition: border-color 0.15s ease, color 0.15s ease;
+
+    &:hover,
+    &:focus {
+      border-color: var(--p-accent);
+      color: var(--p-accent) !important;
+      text-decoration: none !important;
+    }
+  }
+}
+
+.proto-thesis-b {
+  font-family: $font-display;
+  font-variation-settings: "SOFT" 0, "WONK" 0;
+  font-size: 2.45rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--p-ink-strong);
+  margin: 0 0 0.9rem;
+
+  @media (max-width: 767px) {
+    font-size: 1.9rem;
+  }
+}
+
+.proto-lead-b {
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--p-ink-body);
+  margin-bottom: 1.25rem;
+}
+
+.proto-pillars-b {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin: 1.25rem 0 0.5rem;
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.proto-pillar-card {
+  background: var(--p-card);
+  border: 1px solid var(--p-hairline);
+  border-top: 3px solid var(--p-accent);
+  border-radius: 12px;
+  padding: 1rem 1.05rem;
+
+  h3 {
+    font-family: $font-display;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
+    font-size: 1.08rem;
+    margin: 0 0 0.35rem;
+    color: var(--p-ink-strong);
+  }
+
+  p {
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: var(--p-ink-soft);
+    margin: 0;
+  }
+}
+
+.proto-pillar-num {
+  font-family: $font-mono;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--p-accent);
+  margin-bottom: 0.35rem;
+}
+
+.proto-lifecycle {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.proto-stage-card {
+  display: grid;
+  grid-template-columns: 1fr 185px;
+  gap: 1.25rem;
+  align-items: center;
+  background: var(--p-card);
+  border: 1px solid var(--p-hairline);
+  border-left: 3px solid var(--p-accent);
+  border-radius: 14px;
+  padding: 1.25rem 1.4rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.proto-stage-kicker {
+  font-family: $font-mono;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--p-accent);
+  margin-bottom: 0.3rem;
+}
+
+.proto-stage-body h3 {
+  font-family: $font-display;
+  font-variation-settings: "SOFT" 0, "WONK" 0;
+  font-size: 1.22rem;
+  margin: 0 0 0.5rem;
+  color: var(--p-ink-strong);
+}
+
+.proto-stage-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.65rem;
+
+  @media (max-width: 575px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.proto-stage-sub {
+  strong {
+    display: block;
+    font-size: 0.86rem;
+    color: var(--p-ink-strong);
+    margin-bottom: 0.2rem;
+  }
+
+  span {
+    display: block;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--p-ink-soft);
+  }
+}
+
+.proto-stage-viz {
+  background: var(--p-paper);
+  border: 1px solid var(--p-hairline);
+  border-radius: 10px;
+  padding: 0.65rem;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  figcaption {
+    font-family: $font-mono;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--p-ink-soft);
+    text-align: center;
+    margin-top: 0.35rem;
+  }
+}
+
+body.dark {
+  .proto-btn-primary {
+    background: var(--p-accent-bright);
+    border-color: var(--p-accent-bright);
+    color: #0f172a !important;
+
+    &:hover,
+    &:focus {
+      background: #ea7d86;
+      border-color: #ea7d86;
+      color: #0f172a !important;
+    }
+  }
+
+  .proto-btn-outline {
+    border-color: #334155;
+    color: #f8fafc !important;
+
+    &:hover,
+    &:focus {
+      background: #1e293b;
+      border-color: #475569;
+    }
+  }
+
+  .proto-dossier-socials a:hover,
+  .proto-dossier-socials a:focus {
+    border-color: var(--p-accent-bright);
+    color: var(--p-accent-bright) !important;
+  }
+
+  .proto-pillar-card {
+    border-top-color: var(--p-accent-bright);
+  }
+
+  .proto-pillar-num {
+    color: var(--p-accent-bright);
+  }
+
+  .proto-stage-card {
+    border-left-color: var(--p-accent-bright);
+  }
+
+  .proto-stage-kicker {
+    color: var(--p-accent-bright);
   }
 }
 
