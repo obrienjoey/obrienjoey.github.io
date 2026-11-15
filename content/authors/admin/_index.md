@@ -97,13 +97,13 @@ user_groups:
   </div>
   <div class="proto-pillar-card">
     <div class="proto-pillar-num">Pillar II</div>
-    <h3>Open-Source Risk</h3>
-    <p>Production ORE architectures, automated trade translation, and Jacobian sensitivities.</p>
+    <h3>Risk Engines &amp; ORE</h3>
+    <p>End-to-end risk engine implementation, vendor replacement, and production ORE migrations.</p>
   </div>
   <div class="proto-pillar-card">
     <div class="proto-pillar-num">Pillar III</div>
-    <h3>Data &amp; Networks</h3>
-    <p>Reproducible R and Python pipelines, Hawkes point processes, and network rankings.</p>
+    <h3>AI &amp; Risk Workflows</h3>
+    <p>Integrating agentic AI into risk workflows, alongside reproducible Python and R data pipelines.</p>
   </div>
 </div>
 
