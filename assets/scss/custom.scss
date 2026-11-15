@@ -351,15 +351,15 @@ p {
 
 // =============================================================================
 // MARGIN INDEX — ledger section headers (Variant B from prototype-section-typography)
-// Each standard homepage section shows a ghost folio numeral above a sticky
-// title in the left margin, mirroring the mobile sheet's numbering. About (01)
-// and Media (05) keep their bespoke hero/showcase headers and stay unnumbered.
+// Every homepage section below the About hero shows a ghost folio numeral
+// (01–06) above a sticky title in the left margin, mirroring the mobile sheet.
 // =============================================================================
 $ghost-stroke: #d5cab6; // outlined numeral on bone
 
 #expertise .section-heading,
 #publications .section-heading,
 #posts .section-heading,
+#media .section-heading,
 #news .section-heading,
 #contact .section-heading {
   position: sticky;
@@ -381,15 +381,17 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
   }
 }
 
-#expertise .section-heading::before { content: "02"; }
-#publications .section-heading::before { content: "03"; }
-#posts .section-heading::before { content: "04"; }
-#news .section-heading::before { content: "06"; }
-#contact .section-heading::before { content: "07"; }
+#expertise .section-heading::before { content: "01"; }
+#publications .section-heading::before { content: "02"; }
+#posts .section-heading::before { content: "03"; }
+#media .section-heading::before { content: "04"; }
+#news .section-heading::before { content: "05"; }
+#contact .section-heading::before { content: "06"; }
 
 #expertise .section-heading::before,
 #publications .section-heading::before,
 #posts .section-heading::before,
+#media .section-heading::before,
 #news .section-heading::before,
 #contact .section-heading::before {
   display: block;
@@ -407,6 +409,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
   #expertise .section-heading,
   #publications .section-heading,
   #posts .section-heading,
+  #media .section-heading,
   #news .section-heading,
   #contact .section-heading {
     position: static;
@@ -422,6 +425,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
   #expertise .section-heading,
   #publications .section-heading,
   #posts .section-heading,
+  #media .section-heading,
   #news .section-heading,
   #contact .section-heading {
     h1 { color: #f8fafc; }
@@ -431,6 +435,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
   #expertise .section-heading::before,
   #publications .section-heading::before,
   #posts .section-heading::before,
+  #media .section-heading::before,
   #news .section-heading::before,
   #contact .section-heading::before {
     -webkit-text-stroke-color: #334155;
@@ -829,9 +834,27 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
   padding: 1.75rem;
   color: #ffffff;
   border: 1px solid #334155;
+  border-left: 3px solid $accent-bright;
   box-shadow: 0 14px 32px -8px rgba(15, 23, 42, 0.4);
+  margin-bottom: 2rem;
   position: relative;
   overflow: hidden;
+
+  .spotlight-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+
+    @media (min-width: 768px) {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1.5rem;
+      align-items: start;
+
+      .spotlight-summary {
+        margin-bottom: 0;
+      }
+    }
+  }
 
   .spotlight-badge-row {
     display: flex;
@@ -931,7 +954,7 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
 // Chronological Timeline Feed
 // -----------------------------------------------------------------------------
 .media-timeline-feed {
-  padding-left: 0.5rem;
+  padding-left: 0;
 
   .feed-heading {
     font-family: 'Outfit', sans-serif;
@@ -939,6 +962,10 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
     font-weight: 700;
     color: $ink-strong;
     margin-bottom: 1.5rem;
+
+    i {
+      color: $accent;
+    }
   }
 
   .timeline-items-list {
@@ -1041,7 +1068,11 @@ $ghost-stroke: #d5cab6; // outlined numeral on bone
   .media-main-title { color: #f8fafc; }
   .media-main-subtitle { color: #94a3b8; }
   .media-timeline-feed {
-    .feed-heading { color: #f8fafc; }
+    .feed-heading {
+      color: #f8fafc;
+
+      i { color: $accent-bright; }
+    }
     .timeline-items-list { border-color: #1e293b; }
     .timeline-item {
       .timeline-marker {

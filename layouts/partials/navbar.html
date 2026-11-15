@@ -163,7 +163,8 @@
      Keeps #navbar-content collapse as no-JS fallback; JS intercepts the
      toggler on mobile and opens this sheet instead. */}}
 {{ if site.Menus.main }}
-{{ $subs := dict "Home" "Start" "Expertise" "CVA · PFE · SS1/23" "Publications" "Peer-reviewed" "Posts" "Field notes" "Media & Speaking" "Podcast · Talks" "Portfolio" "ORE work" "Contact" "Validation work" }}
+{{ $subs := dict "Home" "Start" "Expertise" "CVA · PFE · SS1/23" "Publications" "Peer-reviewed" "Posts" "Field notes" "Media & Speaking" "Podcast · Talks" "Portfolio" "Packages · Pipelines" "Contact" "Validation work" }}
+{{ $nums := dict "Home" "00" "Expertise" "01" "Publications" "02" "Posts" "03" "Media & Speaking" "04" "Portfolio" "↗" "Contact" "06" }}
 <div class="joey-sheet-backdrop" id="joey-sheet-backdrop" hidden></div>
 <section class="joey-sheet" id="joey-sheet" role="dialog" aria-modal="true" aria-label="Sections" hidden>
   <div class="joey-sheet-handle" aria-hidden="true"></div>
@@ -174,7 +175,7 @@
   <nav aria-label="Mobile sections">
     {{ range $i, $m := site.Menus.main }}
     <a href="{{ $m.URL | relLangURL }}">
-      <span class="n">{{ printf "%02d" (add $i 1) }}</span>
+      <span class="n">{{ index $nums $m.Name | default (printf "%02d" (add $i 1)) }}</span>
       <span class="tt">{{ $m.Name | safeHTML }}</span>
       <span class="ss">{{ index $subs $m.Name | default "" }}</span>
     </a>

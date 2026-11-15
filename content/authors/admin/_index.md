@@ -83,7 +83,7 @@ My technical toolkit includes **Python** (NumPy, SciPy, pandas, QuantLib Python)
 
 <div class="hero-cta-group">
   <a href="#expertise" class="btn btn-primary"><i class="fas fa-chart-line mr-2"></i>Quantitative Expertise</a>
-  <a href="#podcasts" class="btn btn-outline-primary"><i class="fas fa-podcast mr-2"></i>Media & Podcasts</a>
+  <a href="#media" class="btn btn-outline-primary"><i class="fas fa-podcast mr-2"></i>Media & Podcasts</a>
   <a href="#publications" class="btn btn-outline-primary"><i class="fas fa-book-open mr-2"></i>Research & Papers</a>
   <a href="#contact" class="btn btn-outline-secondary"><i class="fas fa-envelope mr-2"></i>Get in Touch</a>
 </div>

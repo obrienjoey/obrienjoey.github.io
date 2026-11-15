@@ -4,113 +4,112 @@
 {{ $talks := where site.RegularPages "Type" "talk" }}
 {{ $talks = sort $talks "Date" "desc" }}
 
-<!-- Consolidated Media & Speaking Section (Spotlight & Timeline Architecture) -->
-<div class="media-section-container">
-  
-  <div class="section-heading text-center mb-5">
-    <h1 class="media-main-title">{{ $page.Title | default "Media & Speaking" }}</h1>
-    <p class="media-main-subtitle">{{ $page.Params.subtitle | default "Podcasts, Keynotes, Industry Labs & Academic Seminars" }}</p>
+<!-- Consolidated Media & Speaking Section (Margin Index + Spotlight & Timeline) -->
+<div class="row">
+  <div class="col-12 col-lg-4 section-heading">
+    <h1>{{ $page.Title | default "Media & Speaking" }}</h1>
+    <p>{{ $page.Params.subtitle | default "Podcasts, Keynotes, Industry Labs & Academic Seminars" }}</p>
   </div>
+  <div class="col-12 col-lg-8">
 
-  <div class="row align-items-start">
-    
-    <!-- Left: High-Impact Featured Broadcast Spotlight Card -->
-    <div class="col-12 col-lg-5 mb-4 mb-lg-0">
-      <div class="spotlight-media-frame">
-        <div class="spotlight-badge-row">
-          <span class="spotlight-pill"><i class="fas fa-podcast mr-1"></i> FEATURED PODCAST</span>
-          <span class="spotlight-series">LSEG Ahead of the Curve</span>
+    <!-- High-Impact Featured Broadcast Spotlight Card -->
+    <div class="spotlight-media-frame">
+      <div class="spotlight-badge-row">
+        <span class="spotlight-pill"><i class="fas fa-podcast mr-1"></i> FEATURED PODCAST</span>
+        <span class="spotlight-series">LSEG Ahead of the Curve</span>
+      </div>
+
+      <div class="spotlight-grid">
+        <div class="spotlight-main">
+          <h2 class="spotlight-title">
+            <a href="https://lseg.group/4dt4uey" target="_blank" rel="noopener">
+              Agentic AI in Quantitative Risk Management
+            </a>
+          </h2>
+
+          <!-- Animated Audio Waveform Visualizer -->
+          <div class="spotlight-waveform-visual" aria-hidden="true">
+            <div class="wave-bar h-40"></div>
+            <div class="wave-bar h-70"></div>
+            <div class="wave-bar h-100"></div>
+            <div class="wave-bar h-60"></div>
+            <div class="wave-bar h-90"></div>
+            <div class="wave-bar h-45"></div>
+            <div class="wave-bar h-80"></div>
+            <div class="wave-bar h-100"></div>
+            <div class="wave-bar h-55"></div>
+            <div class="wave-bar h-30"></div>
+            <div class="wave-bar h-65"></div>
+            <div class="wave-bar h-90"></div>
+            <div class="wave-bar h-40"></div>
+          </div>
+
+          <p class="spotlight-summary">
+            Discussing the real-world operational transformation and governance challenges of deploying autonomous AI agents 
+            and Open Source Risk Engine (ORE) architectures on institutional trading and risk desks.
+          </p>
         </div>
 
-        <h2 class="spotlight-title">
-          <a href="https://lseg.group/4dt4uey" target="_blank" rel="noopener">
-            Agentic AI in Quantitative Risk Management
-          </a>
-        </h2>
+        <div class="spotlight-aside">
+          <div class="spotlight-topics">
+            <strong>Key Discussion Topics:</strong>
+            <ul>
+              <li>Autonomous agents for model validation & stress testing</li>
+              <li>ORE architecture & multi-asset valuation workflows</li>
+              <li>Bank of England PRA SS1/23 supervisory alignment</li>
+            </ul>
+          </div>
 
-        <!-- Animated Audio Waveform Visualizer -->
-        <div class="spotlight-waveform-visual" aria-hidden="true">
-          <div class="wave-bar h-40"></div>
-          <div class="wave-bar h-70"></div>
-          <div class="wave-bar h-100"></div>
-          <div class="wave-bar h-60"></div>
-          <div class="wave-bar h-90"></div>
-          <div class="wave-bar h-45"></div>
-          <div class="wave-bar h-80"></div>
-          <div class="wave-bar h-100"></div>
-          <div class="wave-bar h-55"></div>
-          <div class="wave-bar h-30"></div>
-          <div class="wave-bar h-65"></div>
-          <div class="wave-bar h-90"></div>
-          <div class="wave-bar h-40"></div>
-        </div>
-
-        <p class="spotlight-summary">
-          Discussing the real-world operational transformation and governance challenges of deploying autonomous AI agents 
-          and Open Source Risk Engine (ORE) architectures on institutional trading and risk desks.
-        </p>
-
-        <div class="spotlight-topics">
-          <strong>Key Discussion Topics:</strong>
-          <ul>
-            <li>Autonomous agents for model validation & stress testing</li>
-            <li>ORE architecture & multi-asset valuation workflows</li>
-            <li>Bank of England PRA SS1/23 supervisory alignment</li>
-          </ul>
-        </div>
-
-        <div class="spotlight-action mt-4">
-          <a href="https://lseg.group/4dt4uey" target="_blank" rel="noopener" class="btn btn-primary btn-block">
-            <i class="fas fa-play-circle mr-2"></i> Listen & Watch Episode (LSEG)
-          </a>
+          <div class="spotlight-action">
+            <a href="https://lseg.group/4dt4uey" target="_blank" rel="noopener" class="btn btn-primary btn-block">
+              <i class="fas fa-play-circle mr-2"></i> Listen & Watch Episode (LSEG)
+            </a>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Right: Chronological Timeline Feed -->
-    <div class="col-12 col-lg-7">
-      <div class="media-timeline-feed">
-        <h3 class="feed-heading"><i class="fas fa-history mr-2 text-teal"></i> Recent Summits, Keynotes & Appearances</h3>
-        
-        <div class="timeline-items-list">
-          {{ range first 6 $talks }}
-            {{ $is_podcast := in .Params.tags "Podcast" }}
-            <div class="timeline-item">
-              <div class="timeline-marker {{ if $is_podcast }}marker-podcast{{ else }}marker-talk{{ end }}"></div>
-              <div class="timeline-content">
-                <div class="timeline-meta">
-                  <span class="timeline-date">{{ .Date.Format "Jan 2006" }}</span>
-                  <span class="timeline-badge {{ if $is_podcast }}badge-pod{{ else }}badge-pres{{ end }}">
-                    {{ if $is_podcast }}PODCAST{{ else }}PRESENTATION{{ end }}
-                  </span>
-                  {{ with .Params.location }}<span class="timeline-loc"><i class="fas fa-map-pin mr-1"></i>{{ . }}</span>{{ end }}
-                </div>
-                <h4 class="timeline-title">
-                  <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-                </h4>
-                <p class="timeline-desc">{{ .Params.abstract | default .Summary | truncate 140 }}</p>
-                <div class="timeline-links">
-                  {{ range .Params.links }}
-                    <a href="{{ .url }}" target="_blank" rel="noopener" class="timeline-link-btn">
-                      <i class="{{ .icon_pack }} fa-{{ .icon }} mr-1"></i> {{ .name }}
-                    </a>
-                  {{ else }}
-                    <a href="{{ .RelPermalink }}" class="timeline-link-btn">
-                      View Details &rarr;
-                    </a>
-                  {{ end }}
-                </div>
+    <!-- Chronological Timeline Feed -->
+    <div class="media-timeline-feed">
+      <h3 class="feed-heading"><i class="fas fa-history mr-2"></i> Recent Summits, Keynotes & Appearances</h3>
+      
+      <div class="timeline-items-list">
+        {{ range first 6 $talks }}
+          {{ $is_podcast := in .Params.tags "Podcast" }}
+          <div class="timeline-item">
+            <div class="timeline-marker {{ if $is_podcast }}marker-podcast{{ else }}marker-talk{{ end }}"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="timeline-date">{{ .Date.Format "Jan 2006" }}</span>
+                <span class="timeline-badge {{ if $is_podcast }}badge-pod{{ else }}badge-pres{{ end }}">
+                  {{ if $is_podcast }}PODCAST{{ else }}PRESENTATION{{ end }}
+                </span>
+                {{ with .Params.location }}<span class="timeline-loc"><i class="fas fa-map-pin mr-1"></i>{{ . }}</span>{{ end }}
+              </div>
+              <h4 class="timeline-title">
+                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+              </h4>
+              <p class="timeline-desc">{{ .Params.abstract | default .Summary | truncate 140 }}</p>
+              <div class="timeline-links">
+                {{ range .Params.links }}
+                  <a href="{{ .url }}" target="_blank" rel="noopener" class="timeline-link-btn">
+                    <i class="{{ .icon_pack }} fa-{{ .icon }} mr-1"></i> {{ .name }}
+                  </a>
+                {{ else }}
+                  <a href="{{ .RelPermalink }}" class="timeline-link-btn">
+                    View Details &rarr;
+                  </a>
+                {{ end }}
               </div>
             </div>
-          {{ end }}
-        </div>
+          </div>
+        {{ end }}
+      </div>
 
-        <div class="mt-4 pt-2">
-          <a href="/talk/" class="btn btn-outline-primary btn-sm"><i class="fas fa-archive mr-1"></i> View Full Speaking Archive ({{ len $talks }} Appearances) &rarr;</a>
-        </div>
+      <div class="mt-4 pt-2">
+        <a href="/talk/" class="btn btn-outline-primary btn-sm"><i class="fas fa-archive mr-1"></i> View Full Speaking Archive ({{ len $talks }} Appearances) &rarr;</a>
       </div>
     </div>
 
   </div>
-
 </div>
