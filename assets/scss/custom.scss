@@ -2925,6 +2925,101 @@ body.dark {
   .proto-stage-kicker {
     color: var(--p-accent-bright);
   }
+
+  .home-portfolio-showcase {
+    border-top-color: #1e293b;
+  }
+
+  .home-portfolio-kicker {
+    color: var(--p-accent-bright);
+  }
+
+  .home-portfolio-more {
+    color: #94a3b8;
+
+    &:hover,
+    &:focus {
+      color: var(--p-accent-bright);
+    }
+  }
+}
+
+// =============================================================================
+// HOMEPAGE PORTFOLIO SHOWCASE INSIDE #posts (Item 2)
+// =============================================================================
+.home-portfolio-showcase {
+  margin-top: 2.25rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--p-hairline);
+}
+
+.home-portfolio-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1.1rem;
+}
+
+.home-portfolio-kicker {
+  font-family: $font-mono;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--p-accent);
+}
+
+.home-portfolio-more {
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--p-ink-meta);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+
+  &:hover,
+  &:focus {
+    color: var(--p-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+.home-portfolio-grid .portfolio-col {
+  margin-bottom: 1rem;
+}
+
+.portfolio-card.portfolio-card-compact {
+  padding: 1.1rem 1.2rem;
+
+  .portfolio-card-head {
+    margin-bottom: 0.65rem;
+  }
+
+  .portfolio-title {
+    font-size: 1.02rem;
+    line-height: 1.28;
+    margin-bottom: 0.4rem;
+  }
+
+  .portfolio-summary {
+    font-size: 0.83rem;
+    line-height: 1.5;
+    margin-bottom: 0.85rem;
+  }
+
+  .portfolio-actions {
+    padding-top: 0.7rem;
+    gap: 0.4rem;
+  }
+
+  .portfolio-primary {
+    font-size: 0.8rem;
+  }
 }
 
 // =============================================================================

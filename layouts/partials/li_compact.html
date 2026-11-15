@@ -29,6 +29,35 @@
   {{ $summary = $item.Summary }}
 {{ end }}
 
+{{ $topic := "" }}
+{{ if $item.Params.topic_badge }}
+  {{ $topic = $item.Params.topic_badge }}
+{{ else if in $item.RelPermalink "ore_var" }}
+  {{ $topic = "ORE · Market Risk" }}
+{{ else if in $item.RelPermalink "ore_sensitivity" }}
+  {{ $topic = "ORE · Sensitivities" }}
+{{ else if in $item.RelPermalink "ore_model_validation" }}
+  {{ $topic = "ORE · Validation" }}
+{{ else if in $item.RelPermalink "ore_trade_translation" }}
+  {{ $topic = "ORE · Trade XML" }}
+{{ else if in $item.RelPermalink "ore_sofr_bootstrap" }}
+  {{ $topic = "ORE · Yield Curves" }}
+{{ else if in $item.RelPermalink "lseg_quant_summit" }}
+  {{ $topic = "LSEG · Agentic AI" }}
+{{ else if in $item.RelPermalink "covid19ni_data" }}
+  {{ $topic = "Data Pipeline · R" }}
+{{ else if in $item.RelPermalink "snooker_oup" }}
+  {{ $topic = "Network Science" }}
+{{ else if in $item.RelPermalink "covid_mobility" }}
+  {{ $topic = "Mobility Data" }}
+{{ else if in $item.RelPermalink "fpl_brainstorm" }}
+  {{ $topic = "Operations Research" }}
+{{ else if $item.Params.series }}
+  {{ $topic = index $item.Params.series 0 }}
+{{ else if $item.Params.tags }}
+  {{ $topic = index $item.Params.tags 0 }}
+{{ end }}
+
 {{ if $featured }}
 {{ $media := "" }}
 {{ with $item.Resources.GetMatch "featured*" }}
@@ -38,8 +67,8 @@
   <div class="stream-feature-content">
     <div class="stream-feature-top">
       <div class="stream-feature-kicker">
-        <span class="badge-journal badge-journal-on-dark">Featured Post</span>
-        <span class="pub-year">{{ $item.Date.Format "2006" }}</span>
+        <span class="badge-journal badge-journal-on-dark">{{ with $item.Params.series }}Featured &middot; {{ index . 0 }}{{ else }}Featured Post{{ end }}</span>
+        <span class="pub-year">{{ if $topic }}{{ $topic }} &middot; {{ end }}{{ $item.Date.Format "2006" }}</span>
       </div>
       <h3 class="pub-title pub-title-on-dark">
         <a href="{{ $link }}" {{ $target | safeHTMLAttr }}>{{ $item.Title }}</a>
@@ -52,8 +81,18 @@
       </div>
       {{ end }}
       <div class="stream-meta article-metadata">
+        <span>{{ $item.Date.Format "Jan 2, 2006" }}</span>
+        {{ if gt $item.ReadingTime 0 }}
+        <span class="middot-divider"></span>
+        <span>{{ $item.ReadingTime }} min read</span>
+        {{ end }}
+        {{ with $item.Params.tags }}
+        <span class="middot-divider"></span>
+        <span>{{ delimit (first 3 .) " · " }}</span>
+        {{ end }}
         {{ if $item.Params.authors }}
-          {{ partial "page_metadata" (dict "page" $item "is_list" 1) }}
+        <span class="middot-divider"></span>
+        <span>{{ partial "page_metadata_authors" $item }}</span>
         {{ end }}
       </div>
     </div>
@@ -71,5 +110,8 @@
   <h3 class="pub-compact-title">
     <a href="{{ $link }}" {{ $target | safeHTMLAttr }}>{{ $item.Title }}</a>
   </h3>
+  {{ with $topic }}
+  <span class="pub-compact-journal">{{ . }}</span>
+  {{ end }}
 </div>
 {{ end }}

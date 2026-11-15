@@ -88,5 +88,63 @@
     </div>
     {{ end }}
 
+    {{ if and (eq $items_type "post") $.IsHome }}
+      {{ with site.GetPage "Section" "portfolio" }}
+        {{ $portfolio_items := .Params.items }}
+        {{ with .Pages }}
+        <div class="home-portfolio-showcase">
+          <div class="home-portfolio-head">
+            <span class="home-portfolio-kicker">Open-Source Packages &amp; Data Pipelines</span>
+            <a class="home-portfolio-more" href="/portfolio/">Full portfolio <i class="fas fa-angle-right" aria-hidden="true"></i></a>
+          </div>
+          <div class="row portfolio-grid home-portfolio-grid">
+            {{ range .ByDate.Reverse }}
+              {{ $seg := path.Base .RelPermalink }}
+              {{ $meta := dict }}
+              {{ with $portfolio_items }}
+                {{ range . }}
+                  {{ if eq (printf "%v" .slug) $seg }}{{ $meta = . }}{{ end }}
+                {{ end }}
+              {{ end }}
+              {{ $project := .Title }}
+              {{ $summary := "" }}
+              {{ with $meta.summary }}{{ $summary = . }}{{ else }}
+                {{ with .Params.summary }}{{ $summary = . }}{{ else }}
+                  {{ with .Params.subtitle }}{{ $summary = . }}{{ else }}
+                    {{ $summary = .Summary | plainify | emojify | truncate 140 }}
+                  {{ end }}
+                {{ end }}
+              {{ end }}
+              <div class="col-12 col-md-4 portfolio-col">
+                <article class="portfolio-card portfolio-card-compact">
+                  <header class="portfolio-card-head">
+                    {{ with $meta.kind }}<span class="portfolio-kind">{{ . }}</span>{{ end }}
+                    <span class="portfolio-year">{{ .Date.Format "2006" }}</span>
+                  </header>
+                  <h3 class="portfolio-title"><a href="{{ .RelPermalink }}">{{ $project }}</a></h3>
+                  <p class="portfolio-summary">{{ $summary }}</p>
+                  <div class="portfolio-actions">
+                    <a class="portfolio-primary" href="{{ .RelPermalink }}">
+                      Read the write-up <i class="fas fa-angle-right" aria-hidden="true"></i>
+                    </a>
+                    {{ with $meta.links }}
+                    <nav class="portfolio-links" aria-label="{{ $project }} links">
+                      {{ range . }}
+                        {{ $external := hasPrefix .url "http" }}
+                        <a href="{{ if $external }}{{ .url }}{{ else }}{{ .url | relURL }}{{ end }}"
+                           {{ if $external }}target="_blank" rel="noopener"{{ end }}>{{ .label }}</a>
+                      {{ end }}
+                    </nav>
+                    {{ end }}
+                  </div>
+                </article>
+              </div>
+            {{ end }}
+          </div>
+        </div>
+        {{ end }}
+      {{ end }}
+    {{ end }}
+
   </div>
 </div>
