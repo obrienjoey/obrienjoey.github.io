@@ -12,6 +12,7 @@ Output/
 # and the throwaway build dir used for local review (review_server.js).
 drafts/
 review_build/
+review_server.js
 
 # R
 .RData
