@@ -16,6 +16,7 @@ subtitle = ""
 [design.background]
 +++
 
+- **November 2026** — **ORE 10-Year Anniversary, Frankfurt**: Spoke on *ORE and Agentic AI: Opportunities to Build* and joined Luigi Ballabio, Peter Caspers, and moderator Roland Lichters on the panel *Experiences with AI in the Context of QuantLib and ORE*. [Event Info →](https://solutions.lseg.com/ORE_10Years_Anniversary)
 - **July 2026** — **Podcast**: Featured on LSEG's **Ahead of the Curve** podcast discussing the real-world impact and future of Agentic AI in quantitative risk management. [Listen & Watch →](https://lseg.group/4dt4uey)
 - **November 2025** — **Conference & Lab**: Attended and supported our APAC team's **ORE & Risk Analytics Lab** in Tokyo, presenting to risk professionals from leading financial institutions on CVA frameworks, custom risk models, and capital efficiency.
 - **March 2021** — **New Scientist & PLOS ONE**: Our mathematical research on Fantasy Premier League published in *PLOS ONE* and featured in **New Scientist**: *[Maths reveals the top strategies to win at fantasy football](https://www.newscientist.com/article/2254155-maths-reveals-the-top-strategies-to-win-at-fantasy-football/)*. [Read Paper (PLOS ONE)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0246698) | [arXiv](https://arxiv.org/abs/2009.01206)

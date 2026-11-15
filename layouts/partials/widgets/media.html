@@ -76,13 +76,14 @@
       <div class="timeline-items-list">
         {{ range first 6 $talks }}
           {{ $is_podcast := in .Params.tags "Podcast" }}
+          {{ $is_panel := in .Params.tags "Panel" }}
           <div class="timeline-item">
             <div class="timeline-marker {{ if $is_podcast }}marker-podcast{{ else }}marker-talk{{ end }}"></div>
             <div class="timeline-content">
               <div class="timeline-meta">
                 <span class="timeline-date">{{ .Date.Format "Jan 2006" }}</span>
                 <span class="timeline-badge {{ if $is_podcast }}badge-pod{{ else }}badge-pres{{ end }}">
-                  {{ if $is_podcast }}PODCAST{{ else }}PRESENTATION{{ end }}
+                  {{ if $is_podcast }}PODCAST{{ else if $is_panel }}PANEL{{ else }}PRESENTATION{{ end }}
                 </span>
                 {{ with .Params.location }}<span class="timeline-loc"><i class="fas fa-map-pin mr-1"></i>{{ . }}</span>{{ end }}
               </div>
