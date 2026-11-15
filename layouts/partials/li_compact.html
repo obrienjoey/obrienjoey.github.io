@@ -52,9 +52,9 @@
   {{ $topic = "Mobility Data" }}
 {{ else if in $item.RelPermalink "fpl_brainstorm" }}
   {{ $topic = "Operations Research" }}
-{{ else if $item.Params.series }}
+{{ else if and $item.Params.series (reflect.IsSlice $item.Params.series) }}
   {{ $topic = index $item.Params.series 0 }}
-{{ else if $item.Params.tags }}
+{{ else if and $item.Params.tags (reflect.IsSlice $item.Params.tags) }}
   {{ $topic = index $item.Params.tags 0 }}
 {{ end }}
 
@@ -63,12 +63,16 @@
 {{ with $item.Resources.GetMatch "featured*" }}
   {{ $media = (.Resize "640x q85").RelPermalink }}
 {{ end }}
+{{ $kicker_series := "" }}
+{{ if and $item.Params.series (reflect.IsSlice $item.Params.series) }}
+  {{ $kicker_series = index $item.Params.series 0 }}
+{{ end }}
 <div class="stream-item stream-feature{{ if $media }} has-media{{ end }}">
   <div class="stream-feature-content">
     <div class="stream-feature-top">
       <div class="stream-feature-kicker">
-        <span class="badge-journal badge-journal-on-dark">{{ with $item.Params.series }}Featured &middot; {{ index . 0 }}{{ else }}Featured Post{{ end }}</span>
-        <span class="pub-year">{{ if $topic }}{{ $topic }} &middot; {{ end }}{{ $item.Date.Format "2006" }}</span>
+        <span class="badge-journal badge-journal-on-dark">{{ if $kicker_series }}Featured &middot; {{ $kicker_series }}{{ else }}Featured Post{{ end }}</span>
+        <span class="pub-year">{{ if and $topic (ne $topic $kicker_series) }}{{ $topic }} &middot; {{ end }}{{ $item.Date.Format "2006" }}</span>
       </div>
       <h3 class="pub-title pub-title-on-dark">
         <a href="{{ $link }}" {{ $target | safeHTMLAttr }}>{{ $item.Title }}</a>
@@ -86,9 +90,9 @@
         <span class="middot-divider"></span>
         <span>{{ $item.ReadingTime }} min read</span>
         {{ end }}
-        {{ with $item.Params.tags }}
+        {{ if and $item.Params.tags (reflect.IsSlice $item.Params.tags) }}
         <span class="middot-divider"></span>
-        <span>{{ delimit (first 3 .) " · " }}</span>
+        <span>{{ delimit (first 3 $item.Params.tags) " · " }}</span>
         {{ end }}
         {{ if $item.Params.authors }}
         <span class="middot-divider"></span>

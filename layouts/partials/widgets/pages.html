@@ -90,15 +90,16 @@
 
     {{ if and (eq $items_type "post") $.IsHome }}
       {{ with site.GetPage "Section" "portfolio" }}
+        {{ $portfolio_url := .RelPermalink }}
         {{ $portfolio_items := .Params.items }}
         {{ with .Pages }}
         <div class="home-portfolio-showcase">
           <div class="home-portfolio-head">
             <span class="home-portfolio-kicker">Open-Source Packages &amp; Data Pipelines</span>
-            <a class="home-portfolio-more" href="/portfolio/">Full portfolio <i class="fas fa-angle-right" aria-hidden="true"></i></a>
+            <a class="home-portfolio-more" href="{{ $portfolio_url }}">Full portfolio <i class="fas fa-angle-right" aria-hidden="true"></i></a>
           </div>
           <div class="row portfolio-grid home-portfolio-grid">
-            {{ range .ByDate.Reverse }}
+            {{ range first 3 .ByDate.Reverse }}
               {{ $seg := path.Base .RelPermalink }}
               {{ $meta := dict }}
               {{ with $portfolio_items }}

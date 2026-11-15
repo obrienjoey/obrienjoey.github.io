@@ -44,6 +44,8 @@ $font-mono: 'JetBrains Mono', monospace;
 }
 
 body.dark {
+  --p-accent: #{$accent-bright};
+  --p-accent-strong: #ea7d86;
   --p-paper: #0f172a;
   --p-card: #111e33;
   --p-wash: #1e293b;
@@ -1896,6 +1898,15 @@ body.dark {
     font-family: $font-mono;
     font-size: 0.76rem;
     color: #94a3b8;
+
+    a {
+      color: #cbd5e1;
+
+      &:hover,
+      &:focus {
+        color: $accent-bright;
+      }
+    }
   }
 }
 

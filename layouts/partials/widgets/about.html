@@ -32,12 +32,13 @@
           <h2 class="proto-dossier-name">{{ $person.name }}</h2>
           <div class="proto-dossier-sub">{{ $person.role | markdownify | emojify }}{{ range first 1 $person.organizations }} · {{ .name }}{{ end }}</div>
         </div>
+        {{ with $person.dossier }}
         <ul class="proto-dossier-rows">
-          <li><span class="dk">Division</span><span class="dv">Quant Services</span></li>
-          <li><span class="dk">Doctorate</span><span class="dv">Applied Math, UL</span></li>
-          <li><span class="dk">Focus</span><span class="dv">XVA · CCR · SS1/23</span></li>
-          <li><span class="dk">Stack</span><span class="dv">Python · C++ · R · ORE</span></li>
+          {{ range . }}
+          <li><span class="dk">{{ .label }}</span><span class="dv">{{ .value }}</span></li>
+          {{ end }}
         </ul>
+        {{ end }}
         <div class="proto-dossier-socials" aria-label="Profiles">
           {{ range $person.social }}
           {{ $pack := or .icon_pack "fas" }}
@@ -62,6 +63,38 @@
     </div>
     <div class="col-12 col-lg-8">
       {{ $person_page.Content }}
+
+      {{ if not $page.Params.widget }}
+      <div class="row mt-4">
+        {{ with $person.interests }}
+        <div class="col-md-5">
+          <h3>{{ i18n "interests" | markdownify }}</h3>
+          <ul class="ul-interests">
+            {{ range . }}
+            <li>{{ . | markdownify | emojify }}</li>
+            {{ end }}
+          </ul>
+        </div>
+        {{ end }}
+
+        {{ with $person.education }}
+        <div class="col-md-7">
+          <h3>{{ i18n "education" | markdownify }}</h3>
+          <ul class="ul-edu fa-ul">
+            {{ range .courses }}
+            <li>
+              <i class="fa-li fas fa-graduation-cap"></i>
+              <div class="description">
+                <p class="course">{{ .course }}{{ with .year }}, {{ . }}{{ end }}</p>
+                <p class="institution">{{ .institution }}</p>
+              </div>
+            </li>
+            {{ end }}
+          </ul>
+        </div>
+        {{ end }}
+      </div>
+      {{ end }}
     </div>
   </div>
 </div>

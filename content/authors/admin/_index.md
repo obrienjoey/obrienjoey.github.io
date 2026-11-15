@@ -20,6 +20,16 @@ organizations:
 # Short bio (displayed in user profile at end of posts)
 bio: Principal Consultant in the Quant Services division of LSEG, specializing in model validation, derivative pricing, and risk solutions.
 
+dossier:
+- label: Division
+  value: Quant Services
+- label: Doctorate
+  value: Applied Math, UL
+- label: Focus
+  value: XVA · CCR · SS1/23
+- label: Stack
+  value: Python · C++ · R · ORE
+
 interests:
 - Counterparty Credit Risk (CCR)
 - XVA (CVA / DVA / FVA)
@@ -98,9 +108,9 @@ user_groups:
 </div>
 
 <div class="proto-cta-row">
-  <a href="#expertise" class="proto-btn-primary">See Lifecycle Expertise</a>
-  <a href="#media" class="proto-btn-outline">Podcast &amp; Talks</a>
-  <a href="#publications" class="proto-btn-outline">Research &amp; Papers</a>
-  <a href="#contact" class="proto-btn-outline">Get in Touch</a>
+  <a href="/#expertise" class="proto-btn-primary">See Lifecycle Expertise</a>
+  <a href="/#media" class="proto-btn-outline">Podcast &amp; Talks</a>
+  <a href="/#publications" class="proto-btn-outline">Research &amp; Papers</a>
+  <a href="/#contact" class="proto-btn-outline">Get in Touch</a>
 </div>
 
